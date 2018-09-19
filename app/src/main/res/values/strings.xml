@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">GJSD</string>
+    <string name="title_home">물품선택</string>
+    <string name="title_dashboard">가격/거리 비교</string>
+    <string name="title_notifications">Notifications</string>
+</resources>
