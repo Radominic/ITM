@@ -14,8 +14,11 @@ import com.example.user.gjsd.modules.GuManager;
 import com.example.user.gjsd.modules.MarketExplorer;
 import com.example.user.gjsd.modules.MyClient;
 
+import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
+
+import java.util.Set;
 
 
 /**
@@ -44,6 +47,7 @@ public class MapFragment extends Fragment {
     private MyClient myClient;
 
     private MapView mapView;
+
     public MapFragment() {
         // Required empty public constructor
         // 로딩화면에서 셋팅하기
@@ -89,40 +93,49 @@ public class MapFragment extends Fragment {
         mapView = new MapView(this.getActivity());
 
 
-        RelativeLayout map_container = (RelativeLayout)view.findViewById(R.id.map_view);
+        RelativeLayout map_container = (RelativeLayout) view.findViewById(R.id.map_view);
         map_container.addView(mapView);
 
         //default center point
         setMarkers();
         setMapMyLocation();
+        setZoomIncludeMarket(3);
         return view;
     }
 
-    public void setMapMyLocation(){
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(gpsManager.getLatitude(),gpsManager.getLongitude()),true);
+    public void setMapMyLocation() {
+        mapView.setMapCenterPoint(gpsManager.getMyPoint(), true);
     }
 
-    public void setMapGuLocation(String guName){
-        mapView.setMapCenterPoint(guManager.getGuPoint(guName),true);
+    public void setMapGuLocation(String guName) {
+        mapView.setMapCenterPoint(guManager.getGuPoint(guName), true);
     }
 
-    public void setMapMarketLocation(String marketName){
-        mapView.setMapCenterPoint(marketExplorer.getMarketPoint(marketName),true);
+    public void setMapMarketLocation(String marketName) {
+        mapView.setMapCenterPoint(marketExplorer.getMarketPoint(marketName), true);
     }
 
-    public void setZoomIncludeMarket(int numOfMarkets){
-
+    public void setZoomIncludeMarket(int numOfMarkets) {
+        int zoomRate = 1;
+        while (mapView.getPOIItems().length == numOfMarkets) {
+            zoomRate++;
+        }
+        mapView.setZoomLevel(zoomRate, true);
     }
 
-    public void setMarkers(){
-//        MapPOIItem marker = new MapPOIItem();
-//        marker.setItemName("Default Marker");
-//        marker.setTag(0);
-//        marker.setMapPoint(MARKER_POINT);
-//        marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
-//        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-//
-//        mapView.addPOIItem(marker);
+    public void setMarkers() {
+        Set<String> marketList = marketExplorer.getAllMarketList();
+        int tag_index = 0;
+        for (String marketName : marketList) {
+            MapPOIItem marker = new MapPOIItem();
+            marker.setItemName(marketName);
+            marker.setTag(tag_index);
+            marker.setMapPoint(marketExplorer.getMarketPoint(marketName));
+            marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+            marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+            tag_index++;
+            mapView.addPOIItem(marker);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
