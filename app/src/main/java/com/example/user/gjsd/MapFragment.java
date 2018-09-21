@@ -103,11 +103,11 @@ public class MapFragment extends Fragment {
     }
 
     public void setMapGuLocation(String guName){
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(guManager.getLatitude(guName),guManager.getLongitude(guName)),true);
+        mapView.setMapCenterPoint(guManager.getGuPoint(guName),true);
     }
 
     public void setMapMarketLocation(String marketName){
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(marketExplorer.getLatitude(marketName),marketExplorer.getLongitude(marketName)),true);
+        mapView.setMapCenterPoint(marketExplorer.getMarketPoint(marketName),true);
     }
 
     public void setZoomIncludeMarket(int numOfMarkets){
