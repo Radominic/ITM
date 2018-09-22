@@ -1,9 +1,11 @@
 package com.example.user.gjsd;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,14 +50,17 @@ public class MapFragment extends Fragment {
 
     private MapView mapView;
 
+    @SuppressLint("ValidFragment")
     public MapFragment() {
         // Required empty public constructor
         // 로딩화면에서 셋팅하기
-        gpsManager = new GPSManager(this.getContext());
+
         marketExplorer = new MarketExplorer();
         guManager = new GuManager();
         myClient = new MyClient();
-
+    }
+    public void setGpsManager(GPSManager gpsManager){
+        this.gpsManager = gpsManager;
     }
 
     /**
@@ -90,13 +95,13 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-        mapView = new MapView(this.getActivity());
+        mapView = new MapView(this.getContext());
+        mapView.setDaumMapApiKey("a6a70a1cac21fb3bdf4b989ef4226727");
 
+        ViewGroup map_view = (ViewGroup) view.findViewById(R.id.map_view);
+        map_view.addView(mapView);
 
-        RelativeLayout map_container = (RelativeLayout) view.findViewById(R.id.map_view);
-        map_container.addView(mapView);
-
-        //default center point
+//        default center point
         setMarkers();
         setMapMyLocation();
         setZoomIncludeMarket(3);
@@ -117,25 +122,51 @@ public class MapFragment extends Fragment {
 
     public void setZoomIncludeMarket(int numOfMarkets) {
         int zoomRate = 1;
-        while (mapView.getPOIItems().length == numOfMarkets) {
-            zoomRate++;
-        }
+//        while (mapView.getPOIItems().length == numOfMarkets) {
+//            zoomRate++;
+//            if(zoomRate == 10) break;
+//        }
+        Log.d("hihihi:",""+mapView.getPOIItems().length);
         mapView.setZoomLevel(zoomRate, true);
     }
 
-    public void setMarkers() {
+    private void setMarkers() {
         Set<String> marketList = marketExplorer.getAllMarketList();
         int tag_index = 0;
-        for (String marketName : marketList) {
-            MapPOIItem marker = new MapPOIItem();
-            marker.setItemName(marketName);
-            marker.setTag(tag_index);
-            marker.setMapPoint(marketExplorer.getMarketPoint(marketName));
-            marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
-            marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-            tag_index++;
-            mapView.addPOIItem(marker);
-        }
+//        for (String marketName : marketList) {
+//            MapPOIItem marker = new MapPOIItem();
+//            marker.setItemName(marketName);
+//            marker.setTag(tag_index);
+//            marker.setMapPoint(marketExplorer.getMarketPoint(marketName));
+//            marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+//            marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+//            tag_index++;
+//            mapView.addPOIItem(marker);
+//            mapView.selectPOIItem(marker,true);
+//        }
+        createCustomMarker(mapView,"통인시장");
+        createCustomMarker(mapView,"남대문시장");
+
+    }
+
+    private void createCustomMarker(MapView mapView,String s) {
+        MapPOIItem mCustomMarker;
+        mCustomMarker = new MapPOIItem();
+        String name = "Custom Marker";
+        mCustomMarker.setItemName(name);
+        mCustomMarker.setTag(1);
+        mCustomMarker.setMapPoint(marketExplorer.getMarketPoint(s));
+        mCustomMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
+
+        mCustomMarker.setCustomImageResourceId(R.drawable.custom_marker_red);
+        mCustomMarker.setCustomImageAutoscale(false);
+        mCustomMarker.setCustomImageAnchor(0.5f, 1.0f);
+
+        mapView.addPOIItem(mCustomMarker);
+//        mapView.selectPOIItem(mCustomMarker, true);
+//        mCustomMarker.set
+        mapView.setMapCenterPoint(marketExplorer.getMarketPoint(s), false);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

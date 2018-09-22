@@ -1,10 +1,15 @@
 package com.example.user.gjsd;
 
+import android.Manifest;
 import android.app.slice.Slice;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +25,8 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
+
+import com.example.user.gjsd.modules.GPSManager;
 
 import java.util.ArrayList;
 
@@ -72,6 +79,21 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+        //temp
+        if (!isPermission) {
+            callPermission();
+        }
+
+        GPSManager gpsManager = new GPSManager(MainActivity.this);
+        MapFragment mapFragment = new MapFragment();
+        mapFragment.setGpsManager(gpsManager);
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.add(R.id.contents, mapFragment);
+        fragmentTransaction.commit();
+        //
+
         drawer1 = (SlidingDrawer) findViewById(R.id.slide1);
         drawer2 = (SlidingDrawer)findViewById(R.id.slide2);
         TextView tv1 = (TextView)findViewById(R.id.title1);
@@ -112,4 +134,52 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+
+
+    private final int PERMISSIONS_ACCESS_FINE_LOCATION = 1000;
+    private final int PERMISSIONS_ACCESS_COARSE_LOCATION = 1001;
+    private boolean isAccessFineLocation = false;
+    private boolean isAccessCoarseLocation = false;
+    private boolean isPermission = false;
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == PERMISSIONS_ACCESS_FINE_LOCATION
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            isAccessFineLocation = true;
+
+        } else if (requestCode == PERMISSIONS_ACCESS_COARSE_LOCATION
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+            isAccessCoarseLocation = true;
+        }
+
+        if (isAccessFineLocation && isAccessCoarseLocation) {
+            isPermission = true;
+        }
+    }
+
+    // 전화번호 권한 요청
+    private void callPermission() {
+        // Check the SDK version and whether the permission is already granted or not.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            requestPermissions(
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_ACCESS_FINE_LOCATION);
+
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED){
+
+            requestPermissions(
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    PERMISSIONS_ACCESS_COARSE_LOCATION);
+        } else {
+            isPermission = true;
+        }
+    }
 }
