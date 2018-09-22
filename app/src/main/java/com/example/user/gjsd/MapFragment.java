@@ -105,6 +105,7 @@ public class MapFragment extends Fragment {
         setMarkers();
         setMapMyLocation();
         setZoomIncludeMarket(3);
+
         return view;
     }
 
