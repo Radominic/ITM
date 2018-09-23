@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
+import com.example.user.gjsd.costlist.costFragment;
+import com.example.user.gjsd.costlist.distanceFragment;
 import com.example.user.gjsd.itemlist.ListViewAdapter;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     String itemname = "default";
     String[] item = {"동태","조기","달걀","닭고기","돼지고기","쇠고기","애호박","오이","상추","양파","무","배추","배","사과","오징어","고등어","명태","호박","냉동참조기"};
     ViewPager pager;
+    Bundle bundle = new Bundle(1);
+    costFragment cf;
+    distanceFragment df;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -103,7 +108,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 itemname = item[position];
-                Log.i("itemname : ", itemname);
+                bundle.putString("itemName",itemname);
+                cf = new costFragment();
+                cf.setArguments(bundle);
+
+                pager = (ViewPager)findViewById(R.id.pager);
+                pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
+                pager.setCurrentItem(0);
+
                 drawer1.animateClose();
             }
         }) ;
@@ -124,6 +136,11 @@ public class MainActivity extends AppCompatActivity {
         bt2.setOnClickListener(movePageListener);
         bt2.setTag(1);
 
+        bundle.putString("itemName","상품미선택");
+        cf = new costFragment();
+        df = new distanceFragment();
+        cf.setArguments(bundle);
+        df.setArguments(bundle);
 
     }
     View.OnClickListener movePageListener = new View.OnClickListener(){
@@ -144,9 +161,9 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return new costFragment();
+                    return cf;
                 case 1:
-                    return new distanceFragment();
+                    return df;
                 default:
                     return null;
             }
