@@ -108,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
                 drawer1.animateClose();
             }
         }) ;
+
+
        if(!isPermission){
            callPermission();
        }
