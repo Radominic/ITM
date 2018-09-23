@@ -1,33 +1,34 @@
 package com.example.user.gjsd;
 
-import android.app.slice.Slice;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.example.user.gjsd.itemlist.ListViewAdapter;
 
 public class MainActivity extends AppCompatActivity {
     SlidingDrawer drawer1,drawer2;
     Animation animro, animri, animlo, animli;
     String itemname = "default";
     String[] item = {"동태","조기","달걀","닭고기","돼지고기","쇠고기","애호박","오이","상추","양파","무","배추","배","사과","오징어","고등어","명태","호박","냉동참조기"};
+    ViewPager pager;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -110,6 +111,51 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-    }
 
+        pager = (ViewPager)findViewById(R.id.pager);
+        Button bt1 = (Button)findViewById(R.id.tab1);
+        Button bt2 = (Button)findViewById(R.id.tab2);
+
+        pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
+        pager.setCurrentItem(0);
+
+        bt1.setOnClickListener(movePageListener);
+        bt1.setTag(0);
+        bt2.setOnClickListener(movePageListener);
+        bt2.setTag(1);
+
+
+    }
+    View.OnClickListener movePageListener = new View.OnClickListener(){
+
+        @Override
+        public void onClick(View view) {
+            int tag = (int)view.getTag();
+            pager.setCurrentItem(tag);
+        }
+    };
+
+    private class pagerAdapter extends FragmentStatePagerAdapter {
+        public pagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position){
+                case 0:
+                    return new costFragment();
+                case 1:
+                    return new distanceFragment();
+                default:
+                    return null;
+            }
+        }
+
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+    }
 }
