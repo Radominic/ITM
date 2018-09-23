@@ -1,10 +1,12 @@
-package com.example.user.gjsd;
+package com.example.user.gjsd.itemlist;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.CheckBox;
 import android.widget.Checkable;
 import android.widget.LinearLayout;
+
+import com.example.user.gjsd.R;
 
 public class CheckableLinearLayout extends LinearLayout implements Checkable {
 

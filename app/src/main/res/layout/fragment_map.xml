@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map_view">
+    </RelativeLayout>
+
+    <!--<SlidingDrawer-->
+        <!--android:id="@+id/slide"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:allowSingleTap="true"-->
+        <!--android:animateOnClick="true"-->
+        <!--android:bottomOffset="3dp"-->
+        <!--android:content="@+id/content"-->
+        <!--android:handle="@+id/handle"-->
+        <!--android:orientation="vertical"-->
+        <!--android:topOffset="60dp"-->
+        <!--&gt;-->
+        <!--<ImageView-->
+            <!--android:id="@+id/handle"-->
+            <!--android:src="@drawable/button"-->
+            <!--android:layout_width="70dp"-->
+            <!--android:layout_height="60dp"-->
+            <!--/>-->
+        <!--<LinearLayout-->
+            <!--android:id="@+id/content"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="#fddf33"-->
+            <!--android:orientation="vertical"-->
+            <!--&gt;-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="리스트 들어갈 예정"-->
+                <!--/>-->
+        <!--</LinearLayout>-->
+    <!--</SlidingDrawer>-->
+
+
+</FrameLayout>

@@ -1,33 +1,31 @@
 package com.example.user.gjsd;
 
-import android.app.slice.Slice;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.example.user.gjsd.itemlist.ListViewAdapter;
 
 public class MainActivity extends AppCompatActivity {
     SlidingDrawer drawer1,drawer2;
     Animation animro, animri, animlo, animli;
     String itemname = "default";
     String[] item = {"동태","조기","달걀","닭고기","돼지고기","쇠고기","애호박","오이","상추","양파","무","배추","배","사과","오징어","고등어","명태","호박","냉동참조기"};
+
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         listview = (ListView) findViewById(R.id.itemlist1);
         listview.setAdapter(adapter);
 
-        // 첫 번째 아이템 추가.
+        //아이템 추가.
 
        for(int i=0;i<item.length;i++){
            adapter.addItem(ContextCompat.getDrawable(this, R.drawable.banana),
@@ -106,6 +104,11 @@ public class MainActivity extends AppCompatActivity {
                 drawer1.animateClose();
             }
         }) ;
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        MapFragment mf = new MapFragment();
+        ft.add(R.id.formap,mf);
+        ft.commit();
 
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
