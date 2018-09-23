@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     String itemname = "default";
     String[] item = {"동태","조기","달걀","닭고기","돼지고기","쇠고기","애호박","오이","상추","양파","무","배추","배","사과","오징어","고등어","명태","호박","냉동참조기"};
 
-
+//    public void getItemName(){}
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         MapFragment mf = new MapFragment();
         GPSManager gm = new GPSManager(this);
         mf.setGpsManager(gm);
+        mf.setMainActivity(this);
         ft.add(R.id.formap,mf);
         ft.commit();
 
@@ -150,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 전화번호 권한 요청
     private void callPermission() {
         // Check the SDK version and whether the permission is already granted or not.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M

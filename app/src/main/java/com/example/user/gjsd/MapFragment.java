@@ -49,6 +49,7 @@ public class MapFragment extends Fragment {
     private MarketExplorer marketExplorer;
     private GuManager guManager;
     private MyClient myClient;
+    private MainActivity mainActivity;
 
     private MapView mapView;
 
@@ -56,7 +57,6 @@ public class MapFragment extends Fragment {
     public MapFragment() {
         // Required empty public constructor
         // 로딩화면에서 셋팅하기
-
         marketExplorer = new MarketExplorer();
         guManager = new GuManager();
         myClient = new MyClient();
@@ -64,6 +64,10 @@ public class MapFragment extends Fragment {
 
     public void setGpsManager(GPSManager gpsManager) {
         this.gpsManager = gpsManager;
+    }
+
+    public void setMainActivity(MainActivity mainActivity){
+        this.mainActivity = mainActivity;
     }
 
     /**
@@ -101,9 +105,9 @@ public class MapFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         mapView = new MapView(this.getContext());
         mapView.setDaumMapApiKey("a6a70a1cac21fb3bdf4b989ef4226727");
-
         ViewGroup map_view = (ViewGroup) view.findViewById(R.id.map_view);
         map_view.addView(mapView);
+
 
 //        default center point
         setMapMyLocation();
@@ -126,6 +130,8 @@ public class MapFragment extends Fragment {
         mapView.setMapCenterPoint(marketExplorer.getMarketMapPoint(marketName), true);
     }
 
+
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setMarketIncludeN(Point p, int numOfMarkets) {
         //p기준 정렬
@@ -133,7 +139,8 @@ public class MapFragment extends Fragment {
         //n개 가져오기
         String[] nearMarkets = marketExplorer.getNearNMarkets(numOfMarkets);
         for (String marketName : nearMarkets) {
-            createMarker(marketName, "10000");
+            String price = myClient.getPriceOfMarket(marketName,mainActivity.itemname);
+            createMarker(marketName, price);
         }
     }
 
