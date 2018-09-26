@@ -1,12 +1,16 @@
 package com.example.user.gjsd;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +28,7 @@ import android.widget.TextView;
 import com.example.user.gjsd.costlist.costFragment;
 import com.example.user.gjsd.costlist.distanceFragment;
 import com.example.user.gjsd.itemlist.ListViewAdapter;
+import com.example.user.gjsd.modules.GPSManager;
 
 public class MainActivity extends AppCompatActivity {
     SlidingDrawer drawer1,drawer2;
@@ -120,6 +125,17 @@ public class MainActivity extends AppCompatActivity {
             }
         }) ;
 
+        if(!isPermission){
+            callPermission();
+        }
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        MapFragment mf = new MapFragment();
+        GPSManager gm = new GPSManager(this);
+        mf.setGpsManager(gm);
+        mf.setMainActivity(this);
+        ft.add(R.id.formap,mf);
+        ft.commit();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -142,7 +158,10 @@ public class MainActivity extends AppCompatActivity {
         cf.setArguments(bundle);
         df.setArguments(bundle);
 
+
     }
+
+
     View.OnClickListener movePageListener = new View.OnClickListener(){
 
         @Override
@@ -173,6 +192,51 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             return 2;
+        }
+    }
+    private final int PERMISSIONS_ACCESS_FINE_LOCATION = 1000;
+    private final int PERMISSIONS_ACCESS_COARSE_LOCATION = 1001;
+    private boolean isAccessFineLocation = false;
+    private boolean isAccessCoarseLocation = false;
+    private boolean isPermission = false;
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == PERMISSIONS_ACCESS_FINE_LOCATION
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            isAccessFineLocation = true;
+
+        } else if (requestCode == PERMISSIONS_ACCESS_COARSE_LOCATION
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+            isAccessCoarseLocation = true;
+        }
+
+        if (isAccessFineLocation && isAccessCoarseLocation) {
+            isPermission = true;
+        }
+    }
+
+    private void callPermission() {
+        // Check the SDK version and whether the permission is already granted or not.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            requestPermissions(
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_ACCESS_FINE_LOCATION);
+
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED){
+
+            requestPermissions(
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    PERMISSIONS_ACCESS_COARSE_LOCATION);
+        } else {
+            isPermission = true;
         }
     }
 }

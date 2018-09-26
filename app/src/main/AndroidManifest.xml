@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.user.gjsd">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET">
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION">
+    </uses-permission>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,5 +30,5 @@
 
         </activity>
     </application>
-
+    <meta-data android:name="com.kakao.sdk.AppKey" android:value="a6a70a1cac21fb3bdf4b989ef4226727"/>
 </manifest>
