@@ -7,9 +7,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -17,10 +20,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
+import com.example.user.gjsd.costlist.costFragment;
+import com.example.user.gjsd.costlist.distanceFragment;
 import com.example.user.gjsd.itemlist.ListViewAdapter;
 import com.example.user.gjsd.modules.GPSManager;
 
@@ -29,8 +35,11 @@ public class MainActivity extends AppCompatActivity {
     Animation animro, animri, animlo, animli;
     String itemname = "default";
     String[] item = {"동태","조기","달걀","닭고기","돼지고기","쇠고기","애호박","오이","상추","양파","무","배추","배","사과","오징어","고등어","명태","호박","냉동참조기"};
+    ViewPager pager;
+    Bundle bundle = new Bundle(1);
+    costFragment cf;
+    distanceFragment df;
 
-//    public void getItemName(){}
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -93,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         listview = (ListView) findViewById(R.id.itemlist1);
         listview.setAdapter(adapter);
 
-        //아이템 추가.
+        // 첫 번째 아이템 추가.
 
        for(int i=0;i<item.length;i++){
            adapter.addItem(ContextCompat.getDrawable(this, R.drawable.banana),
@@ -104,15 +113,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 itemname = item[position];
-                Log.i("itemname : ", itemname);
+                bundle.putString("itemName",itemname);
+                cf = new costFragment();
+                cf.setArguments(bundle);
+
+                pager = (ViewPager)findViewById(R.id.pager);
+                pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
+                pager.setCurrentItem(0);
+
                 drawer1.animateClose();
             }
         }) ;
 
-
-       if(!isPermission){
-           callPermission();
-       }
+        if(!isPermission){
+            callPermission();
+        }
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         MapFragment mf = new MapFragment();
@@ -122,11 +137,63 @@ public class MainActivity extends AppCompatActivity {
         ft.add(R.id.formap,mf);
         ft.commit();
 
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        pager = (ViewPager)findViewById(R.id.pager);
+        Button bt1 = (Button)findViewById(R.id.tab1);
+        Button bt2 = (Button)findViewById(R.id.tab2);
+
+        pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
+        pager.setCurrentItem(0);
+
+        bt1.setOnClickListener(movePageListener);
+        bt1.setTag(0);
+        bt2.setOnClickListener(movePageListener);
+        bt2.setTag(1);
+
+        bundle.putString("itemName","상품미선택");
+        cf = new costFragment();
+        df = new distanceFragment();
+        cf.setArguments(bundle);
+        df.setArguments(bundle);
+
+
     }
 
+
+    View.OnClickListener movePageListener = new View.OnClickListener(){
+
+        @Override
+        public void onClick(View view) {
+            int tag = (int)view.getTag();
+            pager.setCurrentItem(tag);
+        }
+    };
+
+    private class pagerAdapter extends FragmentStatePagerAdapter {
+        public pagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position){
+                case 0:
+                    return cf;
+                case 1:
+                    return df;
+                default:
+                    return null;
+            }
+        }
+
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+    }
     private final int PERMISSIONS_ACCESS_FINE_LOCATION = 1000;
     private final int PERMISSIONS_ACCESS_COARSE_LOCATION = 1001;
     private boolean isAccessFineLocation = false;
@@ -172,6 +239,4 @@ public class MainActivity extends AppCompatActivity {
             isPermission = true;
         }
     }
-
-
 }
