@@ -6,21 +6,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@android:color/darker_gray"></LinearLayout>
+
 
     <FrameLayout
         android:id="@+id/draw"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="58dp">
+        android:layout_alignParentTop="true">
+
         <FrameLayout
+            android:id="@+id/formap"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/formap"></FrameLayout>
+            android:layout_height="match_parent"></FrameLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="88dp"
+            android:layout_marginRight="30dp"
+            android:src="@android:drawable/ic_dialog_email" />
 
         <SlidingDrawer
             android:id="@+id/slide1"
@@ -46,20 +52,22 @@
                 android:layout_height="match_parent"
                 android:background="#ffffff"
                 android:orientation="vertical">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:background="#F4A91D"
-                    ><TextView
-                    android:id="@+id/title1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="당신이 사고싶은 물건"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="13dp"
-                    android:textColor="#ffffff"/>
+                    android:background="#F4A91D">
+
+                    <TextView
+                        android:id="@+id/title1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="13dp"
+                        android:text="당신이 사고싶은 물건"
+                        android:textColor="#ffffff" />
 
                     <TextView
                         android:id="@+id/title2"
@@ -67,24 +75,26 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentLeft="true"
-                        android:text="물품선택"
-                        android:paddingLeft="15dp"
                         android:paddingBottom="5dp"
+                        android:paddingLeft="15dp"
+                        android:text="물품선택"
                         android:textColor="#ffffff"
                         android:textSize="36dp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
+
                     <ImageView
                         android:layout_width="75dp"
                         android:layout_height="75dp"
-                        android:src="@drawable/item"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:paddingRight="15dp"
-                        android:layout_alignParentRight="true"/>
+                        android:src="@drawable/item" />
                 </RelativeLayout>
+
                 <ListView
+                    android:id="@+id/itemlist1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/itemlist1"
                     android:choiceMode="singleChoice">
 
 
@@ -92,6 +102,7 @@
 
             </LinearLayout>
         </SlidingDrawer>
+
         <SlidingDrawer
             android:id="@+id/slide2"
             android:layout_width="match_parent"
@@ -120,17 +131,18 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:background="#ff4081"
-                    ><TextView
-                    android:id="@+id/title11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="가격과 거리를 따졌을 때"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="13dp"
-                    android:textColor="#ffffff"/>
+                    android:background="#ff4081">
+
+                    <TextView
+                        android:id="@+id/title11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="13dp"
+                        android:text="가격과 거리를 따졌을 때"
+                        android:textColor="#ffffff" />
 
                     <TextView
                         android:id="@+id/title22"
@@ -138,51 +150,82 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentLeft="true"
-                        android:text="가격/거리 비교"
-                        android:paddingLeft="15dp"
                         android:paddingBottom="5dp"
+                        android:paddingLeft="15dp"
+                        android:text="가격/거리 비교"
                         android:textColor="#ffffff"
                         android:textSize="36dp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
+
                     <ImageView
                         android:layout_width="75dp"
                         android:layout_height="75dp"
-                        android:src="@drawable/list"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:paddingRight="15dp"
-                        android:layout_alignParentRight="true"/>
+                        android:src="@drawable/list" />
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <LinearLayout
                         android:id="@+id/tabpanel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <Button
                             android:id="@+id/tab1"
-                        android:layout_width="0dip"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="가격"/>
+                            android:layout_width="0dip"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="가격" />
+
                         <Button
                             android:id="@+id/tab2"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:text="거리"/>
+                            android:text="거리" />
                     </LinearLayout>
+
                     <android.support.v4.view.ViewPager
+                        android:id="@+id/pager"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/pager"
                         android:layout_below="@id/tabpanel">
 
                     </android.support.v4.view.ViewPager>
                 </RelativeLayout>
             </LinearLayout>
         </SlidingDrawer>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#9b8e8e8e">
+
+            <com.example.user.gjsd.ClearEditText
+                android:id="@+id/cleartext"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true">
+
+            </com.example.user.gjsd.ClearEditText>
+
+            <Button
+                android:id="@+id/searchbutton"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/cleartext"
+                android:layout_marginLeft="2dp"
+                android:text="찾기" />
+
+        </RelativeLayout>
+
 
     </FrameLayout>
 
@@ -206,6 +249,9 @@
 
             />
     </android.support.constraint.ConstraintLayout>
+
+
+
 
 
 

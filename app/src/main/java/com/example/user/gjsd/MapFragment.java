@@ -20,6 +20,8 @@ import com.example.user.gjsd.modules.Point;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapView;
 
+import java.util.Set;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -140,6 +142,8 @@ public class MapFragment extends Fragment {
         }
     }
 
+   
+
     private void createMarker(String marketName, String price) {
         MapPOIItem mCustomMarker;
         mCustomMarker = new MapPOIItem();
@@ -196,4 +200,5 @@ public class MapFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }

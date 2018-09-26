@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -20,6 +21,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
@@ -29,6 +32,10 @@ import com.example.user.gjsd.costlist.costFragment;
 import com.example.user.gjsd.costlist.distanceFragment;
 import com.example.user.gjsd.itemlist.ListViewAdapter;
 import com.example.user.gjsd.modules.GPSManager;
+import com.example.user.gjsd.modules.MarketExplorer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     SlidingDrawer drawer1,drawer2;
@@ -39,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
     Bundle bundle = new Bundle(1);
     costFragment cf;
     distanceFragment df;
+    FloatingActionButton fab ;
+    MapFragment mf;
+    List<String> marketnamelist ;
+    MarketExplorer me ;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -51,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_home:
 
                     if(!drawer1.isOpened()&&!drawer2.isOpened()) {
-                        drawer1.animateOpen();
+                        drawer1.animateOpen();fab.hide();
                     }else if(drawer1.isOpened()){
-                        drawer1.animateClose();
+                        drawer1.animateClose(); fab.show();
                     }
                     else if(drawer2.isOpened()){
                         drawer1.open();
@@ -62,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_dashboard:
                     if(!drawer1.isOpened()&&!drawer2.isOpened()) {
-                        drawer2.animateOpen();
+                        drawer2.animateOpen(); fab.hide();
                     }else if(drawer2.isOpened()){
-                        drawer2.animateClose();
+                        drawer2.animateClose(); fab.show();
                     }else if(drawer1.isOpened()){
                         drawer2.open();
                         drawer1.close();
@@ -130,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         }
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        MapFragment mf = new MapFragment();
+        mf = new MapFragment();
         GPSManager gm = new GPSManager(this);
         mf.setGpsManager(gm);
         mf.setMainActivity(this);
@@ -158,7 +169,31 @@ public class MainActivity extends AppCompatActivity {
         cf.setArguments(bundle);
         df.setArguments(bundle);
 
+        fab = (FloatingActionButton)findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                mf.setMapMyLocation();
+            }
+        });
 
+        me = new MarketExplorer();
+        settingList();
+        final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+
+        autoCompleteTextView.setAdapter(new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line,  marketnamelist ));
+        final ClearEditText clearedittext = (ClearEditText)findViewById(R.id.cleartext);
+        Button bt = (Button)findViewById(R.id.searchbutton);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mf.setMapMarketLocation(clearedittext.getText().toString());
+            }
+        });
+    }
+    private void settingList(){
+        marketnamelist = me.marketlist();
     }
 
 
