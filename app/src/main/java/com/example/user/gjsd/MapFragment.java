@@ -20,6 +20,8 @@ import com.example.user.gjsd.modules.Point;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapView;
 
+import java.util.Set;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -139,6 +141,8 @@ public class MapFragment extends Fragment {
         }
     }
 
+
+
     private void createMarker(String marketName) {
         MapPOIItem mCustomMarker;
         mCustomMarker = new MapPOIItem();
@@ -158,7 +162,7 @@ public class MapFragment extends Fragment {
 
     public void setPriceOnMap(){
         //떠있는 poi들을 client에게 넘김
-        MapPOIItem[] poiItems = mapView.getPOIItems()
+        MapPOIItem[] poiItems = mapView.getPOIItems();
     }
     public void setPriceOnPOIItem(MapPOIItem poiItem,String price){
         //가격을 poiItem에 셋팅, 이 부분에 가격정보 띄우는 코드 삽입
