@@ -142,7 +142,7 @@ public class MapFragment extends Fragment {
         }
     }
 
-   
+
 
     private void createMarker(String marketName, String price) {
         MapPOIItem mCustomMarker;
@@ -158,10 +158,16 @@ public class MapFragment extends Fragment {
 
         mapView.addPOIItem(mCustomMarker);
 
-//        mapView.selectPOIItem(mCustomMarker, true);
-//        mCustomMarker.set
-//        mapView.setMapCenterPoint(marketExplorer.getMarketPoint(s), false);
+        //클릭시 말풍선 안뜨게 수정
 
+    }
+    public void setPriceOnMap(){
+        //떠있는 poi들을 client에게 넘김
+        MapPOIItem[] poiItems = mapView.getPOIItems();
+    }
+    public void setPriceOnPOIItem(MapPOIItem poiItem,String price){
+        //가격을 poiItem에 셋팅, 이 부분에 가격정보 띄우는 코드 삽입
+        poiItem.setItemName(price);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
