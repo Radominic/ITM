@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,7 +47,7 @@ import java.util.Set;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements MapView.MapViewEventListener,MapView.POIItemEventListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -123,19 +124,29 @@ public class MapFragment extends Fragment {
         // Inflate the layout for this fragment
         con1 = container.getContext();
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-        mapView = new MapView(this.getContext());
+        mapView = new MapView(this.getActivity());
         mapView.setDaumMapApiKey("a6a70a1cac21fb3bdf4b989ef4226727");
         ViewGroup map_view = (ViewGroup) view.findViewById(R.id.map_view);
         map_view.addView(mapView);
+        mapView.setPOIItemEventListener(this);
+        mapView.setMapViewEventListener(this);
 
+        //이거 대신 커스텀 이미지 삽입(내위치 마커)
+        mapView.setDefaultCurrentLocationMarker();
 
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+//        mapView.setShowCurrentLocationMarker(true);
+
+//        mapView.
 //        default center point
+
+//        setMarketIncludeN(gpsManager.getMyPoint(), 3);
+
         setMapMyLocation();
-        setMarketIncludeN(gpsManager.getMyPoint(), 3);
-        mapView.fitMapViewAreaToShowAllPOIItems();
-        mapView.zoomOut(true);
-        setPriceOnMap();
         setAllMarkets();
+        setZoomIncludeN(3);
+        setPriceOnMap();
+
 
 //        framelayout = (FrameLayout) view.findViewById(R.id.formap);
 
@@ -146,24 +157,33 @@ public class MapFragment extends Fragment {
         mapView.setMapCenterPoint(gpsManager.getMyMapPoint(), true);
     }
 
-    public void setMapGuLocation(String guName) {
-        mapView.setMapCenterPoint(guManager.getGuMapPoint(guName), true);
-    }
+//    public void setMapGuLocation(String guName) {
+//        mapView.setMapCenterPoint(guManager.getGuMapPoint(guName), true);
+//    }
 
     public void setMapMarketLocation(String marketName) {
         mapView.setMapCenterPoint(marketExplorer.getMarketMapPoint(marketName), true);
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void setMarketIncludeN(Point p, int numOfMarkets) {
-        //p기준 정렬
-        marketExplorer.updateMarketsSortedByDistance(p);
-        //n개 가져오기
-        String[] nearMarkets = marketExplorer.getNearNMarkets(numOfMarkets);
-        for (String marketName : nearMarkets) {
+    public void setAllMarkets(){
+        Set<String> markets = marketExplorer.getAllMarketList();
+        for(String marketName : markets){
             createMarker(marketName);
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setZoomIncludeN(int numOfMarkets) {
+        //p기준 정렬
+        marketExplorer.updateMarketsSortedByDistance(new Point(mapView.getMapCenterPoint().getMapPointGeoCoord().latitude,mapView.getMapCenterPoint().getMapPointGeoCoord().latitude));
+
+//        mapView.fitMapViewAreaToShowMapPoints();
+        //n개 가져오기
+        MapPoint[] nearMarkets = marketExplorer.getNearNMarketsMapPoint(numOfMarkets);
+//        for (String marketName : nearMarkets) {
+//            createMarker(marketName);
+//        }
+        mapView.fitMapViewAreaToShowMapPoints(nearMarkets);
     }
 
 
@@ -175,45 +195,30 @@ public class MapFragment extends Fragment {
         mCustomMarker.setTag(1);
         mCustomMarker.setMapPoint(marketExplorer.getMarketMapPoint(marketName));
         mCustomMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
-        Canvas cv = new Canvas();
+
 
         mCustomMarker.setCustomImageBitmap(writeOnDrawable(R.drawable.custom_marker_red,marketName,30));
 
         mCustomMarker.setCustomImageAutoscale(false);
         mCustomMarker.setCustomImageAnchor(0.5f, 1.0f);
 
+        mCustomMarker.setShowCalloutBalloonOnTouch(false);
         mapView.addPOIItem(mCustomMarker);
 
         //클릭시 말풍선 안뜨게 수정
     }
 
-    public void setAllMarkets() {
-        Set<String> markets = marketExplorer.getAllMarketList();
-        for (String marketName : markets) {
-            createMarker(marketName);
+    public void setPriceOnMap(){
+        //떠있는 poi들을 client에게 넘김
+        MapPOIItem[] poiItems = mapView.getPOIItems();
+        for(MapPOIItem poiItem : poiItems){
+            myClient.getPriceOfMarket(poiItem,mainActivity.getItemname(),poiItem.getItemName());
         }
     }
-
-    public void setPriceOnMap() {
-        //떠있는 poi들을 client에게 넘김
-//        MapPOIItem[] poiItems = mapView.getPOIItems();
-//        String[] names = marketExplorer.getNearNMarkets(3);
-//        ArrayList<MapPOIItem> poiItems = new ArrayList<MapPOIItem>();
-//        for(String name : names){
-//             poiItems.add(mapView.findPOIItemByName(name)[0]);
-//        }
-//
-//        for (MapPOIItem poiItem : poiItems) {
-//            myClient.getPriceOfMarket(poiItem);
-//        }
-        String name = marketExplorer.getNearNMarkets(1)[0];
-        MapPOIItem poiItem = mapView.findPOIItemByName(name)[0];
-        Log.d("@@@",poiItem.getItemName());
-        myClient.getPriceOfMarket(poiItem);
-
-    }
-
-    public void setPriceOnPOIItem(MapPOIItem poiItem, String price) {
+    public void setPriceOnPOIItem(MapPOIItem poiItem,String price){
+        //가격을 poiItem에 셋팅, 이 부분에 가격정보 띄우는 코드 삽입
+        Log.d("price",price);
+        poiItem.setItemName(price);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -236,6 +241,73 @@ public class MapFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onMapViewInitialized(MapView mapView) {
+
+    }
+
+    @Override
+    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewZoomLevelChanged(MapView mapView, int i) {
+
+    }
+
+    @Override
+    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    //poi listener
+    @Override
+    public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
+        setPriceOnMap();
+        Log.d("@@@",mapPOIItem.getItemName());
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
+
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
+
+    }
+
+    @Override
+    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
+
     }
 
     /**

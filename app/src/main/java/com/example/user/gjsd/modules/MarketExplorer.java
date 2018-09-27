@@ -67,9 +67,11 @@ public class MarketExplorer {
         Markets.put("강서구 화곡 본동시장",new Point(37.5428618, 126.8441381));
         Markets.put("강남구 청담 삼익시장",new Point(37.5224855, 127.0576847));
         Markets.put("강남구 도곡시장",new Point(37.4954841, 127.0333574));
-        Markets.put("서초구 방림시장",new Point(35.1369729, 126.9136617));
+        Markets.put("서초구 방림시장",new Point(37.483325, 126.99624500000004));
         Markets.put("은평구 대조시장",new Point(37.6098316, 126.9276087));
         Markets.put("강북구 숭인시장",new Point(37.6131571, 127.0294686));
+
+
 
         //default sort
         Set<String> keys = (Set<String>)Markets.keySet();
@@ -126,6 +128,13 @@ public class MarketExplorer {
         return result;
     }
 
+    public MapPoint[] getNearNMarketsMapPoint(int numOfMarket){
+        MapPoint[] result = new MapPoint[numOfMarket];
+        for(int i = 0;i<numOfMarket;i++) {
+            result[i] = getMarketMapPoint(Markets_sort_by_distance.get(i).name);
+        }
+        return result;
+    }
 
 
     class MarketD {
@@ -139,6 +148,7 @@ public class MarketExplorer {
             this.d_sqaure = d_square;
         }
     }
+
     class MarketComparator implements Comparator<MarketD> {
 
         @Override
