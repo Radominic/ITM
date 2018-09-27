@@ -29,6 +29,7 @@ import com.example.user.gjsd.modules.GPSManager;
 import com.example.user.gjsd.modules.GuManager;
 import com.example.user.gjsd.modules.MarketExplorer;
 import com.example.user.gjsd.modules.MyClient;
+import com.example.user.gjsd.modules.POIMarkers;
 import com.example.user.gjsd.modules.Point;
 
 import net.daum.mf.map.api.MapPOIItem;
@@ -67,6 +68,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 
     private MapView mapView;
     private FrameLayout framelayout;
+    private POIMarkers poiMarkers ;
     Context con1;
 
     @SuppressLint("ValidFragment")
@@ -123,6 +125,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         con1 = container.getContext();
+        poiMarkers.setContext(con1);
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         mapView = new MapView(this.getActivity());
         mapView.setDaumMapApiKey("a6a70a1cac21fb3bdf4b989ef4226727");
@@ -168,7 +171,9 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     public void setAllMarkets(){
         Set<String> markets = marketExplorer.getAllMarketList();
         for(String marketName : markets){
-            createMarker(marketName);
+            poiMarkers = new POIMarkers();
+            poiMarkers.setName(marketName);
+            createMarker();
         }
     }
 
@@ -187,17 +192,19 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     }
 
 
-    private void createMarker(String marketName) {
+    private void createMarker() {
         MapPOIItem mCustomMarker;
         mCustomMarker = new MapPOIItem();
-        String name = marketName;
-        mCustomMarker.setItemName(marketName);
+        mCustomMarker.setItemName(poiMarkers.getName());
         mCustomMarker.setTag(1);
-        mCustomMarker.setMapPoint(marketExplorer.getMarketMapPoint(marketName));
+        mCustomMarker.setMapPoint(marketExplorer.getMarketMapPoint(poiMarkers.getName()));
         mCustomMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
 
+        //디폴트이미지메소드 호출-가격 안들어간것
 
-        mCustomMarker.setCustomImageBitmap(writeOnDrawable(R.drawable.custom_marker_red,marketName,30));
+
+        mCustomMarker.setCustomImageBitmap(poiMarkers.writeOnDrawable());
+        //아이템 클래스, 객체 만들기
 
         mCustomMarker.setCustomImageAutoscale(false);
         mCustomMarker.setCustomImageAnchor(0.5f, 1.0f);
@@ -218,6 +225,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     public void setPriceOnPOIItem(MapPOIItem poiItem,String price){
         //가격을 poiItem에 셋팅, 이 부분에 가격정보 띄우는 코드 삽입
         Log.d("price",price);
+        poiMarkers.setPrice(price);
         poiItem.setItemName(price);
     }
 
@@ -324,22 +332,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-    public Bitmap writeOnDrawable(int drawableId, String text, int TextSize){
 
-        Bitmap bm = BitmapFactory.decodeResource(con1.getResources(), drawableId).copy(Bitmap.Config.ARGB_8888, true);
-        BitmapFactory.decodeResource(con1.getResources(),R.drawable.custom_marker_red);
-
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(TextSize);
-        paint.setTextAlign(Paint.Align.CENTER);
-
-        Canvas canvas = new Canvas(bm);
-        canvas.drawText(text,bm.getWidth()/2 , bm.getHeight()/2, paint);
-
-        return bm;
-    }
 
 
 }
