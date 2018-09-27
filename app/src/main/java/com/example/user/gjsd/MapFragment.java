@@ -2,14 +2,27 @@ package com.example.user.gjsd;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.example.user.gjsd.modules.GPSManager;
 import com.example.user.gjsd.modules.GuManager;
@@ -18,8 +31,10 @@ import com.example.user.gjsd.modules.MyClient;
 import com.example.user.gjsd.modules.Point;
 
 import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 
@@ -50,6 +65,8 @@ public class MapFragment extends Fragment {
     private MainActivity mainActivity;
 
     private MapView mapView;
+    private FrameLayout framelayout;
+    Context con1;
 
     @SuppressLint("ValidFragment")
     public MapFragment() {
@@ -60,11 +77,15 @@ public class MapFragment extends Fragment {
         myClient = new MyClient(this);
     }
 
+    public void setFramelayout(FrameLayout frameLayout) {
+        this.framelayout = frameLayout;
+    }
+
     public void setGpsManager(GPSManager gpsManager) {
         this.gpsManager = gpsManager;
     }
 
-    public void setMainActivity(MainActivity mainActivity){
+    public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
@@ -100,6 +121,7 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        con1 = container.getContext();
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         mapView = new MapView(this.getContext());
         mapView.setDaumMapApiKey("a6a70a1cac21fb3bdf4b989ef4226727");
@@ -113,6 +135,10 @@ public class MapFragment extends Fragment {
         mapView.fitMapViewAreaToShowAllPOIItems();
         mapView.zoomOut(true);
         setPriceOnMap();
+        setAllMarkets();
+
+//        framelayout = (FrameLayout) view.findViewById(R.id.formap);
+
         return view;
     }
 
@@ -129,7 +155,6 @@ public class MapFragment extends Fragment {
     }
 
 
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setMarketIncludeN(Point p, int numOfMarkets) {
         //p기준 정렬
@@ -142,7 +167,6 @@ public class MapFragment extends Fragment {
     }
 
 
-
     private void createMarker(String marketName) {
         MapPOIItem mCustomMarker;
         mCustomMarker = new MapPOIItem();
@@ -151,7 +175,10 @@ public class MapFragment extends Fragment {
         mCustomMarker.setTag(1);
         mCustomMarker.setMapPoint(marketExplorer.getMarketMapPoint(marketName));
         mCustomMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
-        mCustomMarker.setCustomImageResourceId(R.drawable.custom_marker_red);
+        Canvas cv = new Canvas();
+
+        mCustomMarker.setCustomImageBitmap(writeOnDrawable(R.drawable.custom_marker_red,marketName,30));
+
         mCustomMarker.setCustomImageAutoscale(false);
         mCustomMarker.setCustomImageAnchor(0.5f, 1.0f);
 
@@ -160,13 +187,33 @@ public class MapFragment extends Fragment {
         //클릭시 말풍선 안뜨게 수정
     }
 
-    public void setPriceOnMap(){
-        //떠있는 poi들을 client에게 넘김
-        MapPOIItem[] poiItems = mapView.getPOIItems();
+    public void setAllMarkets() {
+        Set<String> markets = marketExplorer.getAllMarketList();
+        for (String marketName : markets) {
+            createMarker(marketName);
+        }
     }
-    public void setPriceOnPOIItem(MapPOIItem poiItem,String price){
-        //가격을 poiItem에 셋팅, 이 부분에 가격정보 띄우는 코드 삽입
-        poiItem.setItemName(price);
+
+    public void setPriceOnMap() {
+        //떠있는 poi들을 client에게 넘김
+//        MapPOIItem[] poiItems = mapView.getPOIItems();
+//        String[] names = marketExplorer.getNearNMarkets(3);
+//        ArrayList<MapPOIItem> poiItems = new ArrayList<MapPOIItem>();
+//        for(String name : names){
+//             poiItems.add(mapView.findPOIItemByName(name)[0]);
+//        }
+//
+//        for (MapPOIItem poiItem : poiItems) {
+//            myClient.getPriceOfMarket(poiItem);
+//        }
+        String name = marketExplorer.getNearNMarkets(1)[0];
+        MapPOIItem poiItem = mapView.findPOIItemByName(name)[0];
+        Log.d("@@@",poiItem.getItemName());
+        myClient.getPriceOfMarket(poiItem);
+
+    }
+
+    public void setPriceOnPOIItem(MapPOIItem poiItem, String price) {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -205,5 +252,22 @@ public class MapFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    public Bitmap writeOnDrawable(int drawableId, String text, int TextSize){
+
+        Bitmap bm = BitmapFactory.decodeResource(con1.getResources(), drawableId).copy(Bitmap.Config.ARGB_8888, true);
+        BitmapFactory.decodeResource(con1.getResources(),R.drawable.custom_marker_red);
+
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(TextSize);
+        paint.setTextAlign(Paint.Align.CENTER);
+
+        Canvas canvas = new Canvas(bm);
+        canvas.drawText(text,bm.getWidth()/2 , bm.getHeight()/2, paint);
+
+        return bm;
+    }
+
 
 }

@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
@@ -145,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         GPSManager gm = new GPSManager(this);
         mf.setGpsManager(gm);
         mf.setMainActivity(this);
+        mf.setFramelayout((FrameLayout) findViewById(R.id.formap));
         ft.add(R.id.formap,mf);
         ft.commit();
 
