@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -18,11 +19,13 @@ public interface APIService {
 
 
     @FormUrlEncoded
-    @POST("cheapest_mart.php")
-    Call<String> get_cheapest_mart(
-            @Field("goods") String goods
+    @POST("name_goods.php")
+    Call<ResponseBody> get_name_goods(
+            @Field("goods") String goods,
+            @Field("market_name") String market_name
     );
 
-
+//    @FormUrlEncoded
+//    @POST("cheape")
 
 }

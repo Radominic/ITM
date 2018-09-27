@@ -75,7 +75,10 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
+    public String getItemname(){
+        Log.d("itemname",itemname);
+        return itemname;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
