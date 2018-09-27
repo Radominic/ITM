@@ -57,7 +57,7 @@ public class MapFragment extends Fragment {
         // 로딩화면에서 셋팅하기
         marketExplorer = new MarketExplorer();
         guManager = new GuManager();
-        myClient = new MyClient();
+        myClient = new MyClient(this);
     }
 
     public void setGpsManager(GPSManager gpsManager) {
@@ -112,7 +112,7 @@ public class MapFragment extends Fragment {
         setMarketIncludeN(gpsManager.getMyPoint(), 3);
         mapView.fitMapViewAreaToShowAllPOIItems();
         mapView.zoomOut(true);
-
+        setPriceOnMap();
         return view;
     }
 
@@ -137,14 +137,13 @@ public class MapFragment extends Fragment {
         //n개 가져오기
         String[] nearMarkets = marketExplorer.getNearNMarkets(numOfMarkets);
         for (String marketName : nearMarkets) {
-            String price = myClient.getPriceOfMarket(marketName,mainActivity.itemname);
-            createMarker(marketName, price);
+            createMarker(marketName);
         }
     }
 
 
 
-    private void createMarker(String marketName, String price) {
+    private void createMarker(String marketName) {
         MapPOIItem mCustomMarker;
         mCustomMarker = new MapPOIItem();
         String name = marketName;
@@ -159,8 +158,8 @@ public class MapFragment extends Fragment {
         mapView.addPOIItem(mCustomMarker);
 
         //클릭시 말풍선 안뜨게 수정
-
     }
+
     public void setPriceOnMap(){
         //떠있는 poi들을 client에게 넘김
         MapPOIItem[] poiItems = mapView.getPOIItems();
