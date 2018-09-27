@@ -2,40 +2,30 @@ package com.example.user.gjsd;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.example.user.gjsd.modules.GPSManager;
-import com.example.user.gjsd.modules.GuManager;
 import com.example.user.gjsd.modules.MarketExplorer;
 import com.example.user.gjsd.modules.MyClient;
-import com.example.user.gjsd.modules.Point;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 
@@ -61,7 +51,6 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 
     private GPSManager gpsManager;
     private MarketExplorer marketExplorer;
-    private GuManager guManager;
     private MyClient myClient;
     private MainActivity mainActivity;
 
@@ -74,7 +63,6 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         // Required empty public constructor
         // 로딩화면에서 셋팅하기
         marketExplorer = new MarketExplorer();
-        guManager = new GuManager();
         myClient = new MyClient(this);
     }
 
@@ -134,13 +122,8 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         //이거 대신 커스텀 이미지 삽입(내위치 마커)
         mapView.setDefaultCurrentLocationMarker();
 
-        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+//        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
 //        mapView.setShowCurrentLocationMarker(true);
-
-//        mapView.
-//        default center point
-
-//        setMarketIncludeN(gpsManager.getMyPoint(), 3);
 
         setMapMyLocation();
         setAllMarkets();
@@ -148,14 +131,16 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         setPriceOnMap();
 
 
-//        framelayout = (FrameLayout) view.findViewById(R.id.formap);
-
         return view;
     }
 
     public void setMapMyLocation() {
-        mapView.setMapCenterPoint(gpsManager.getMyMapPoint(), true);
+        mapView.setMapCenterPoint(gpsManager.getMyMapPoint(), false);
+//        Log.d("@@@",""+gpsManager.getMyMapPoint().getMapPointGeoCoord().latitude+","+gpsManager.getMyMapPoint().getMapPointGeoCoord().longitude);
+//        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+//        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
     }
+
 
 //    public void setMapGuLocation(String guName) {
 //        mapView.setMapCenterPoint(guManager.getGuMapPoint(guName), true);
@@ -175,7 +160,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setZoomIncludeN(int numOfMarkets) {
         //p기준 정렬
-        marketExplorer.updateMarketsSortedByDistance(new Point(mapView.getMapCenterPoint().getMapPointGeoCoord().latitude,mapView.getMapCenterPoint().getMapPointGeoCoord().latitude));
+        marketExplorer.updateMarketsSortedByDistance(mapView.getMapCenterPoint());
 
 //        mapView.fitMapViewAreaToShowMapPoints();
         //n개 가져오기
@@ -184,8 +169,15 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 //            createMarker(marketName);
 //        }
         mapView.fitMapViewAreaToShowMapPoints(nearMarkets);
+        mapView.zoomOut(true);
     }
 
+    public void setCenterMarker(){
+        //화면 중심에 마커를 띄움
+        //화면이 갱신될 때마다 업데이트?
+        //이름 center
+        //화면 갱신될 때마다 여기서 생성한 poiItem으로 mappoint에 접근해서 거리 계산 갱신
+    }
 
     private void createMarker(String marketName) {
         MapPOIItem mCustomMarker;

@@ -129,9 +129,6 @@ public class GPSManager extends Service implements LocationListener {
         }
     }
 
-    public Point getMyPoint() {
-        return new Point(getLatitude(), getLongitude());
-    }
 
     public MapPoint getMyMapPoint() {
         return MapPoint.mapPointWithGeoCoord(getLatitude(), getLongitude());
