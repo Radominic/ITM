@@ -1,5 +1,6 @@
 package com.example.user.gjsd.costlist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,9 +8,11 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.example.user.gjsd.R;
+import com.example.user.gjsd.detail.DetailActivity;
 
 
 public class distanceFragment extends ListFragment {
@@ -34,5 +37,19 @@ public class distanceFragment extends ListFragment {
             adapter.addItem((i+1)+"등",marketname[i],"거리정보");
         }
         return super.onCreateView(inflater,container,savedInstanceState);
+    }
+
+    @Override
+    public void onListItemClick (ListView l, View v, int position, long id) {
+        // get TextView's Text.
+        CostViewItem item = (CostViewItem) l.getItemAtPosition(position) ;
+        String marketName = item.getTitle();
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra("marketName",item.getTitle());
+        startActivity(intent);
+
+
+
+        // TODO : use item data.
     }
 }

@@ -174,14 +174,14 @@
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:text="가격" />
+                            android:text="가격순" />
 
                         <Button
                             android:id="@+id/tab2"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:text="거리" />
+                            android:text="거리순" />
                     </LinearLayout>
 
                     <android.support.v4.view.ViewPager
@@ -212,18 +212,27 @@
                 android:layout_centerHorizontal="true"
                 android:id="@+id/standard">
 
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab"
+                <LinearLayout
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:src="@drawable/click_button" />
+                    android:layout_alignParentBottom="true">
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/fab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="center"
+                        app:fabSize="mini"
+                        android:src="@drawable/click_button"
+                        android:backgroundTint="#dadada"/>
+
+                </LinearLayout>
+
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:background="#9b8e8e8e"
                     android:id="@+id/searchbase"
                     android:layout_centerHorizontal="true">
 
