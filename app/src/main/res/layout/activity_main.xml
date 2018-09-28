@@ -19,14 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"></FrameLayout>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="88dp"
-            android:layout_marginRight="30dp"
-            android:src="@android:drawable/ic_dialog_email" />
+
 
         <SlidingDrawer
             android:id="@+id/slide1"
@@ -181,14 +174,14 @@
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:text="가격" />
+                            android:text="가격순" />
 
                         <Button
                             android:id="@+id/tab2"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:text="거리" />
+                            android:text="거리순" />
                     </LinearLayout>
 
                     <android.support.v4.view.ViewPager
@@ -205,27 +198,58 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="#9b8e8e8e">
-
-            <com.example.user.gjsd.ClearEditText
-                android:id="@+id/cleartext"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true">
-
-            </com.example.user.gjsd.ClearEditText>
-
+            android:layout_height="80dp">
             <Button
                 android:id="@+id/searchbutton"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/cleartext"
-                android:layout_marginLeft="2dp"
-                android:text="찾기" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_toRightOf="@id/standard"
+                android:background="@drawable/enter_button"/>
 
+            <RelativeLayout
+                android:layout_width="300dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/standard">
+
+                <LinearLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true">
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/fab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="center"
+                        app:fabSize="mini"
+                        android:src="@drawable/click_button"
+                        android:backgroundTint="#dadada"/>
+
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/searchbase"
+                    android:layout_centerHorizontal="true">
+
+                    <com.example.user.gjsd.ClearEditText
+                        android:id="@+id/cleartext"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true">
+
+                    </com.example.user.gjsd.ClearEditText>
+                </RelativeLayout>
+
+            </RelativeLayout>
         </RelativeLayout>
+
+
 
 
     </FrameLayout>

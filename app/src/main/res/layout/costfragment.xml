@@ -28,14 +28,14 @@
             android:id="@+id/textView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="30dp"
+            android:textSize="20dp"
             android:textStyle="bold"
             android:text="시장이름"/>
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
+            android:textSize="16dp"
             android:text="가격정보"/>
     </LinearLayout>
 </LinearLayout>

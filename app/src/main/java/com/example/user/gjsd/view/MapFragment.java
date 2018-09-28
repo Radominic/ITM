@@ -57,7 +57,6 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 
     private MapView mapView;
     private FrameLayout framelayout;
-    Context con1;
 
     @SuppressLint("ValidFragment")
     public MapFragment() {
@@ -111,7 +110,6 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        con1 = container.getContext();
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         mapView = new MapView(this.getActivity());
         mapView.setDaumMapApiKey("a6a70a1cac21fb3bdf4b989ef4226727");
@@ -201,13 +199,19 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     }
 
     private void createMarker(String marketName) {
+
         MapPOIItem mCustomMarker = new MapPOIItem();
         mCustomMarker.setUserObject(new MyPOIObject(marketName));
         mCustomMarker.setItemName(marketName);
         mCustomMarker.setMapPoint(marketExplorer.getMarketMapPoint(marketName));
 
         mCustomMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
-        mCustomMarker.setCustomImageBitmap(writeOnDrawable(R.drawable.custom_marker_red, marketName, 30));
+
+        //디폴트이미지메소드 호출-가격 안들어간것
+
+        //아이템 클래스, 객체 만들기
+        mCustomMarker.setCustomImageBitmap(writeOnDrawable(mCustomMarker));
+
 
         mCustomMarker.setCustomImageAutoscale(false);
         mCustomMarker.setCustomImageAnchor(0.5f, 1.0f);
@@ -348,11 +352,17 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    public Bitmap writeOnDrawable(MapPOIItem mp){
+        //마켓의 종류에 따라 다른 드로어블 부여함.
+        int drawableId = R.drawable.custom_marker_red;
+        String[] namearr = mp.getItemName().split(" ");
+        String name = "";
+        for(int i=1;i<namearr.length;i++)
+            name += namearr[i];
+        int TextSize = 30;
 
-    public Bitmap writeOnDrawable(int drawableId, String text, int TextSize) {
-
-        Bitmap bm = BitmapFactory.decodeResource(con1.getResources(), drawableId).copy(Bitmap.Config.ARGB_8888, true);
-        BitmapFactory.decodeResource(con1.getResources(), R.drawable.custom_marker_red);
+        Bitmap bm = BitmapFactory.decodeResource(this.getActivity().getResources(), drawableId).copy(Bitmap.Config.ARGB_8888, true);
+        BitmapFactory.decodeResource(this.getActivity().getResources(), R.drawable.custom_marker_red);
 
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
@@ -361,10 +371,11 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         paint.setTextAlign(Paint.Align.CENTER);
 
         Canvas canvas = new Canvas(bm);
-        canvas.drawText(text, bm.getWidth() / 2, bm.getHeight() / 2, paint);
+        canvas.drawText(name,bm.getWidth()/2 , bm.getHeight()/2, paint);
 
         return bm;
     }
+
 
 
 }

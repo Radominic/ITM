@@ -1,7 +1,11 @@
 package com.example.user.gjsd;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -32,6 +36,7 @@ import com.example.user.gjsd.itemlist.ListViewAdapter;
 import com.example.user.gjsd.modules.GPSManager;
 import com.example.user.gjsd.modules.MarketExplorer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     MapFragment mf;
     List<String> marketnamelist ;
     MarketExplorer marketExplorer;
+    Button bt1,bt2;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -105,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         tv11.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/Roboto-Black.ttf"));
         tv22.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/Roboto-Black.ttf"));
 
-        ListView listview ;
+        ListView listview;
         ListViewAdapter adapter;
 
         adapter = new ListViewAdapter() ;
@@ -151,8 +157,8 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         pager = (ViewPager)findViewById(R.id.pager);
-        Button bt1 = (Button)findViewById(R.id.tab1);
-        Button bt2 = (Button)findViewById(R.id.tab2);
+        bt1 = (Button)findViewById(R.id.tab1);
+        bt2 = (Button)findViewById(R.id.tab2);
 
         pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
         pager.setCurrentItem(0);
@@ -177,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         marketExplorer = new MarketExplorer();
-        settingList();
+//        this.marketnamelist = (List<String>)marketExplorer.getAllMarketList();
         final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
 
         autoCompleteTextView.setAdapter(new ArrayAdapter<String>(this,
@@ -187,12 +193,16 @@ public class MainActivity extends AppCompatActivity {
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mf.setMapMarketLocation(clearedittext.getText().toString());
+                for(int i=0;i<marketnamelist.size();i++){
+                    if(marketnamelist.get(i).equals(clearedittext.getText().toString())){
+                        mf.setMapMarketLocation(clearedittext.getText().toString());
+                    }
+
+
+                }
+
             }
         });
-    }
-    private void settingList(){
-        marketnamelist = (List<String>)marketExplorer.getAllMarketList();
     }
 
 
