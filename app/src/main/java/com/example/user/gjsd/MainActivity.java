@@ -1,9 +1,6 @@
 package com.example.user.gjsd;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -35,13 +32,12 @@ import com.example.user.gjsd.itemlist.ListViewAdapter;
 import com.example.user.gjsd.modules.GPSManager;
 import com.example.user.gjsd.modules.MarketExplorer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     SlidingDrawer drawer1,drawer2;
     Animation animro, animri, animlo, animli;
-    String itemname = "default";
+    String selectedItem = "default";
     String[] item = {"동태","조기","달걀","닭고기","돼지고기","쇠고기","애호박","오이","상추","양파","무","배추","배","사과","오징어","고등어","명태","냉동참조기"};
     ViewPager pager;
     Bundle bundle = new Bundle(1);
@@ -50,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton fab ;
     MapFragment mf;
     List<String> marketnamelist ;
-    MarketExplorer me ;
+    MarketExplorer marketExplorer;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -87,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public String getItemname(){
-        Log.d("itemname",itemname);
-        return itemname;
+    public String getSelectedItemName(){
+        Log.d("itemname",selectedItem);
+        return selectedItem;
     }
 
     @Override
@@ -127,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-                itemname = item[position];
-                bundle.putString("itemName",itemname);
+                selectedItem = item[position];
+                bundle.putString("itemName",selectedItem);
                 cf = new costFragment();
                 cf.setArguments(bundle);
 
@@ -180,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        me = new MarketExplorer();
+        marketExplorer = new MarketExplorer();
         settingList();
         final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
 
@@ -196,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void settingList(){
-        marketnamelist = me.marketlist();
+        marketnamelist = (List<String>)marketExplorer.getAllMarketList();
     }
 
 
