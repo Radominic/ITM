@@ -8,15 +8,20 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.user.gjsd.R;
+import com.example.user.gjsd.model.Market;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DistanceViewAdapter extends BaseAdapter{
 
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<DistanceViewItem> distanceViewItemList = new ArrayList<DistanceViewItem>() ;
+    private Map<String, DistanceViewItem> distanceViewItems = Collections.synchronizedMap(new HashMap<String, DistanceViewItem>());
+    private ArrayList<String> distanceMarketNameList = new ArrayList<String>();
 
     // ListViewAdapter의 생성자
     public DistanceViewAdapter() {
@@ -26,7 +31,7 @@ public class DistanceViewAdapter extends BaseAdapter{
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
     @Override
     public int getCount() {
-        return distanceViewItemList.size() ;
+        return distanceViewItems.size() ;
     }
 
     // position에 위치한 데이터를 화면에 출력하는데 사용될 View를 리턴. : 필수 구현
@@ -48,13 +53,13 @@ public class DistanceViewAdapter extends BaseAdapter{
         TextView distTextView = (TextView) convertView.findViewById(R.id.textView33);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        DistanceViewItem distanceViewItem = distanceViewItemList.get(position);
+        DistanceViewItem distanceViewItem = distanceViewItems.get(distanceMarketNameList.get(position));
 
         // 아이템 내 각 위젯에 데이터 반영
-        numberTextView.setText(distanceViewItem.getNumber());
-        titleTextView.setText(distanceViewItem.getTitle());
-        descTextView.setText(distanceViewItem.getDesc());
-        distTextView.setText(distanceViewItem.getDisStr());
+        numberTextView.setText(""+position);
+        titleTextView.setText(distanceViewItem.getName());
+        descTextView.setText(distanceViewItem.getMarket().getPrice());
+        distTextView.setText(""+distanceViewItem.getMarket().getDistance());
 
 
         return convertView;
@@ -69,18 +74,29 @@ public class DistanceViewAdapter extends BaseAdapter{
     // 지정한 위치(position)에 있는 데이터 리턴 : 필수 구현
     @Override
     public Object getItem(int position) {
-        return distanceViewItemList.get(position) ;
+        return distanceViewItems.get(distanceMarketNameList.get(position)) ;
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(String number, String title, String desc,String dist) {
-        DistanceViewItem item = new DistanceViewItem();
+    public void addItem(DistanceViewItem item) {
+        //String number, String title, String desc,String dist
+//        DistanceViewItem item = new DistanceViewItem();
+//
+//        item.setNumber(number);
+//        item.setTitle(title);
+//        item.setDesc(desc);
+//        item.setDisStr(dist);
 
-        item.setNumber(number);
-        item.setTitle(title);
-        item.setDesc(desc);
-        item.setDisStr(dist);
+        distanceViewItems.put(item.getName(),item);
+    }
 
-        distanceViewItemList.add(item);
+    public void setOrder(ArrayList<String> namelist){
+        this.distanceMarketNameList = namelist;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+
     }
 }

@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     List<String> marketnamelist ;
     MarketExplorer marketExplorer;
     Button bt1,bt2;
+    pagerAdapter  pageadapter ;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -72,11 +73,12 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_dashboard:
                     if(!drawer1.isOpened()&&!drawer2.isOpened()) {
+                        df.updateMarkets_sort_by_distance();
                         drawer2.animateOpen(); fab.hide();
-
                     }else if(drawer2.isOpened()){
                         drawer2.animateClose(); fab.show();
                     }else if(drawer1.isOpened()){
+                        df.updateMarkets_sort_by_distance();
                         drawer2.open();
                         drawer1.close();
                     }
@@ -159,9 +161,10 @@ public class MainActivity extends AppCompatActivity {
 //                cf = new costFragment();
 //                cf.setArguments(bundle);
 
-                pager = (ViewPager)findViewById(R.id.pager);
-                pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
-                pager.setCurrentItem(0);
+//                pager = (ViewPager)findViewById(R.id.pager);
+//                pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
+//                pager.setCurrentItem(0);
+                pageadapter.notifyDataSetChanged();
 
                 mf.updatePrice();
                 drawer1.animateClose();
@@ -178,7 +181,8 @@ public class MainActivity extends AppCompatActivity {
         bt1 = (Button)findViewById(R.id.tab1);
         bt2 = (Button)findViewById(R.id.tab2);
 
-        pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
+        pageadapter = new pagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(pageadapter);
         pager.setCurrentItem(0);
 
         bt1.setOnClickListener(movePageListener);
