@@ -83,4 +83,6 @@ public class DistanceViewAdapter extends BaseAdapter{
 
         distanceViewItemList.add(item);
     }
+
+
 }

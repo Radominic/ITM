@@ -44,6 +44,7 @@ public class costFragment extends ListFragment {
 
     public void updateMarkets_sort_by_price(){
         this.markets_sort_by_price = marketExplorer.getMarkets_sort_by_price();
+        adapter.notifyDataSetChanged();
     }
     @Override
     public void onListItemClick (ListView l, View v, int position, long id) {

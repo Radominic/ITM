@@ -45,8 +45,14 @@ public class distanceFragment extends ListFragment {
         return super.onCreateView(inflater,container,savedInstanceState);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     public void updateMarkets_sort_by_distance(){
         this.markets_sort_by_distance = marketExplorer.getMarkets_sort_by_distance();
+//        adapter.notifyDataSetChanged();
     }
 
     @Override
