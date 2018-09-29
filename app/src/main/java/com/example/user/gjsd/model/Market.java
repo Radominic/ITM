@@ -13,7 +13,7 @@ public class Market {
 
     //variable
     private String price = null;
-    private Double distance = null;
+    private Double distance = 0.0;
 
 //    public MapPOIItem getPoiItem() {
 //        return poiItem;
