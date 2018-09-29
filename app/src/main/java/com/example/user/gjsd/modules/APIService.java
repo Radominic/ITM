@@ -26,7 +26,7 @@ public interface APIService {
     );
 
     @FormUrlEncoded
-    @POST("ascending_sort")
+    @POST("ascending_sort.php")
     Call<ResponseBody> get_ascending_sort(
             @Field("goods") String selectedItem
     );
