@@ -138,11 +138,11 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 
         mapView.setZoomLevel(4,false);
 //        setZoomIncludeN(3);
-        marketExplorer.updateMarketPrice(mainActivity.selectedItem);
+
 //        marketExplorer.updateMarketDistance(mapView.getMapCenterPoint());
         initMarker();
-        updateAllMarkersOnMap();
-
+//        updateAllMarkersOnMap();
+        marketExplorer.updateMarketPrice(mainActivity.selectedItem);
         mainActivity.cf.updateMarkets_sort_by_price();
         mainActivity.df.updateMarkets_sort_by_distance();
 
