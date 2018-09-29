@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.example.user.gjsd.model.Market;
 import com.example.user.gjsd.view.MapFragment;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import net.daum.mf.map.api.MapPoint;
 
@@ -169,21 +171,7 @@ public class MarketExplorer {
     public ArrayList<String> getMarkets_sort_by_price(){return markets_sort_by_price;}
 
 
-    //응답 string을 arraylist<String>으로 변환
-    private ArrayList<String> parsePriceList(String s) {
-        JSONArray jsonArray = null;
-        try {
-            jsonArray = new JSONArray(s);
-            ArrayList<String> tmp = new ArrayList<String>();
-            for(int i = 0; i<jsonArray.length();i++){
-                tmp.add(jsonArray.getJSONObject(i).getString("mart_name"));
-            }
-            return tmp;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+
 
 //    public
 
@@ -280,18 +268,23 @@ public class MarketExplorer {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    String price = parsePrice(response.body().string());
+//                    String price = parsePrice(response.body().string());
+//                    Log.d("debug_response_price_json",response.body().string());
+//                    markets.get(name).setPrice(price);
+                    JSONArray post = new JSONArray(response.body().string());
+                    String price=post.getJSONObject(0).getString("cost").toString();
                     markets.get(name).setPrice(price);
+//                    Log.v("what the fuck", name+":"+price);
 //                    mapFragment.setPriceOnPOIItem(poiItem, price);
                 } catch (Exception e) {
                     Log.v("debug_error_getPrice", e.toString());
-                    markets.get(name).setPrice(null);
+                    markets.get(name).setPrice("품목없음");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                markets.get(name).setPrice(null);
+                markets.get(name).setPrice("품목없음");
             }
         });
     }
@@ -300,7 +293,7 @@ public class MarketExplorer {
         JSONArray jsonArray = null;
         try {
             jsonArray = new JSONArray(s);
-            String price = jsonArray.getJSONArray(0).getJSONObject(0).getString("cost");
+            String price = jsonArray.getJSONObject(0).getString("cost");
             return price;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -333,10 +326,22 @@ public class MarketExplorer {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    Log.v("pricelist_response", response.body().string());
-                    ArrayList<String> sortedList = parsePriceList(response.body().string());
-                    markets_sort_by_price = sortedList;
-
+//                    Log.v("pricelist_response", response.body().string());
+//                    ArrayList<String> sortedList = parsePriceList(response.body().string());
+//                    markets_sort_by_price = sortedList;
+//                    JsonArray array = new JsonArray().get(response.body().toString()).getAsJsonArray();
+//                    markets.get(name).setPrice(post.get("cost").toString());
+                    JSONArray post = new JSONArray(response.body().string());
+                    ArrayList<String> tmp = new ArrayList<String>();
+                    for(int i = 0; i<post.getJSONArray(0).length();i++){
+                        String name = post.getJSONArray(0).getJSONObject(i).getString("mart_name").toString();
+                        tmp.add(name);
+                        Log.v("sorted_market_name", name);
+                    }
+                    markets_sort_by_price = tmp;
+//                    String price=post.getJSONObject(0).getString("cost").toString();
+//                    markets.get(name).setPrice(price);
+//                    Log.v("what the fuck", name+":"+price);
                 } catch (Exception e) {
                     Log.v("debug_error", "getMarketsSortByPrice_error");
 
@@ -350,5 +355,21 @@ public class MarketExplorer {
             }
         });
 
+    }
+
+    //응답 string을 arraylist<String>으로 변환
+    private ArrayList<String> parsePriceList(String s) {
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = new JSONArray(s);
+            ArrayList<String> tmp = new ArrayList<String>();
+            for(int i = 0; i<jsonArray.length();i++){
+                tmp.add(jsonArray.getJSONObject(i).getString("mart_name"));
+            }
+            return tmp;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

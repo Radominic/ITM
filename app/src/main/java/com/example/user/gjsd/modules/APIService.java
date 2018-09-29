@@ -2,6 +2,9 @@ package com.example.user.gjsd.modules;
 
 import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
@@ -28,7 +31,7 @@ public interface APIService {
     @FormUrlEncoded
     @POST("ascending_sort.php")
     Call<ResponseBody> get_ascending_sort(
-            @Field("goods") String selectedItem
+            @Field("goods") String goods
     );
 
 }
