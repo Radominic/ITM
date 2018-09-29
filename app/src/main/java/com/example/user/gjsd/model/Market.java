@@ -11,9 +11,11 @@ public class Market {
     private MapPoint mapPoint;//fix at constructor
     private boolean isMart;//fix at constructor
 
+
     //variable
     private String price = "품목없음";
     private Double distance = 0.0;
+    private String difference = "0";
 
 //    public MapPOIItem getPoiItem() {
 //        return poiItem;
@@ -70,4 +72,7 @@ public class Market {
         this.distance = distance;
     }
 
+    public void setDifference(String difference){
+        this.difference = difference;
+    }
 }

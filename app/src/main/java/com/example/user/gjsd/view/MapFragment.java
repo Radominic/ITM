@@ -63,8 +63,6 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     private MapView mapView;
     private FrameLayout framelayout;
 
-//    public String item = "품목";
-
     @SuppressLint("ValidFragment")
     public MapFragment() {
         // Required empty public constructor
@@ -136,18 +134,17 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         Log.d("debug_my_location",""+gpsManager.getMyMapPoint().getMapPointGeoCoord().latitude+","+gpsManager.getMyMapPoint().getMapPointGeoCoord().longitude);
         createCenterMarker();
         marketExplorer.updateMarketDistance(centerPoiItem.getMapPoint());
+        marketExplorer.updateMarkets_sort_by_price(mainActivity.getSelectedItemName());
+
         mapView.setZoomLevel(4,false);
 //        setZoomIncludeN(3);
         marketExplorer.updateMarketPrice(mainActivity.selectedItem);
 //        marketExplorer.updateMarketDistance(mapView.getMapCenterPoint());
         initMarker();
         updateAllMarkersOnMap();
+
         mainActivity.cf.updateMarkets_sort_by_price();
         mainActivity.df.updateMarkets_sort_by_distance();
-        marketExplorer.updateMarkets_sort_by_price(mainActivity.getSelectedItemName());
-
-
-        centerPoiItem.setCustomImageResourceId(R.drawable.mypoint);
 
     }
 
@@ -474,7 +471,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         Canvas canvas = new Canvas(bm);
         canvas.drawText(name,13 , 43, paint1);
         canvas.drawText(item+price,13 , 80, paint2);
-        mapPOIItem.setCustomImageBitmap(bm);
+
         return bm;
     }
 

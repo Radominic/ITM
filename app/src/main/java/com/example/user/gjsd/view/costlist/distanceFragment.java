@@ -42,8 +42,6 @@ public class distanceFragment extends ListFragment {
         //해당 품목 가져오기
 
         adapter = new DistanceViewAdapter();
-        String in = getArguments().getString("itemName");
-        adapter.setItem(in);
         setListAdapter(adapter);
         updateMarkets_sort_by_distance();
 //        String[] marketname = new String[markets.size()];
@@ -54,18 +52,6 @@ public class distanceFragment extends ListFragment {
             adapter.addItem(new DistanceViewItem(name, marketExplorer.getMarket(name)));
         }
         adapter.setOrder(markets_sort_by_distance);
-        //String number, String title, String desc,String dist
-//        DistanceViewItem item = new DistanceViewItem();
-//
-//        item.setNumber(number);
-//        item.setTitle(title);
-//        item.setDesc(desc);
-//        item.setDisStr(dist);
-
-
-//        for(int i=0;i<markets_sort_by_distance.size();i++){
-//            adapter.addItem((i+1)+"등",markets_sort_by_distance.get(i),in + " : " + "5000원","거리 : "+"000km");
-//        }
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -77,8 +63,6 @@ public class distanceFragment extends ListFragment {
     public void updateMarkets_sort_by_distance() {
         this.markets_sort_by_distance = marketExplorer.getMarkets_sort_by_distance();
         adapter.setOrder(markets_sort_by_distance);
-        String in = getArguments().getString("itemName");
-        adapter.setItem(in);
         adapter.notifyDataSetChanged();
     }
 

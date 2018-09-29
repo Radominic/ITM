@@ -29,30 +29,38 @@ public class costFragment extends ListFragment {
 
         adapter = new CostViewAdapter();
         setListAdapter(adapter);
-        String in = getArguments().getString("itemName");
+//        String in = getArguments().getString("itemName");
 
 //        ArrayList<String> marketname = marketExplorer.getMarkets_sort_by_price();
         updateMarkets_sort_by_price();
 //        String[] marketname = new String[markets.size()];
 //        marketname = markets.toArray(marketname);
 
-        for (int i = 0; i < markets_sort_by_price.size(); i++) {
-            adapter.addItem((i + 1) + "등", markets_sort_by_price.get(i), in + " : " + "5000원");
+        for (String name : markets_sort_by_price) {
+            adapter.addItem(new CostViewItem(name,marketExplorer.getMarket(name)));
         }
+        adapter.setOrder(markets_sort_by_price);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+
     public void updateMarkets_sort_by_price(){
         this.markets_sort_by_price = marketExplorer.getMarkets_sort_by_price();
+        adapter.setOrder(markets_sort_by_price);
         adapter.notifyDataSetChanged();
     }
     @Override
     public void onListItemClick (ListView l, View v, int position, long id) {
         // get TextView's Text.
         CostViewItem item = (CostViewItem) l.getItemAtPosition(position) ;
-        String marketName = item.getTitle();
+        String marketName = item.getName();
         Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra("marketName",item.getTitle());
+        intent.putExtra("marketName",item.getName());
         startActivity(intent);
 
 
