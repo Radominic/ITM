@@ -6,6 +6,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.example.user.gjsd.model.Market;
+import com.example.user.gjsd.view.MapFragment;
 
 import net.daum.mf.map.api.MapPoint;
 
@@ -29,12 +30,13 @@ public class MarketExplorer {
     private Map<String, Market> markets;
     private ArrayList<String> markets_sort_by_distance;
     private ArrayList<String> markets_sort_by_price;
+    MapFragment mapFragment;
 
-    public MarketExplorer() {
+    public MarketExplorer(MapFragment mapFragment) {
         markets = Collections.synchronizedMap(new HashMap<String, Market>());
         markets_sort_by_distance = new ArrayList<String>();
         markets_sort_by_price = new ArrayList<String>();
-
+        this.mapFragment = mapFragment;
         //데이터 삽입
         markets.put("종로구 통인시장", new Market(MapPoint.mapPointWithGeoCoord(37.5807801, 126.9699523), false));
         markets.put("용산구 용문시장", new Market(MapPoint.mapPointWithGeoCoord(37.5366204, 126.9597976), false));
@@ -139,12 +141,12 @@ public class MarketExplorer {
 
         //setNameToEachMarket
         Set<String> keys = markets.keySet();
-        for(String key : keys){
+        for (String key : keys) {
             markets.get(key).setName(key);
         }
 
         //default sort
-        markets_sort_by_price = new ArrayList<String>(markets.keySet());
+//        markets_sort_by_price = new ArrayList<String>(markets.keySet());
         markets_sort_by_distance = new ArrayList<String>(markets.keySet());
 
     }
@@ -154,17 +156,51 @@ public class MarketExplorer {
         return markets.get(name).getMapPoint();
     }
 
-    public Market getMarket(String name){
+    public Market getMarket(String name) {
         return markets.get(name);
+
     }
 
     public ArrayList<String> getMarkets_sort_by_distance() {
         return markets_sort_by_distance;
     }
 
-    public ArrayList<String> getMarkets_sort_by_price() {
-        updateMarketPrice();
+    public ArrayList<String> getMarkets_sort_by_price(String selectedItem) {
+        retrofit = new Retrofit.Builder()
+                .baseUrl(APIService.URL).build();
+//                .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
+//                .build();
+        service = retrofit.create(APIService.class);
+        Call<ResponseBody> call = service.get_ascending_sort(selectedItem);
+        Log.d("debug_getPriceOfMarket", selectedItem);
+        call.enqueue(new Callback<ResponseBody>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    Log.v("pricelist_response", response.body().string());
+//                    ArrayList<String> sortedList = parsePriceList(response.body().string());
+//                    markets_sort_by_price = sortedList;
+
+                } catch (Exception e) {
+                    Log.v("debug_error", "getMarketsSortByPrice_error");
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                markets.get(name).setPrice(null);
+                Log.v("debug_error", "getMarketsSortByPrice_error:server_no_response");
+            }
+        });
         return markets_sort_by_price;
+    }
+
+    //응답 string을 arraylist<String>으로 변환
+    private ArrayList<String> parsePriceList(String s) {
+
+        return null;
     }
 
 //    public
@@ -241,13 +277,13 @@ public class MarketExplorer {
     }
 
 
-
-
     Retrofit retrofit;
     APIService service;
+
     public APIService getService() {
         return service;
     }
+
     //시장이름과 품목으로 가격정보를 가져온다
     public void getPrice(final String name, String goods) {
         retrofit = new Retrofit.Builder()
@@ -266,7 +302,7 @@ public class MarketExplorer {
                     markets.get(name).setPrice(price);
 //                    mapFragment.setPriceOnPOIItem(poiItem, price);
                 } catch (Exception e) {
-                    Log.v("debug_error_getPrice", "true");
+                    Log.v("debug_error_getPrice", e.toString());
                     markets.get(name).setPrice(null);
                 }
             }
@@ -290,9 +326,15 @@ public class MarketExplorer {
         return null;
     }
 
-    public void updateMarketPrice() {
+    public void updateMarketPrice(String selectedItem) {
         //구현할것
         //모든 시장의 해당 가격을 가져오고 정렬 및 셋팅
         //없으면 null
+        Set<String> names = markets.keySet();
+        for (String name : names) {
+            getPrice(name, selectedItem);
+        }
+
+        mapFragment.updateAllMarkersOnMap();
     }
 }

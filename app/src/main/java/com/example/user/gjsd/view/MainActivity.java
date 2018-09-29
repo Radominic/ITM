@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 selectedItem = item[position];
+
                 bundle.putString("itemName",selectedItem);
                 cf = new costFragment();
                 cf.setArguments(bundle);
@@ -149,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
                 pager.setCurrentItem(0);
 
+                mf.updatePrice();
                 drawer1.animateClose();
             }
         }) ;
@@ -156,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        marketExplorer = new MarketExplorer();
         mf = new MapFragment();
+        marketExplorer = new MarketExplorer(mf);
         mf.setMarketExplorer(marketExplorer);
         GPSManager gm = new GPSManager(this);
         mf.setGpsManager(gm);
@@ -186,7 +188,9 @@ public class MainActivity extends AppCompatActivity {
         df = new distanceFragment();
         cf.setArguments(bundle);
         df.setArguments(bundle);
-
+//        cf.setMainActivity(this);
+        cf.setMarketExplorer(marketExplorer);
+        df.setMarketExplorer(marketExplorer);
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener(){
             @Override

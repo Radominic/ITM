@@ -25,7 +25,10 @@ public interface APIService {
             @Field("market_name") String market_name
     );
 
-//    @FormUrlEncoded
-//    @POST("cheape")
+    @FormUrlEncoded
+    @POST("ascending_sort")
+    Call<ResponseBody> get_ascending_sort(
+            @Field("goods") String selectedItem
+    );
 
 }

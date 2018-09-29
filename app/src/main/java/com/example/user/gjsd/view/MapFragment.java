@@ -29,6 +29,7 @@ import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -123,20 +124,18 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         mapView.setPOIItemEventListener(this);
         mapView.setMapViewEventListener(this);
 //        Log.d("debug", "여기까지 ok");
-
-
-        initMap();
         return view;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initMap() {
-        setMapMyLocation();
+        mapView.setMapCenterPoint(gpsManager.getMyMapPoint(),false);
         Log.d("debug_my_location",""+gpsManager.getMyMapPoint().getMapPointGeoCoord().latitude+","+gpsManager.getMyMapPoint().getMapPointGeoCoord().longitude);
         createCenterMarker();
         marketExplorer.updateMarketDistance(centerPoiItem.getMapPoint());
-        setZoomIncludeN(3);
-        marketExplorer.updateMarketPrice();
+        mapView.setZoomLevel(4,false);
+//        setZoomIncludeN(3);
+        marketExplorer.updateMarketPrice(mainActivity.selectedItem);
 //        marketExplorer.updateMarketDistance(mapView.getMapCenterPoint());
         initMarker();
         updateAllMarkersOnMap();
@@ -158,7 +157,8 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
             poiItem.setUserObject(market);
             poiItem.setMarkerType(MapPOIItem.MarkerType.CustomImage);
             poiItem.setCustomImageAutoscale(false);
-            poiItem.setCustomImageAnchor(0.5f, 1.0f);
+            poiItem.setShowCalloutBalloonOnTouch(false);
+            poiItem.setCustomImageAnchor(0.2f, 1.0f);
             poiItem.setCustomImageBitmap(writeOnDrawable(poiItem));
             if (poiItem.getUserObject() == null) Log.d("debug_poiSetobj_null", "true");
             mapView.addPOIItem(poiItem);
@@ -201,7 +201,10 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     }
 
     public void setMapMyLocation() {
-        mapView.setMapCenterPoint(gpsManager.getMyMapPoint(), false);
+        mapView.removePOIItem(centerPoiItem);
+        mapView.setMapCenterPoint(gpsManager.getMyMapPoint(), true);
+        updateCenterMarkerAndDistance();
+        mapView.addPOIItem(centerPoiItem);
     }
 
     public void setMapMarketLocation(String marketName) {
@@ -221,21 +224,11 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void createCenterMarker() {
-        //화면 중심에 마커를 띄움
-        //화면이 갱신될 때마다 업데이트?
-        //이름 center
-        //화면 갱신될 때마다 여기서 생성한 poiItem으로 mappoint에 접근해서 거리 계산 갱신
-
-        //p기준 정렬
-//        marketExplorer.updateMarketDistance(mapView.getMapCenterPoint());
-
-        //생성
         centerPoiItem = new MapPOIItem();
         centerPoiItem.setItemName("centerPoiItem");
         centerPoiItem.setMapPoint(mapView.getMapCenterPoint());
         centerPoiItem.setCustomImageResourceId(R.drawable.custom_marker_red);
         mapView.addPOIItem(centerPoiItem);
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -245,7 +238,6 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         //거리 갱신
         marketExplorer.updateMarketDistance(mapView.getMapCenterPoint());
 //        updateAllMarkersOnMap();
-
         marketExplorer.getNearNMarketsMapPoint(5);
 
     }
@@ -253,6 +245,9 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     public void updatePrice(){
         //가격 정보 모두 셋팅
         //모두 그리기
+        marketExplorer.updateMarketPrice(mainActivity.getSelectedItemName());
+        //delete
+        marketExplorer.getMarkets_sort_by_price(mainActivity.getSelectedItemName());
     }
 
 
@@ -327,19 +322,24 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 
     @Override
     public void onMapViewInitialized(MapView mapView) {
-
+        initMap();
     }
 
 
     @Override
     public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
-
+        Log.d("selected_item",mainActivity.getSelectedItemName());
     }
 
     @Override
     public void onMapViewZoomLevelChanged(MapView mapView, int i) {
         //줌 레벨 구간 강제 설정
-        Log.d("zoomlevel",""+mapView.getZoomLevel());
+        Log.d("zoomlevel",""+(float)mapView.getZoomLevel());
+        if(mapView.getZoomLevel() >= 6){
+            mapView.setZoomLevel(5,true);
+        }
+
+
     }
 
     @Override
@@ -365,13 +365,14 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
-        updateCenterMarkerAndDistance();
-        mapView.addPOIItem(centerPoiItem);
+
     }
 
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
-
+        if(mapView.findPOIItemByName("centerPoiItem")!=null){mapView.removePOIItem(centerPoiItem);}
+        updateCenterMarkerAndDistance();
+        mapView.addPOIItem(centerPoiItem);
     }
 
     //poi listener
