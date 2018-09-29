@@ -1,4 +1,4 @@
-package com.example.user.gjsd;
+package com.example.user.gjsd.view;
 
 import android.content.Context;
 import android.text.Editable;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+
+import com.example.user.gjsd.R;
 
 /**
  * Created by TonyChoi on 2016. 4. 4..

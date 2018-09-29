@@ -1,18 +1,15 @@
-package com.example.user.gjsd.costlist;
+package com.example.user.gjsd.view.costlist;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
-import com.example.user.gjsd.R;
-import com.example.user.gjsd.detail.DetailActivity;
+import com.example.user.gjsd.view.detail.DetailActivity;
 
 
 public class distanceFragment extends ListFragment {

@@ -1,11 +1,7 @@
-package com.example.user.gjsd;
+package com.example.user.gjsd.view;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -30,13 +26,13 @@ import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
-import com.example.user.gjsd.costlist.costFragment;
-import com.example.user.gjsd.costlist.distanceFragment;
-import com.example.user.gjsd.itemlist.ListViewAdapter;
+import com.example.user.gjsd.R;
+import com.example.user.gjsd.view.costlist.costFragment;
+import com.example.user.gjsd.view.costlist.distanceFragment;
+import com.example.user.gjsd.view.itemlist.ListViewAdapter;
 import com.example.user.gjsd.modules.GPSManager;
 import com.example.user.gjsd.modules.MarketExplorer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -145,7 +141,9 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
+        marketExplorer = new MarketExplorer();
         mf = new MapFragment();
+        mf.setMarketExplorer(marketExplorer);
         GPSManager gm = new GPSManager(this);
         mf.setGpsManager(gm);
         mf.setMainActivity(this);
@@ -182,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        marketExplorer = new MarketExplorer();
+
 //        this.marketnamelist = (List<String>)marketExplorer.getAllMarketList();
         final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
 

@@ -1,9 +1,8 @@
-package com.example.user.gjsd.detail;
+package com.example.user.gjsd.view.detail;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 import com.example.user.gjsd.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
     private RecyclerView recyclerview;

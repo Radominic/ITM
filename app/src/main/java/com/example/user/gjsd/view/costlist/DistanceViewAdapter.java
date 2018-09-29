@@ -1,4 +1,4 @@
-package com.example.user.gjsd.costlist;
+package com.example.user.gjsd.view.costlist;
 
 import android.content.Context;
 import android.view.LayoutInflater;

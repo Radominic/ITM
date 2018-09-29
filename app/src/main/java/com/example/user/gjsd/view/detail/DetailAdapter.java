@@ -1,4 +1,4 @@
-package com.example.user.gjsd.detail;
+package com.example.user.gjsd.view.detail;
 
 import android.content.Context;
 import android.graphics.Color;

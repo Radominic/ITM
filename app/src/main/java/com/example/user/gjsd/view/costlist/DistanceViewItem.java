@@ -1,4 +1,4 @@
-package com.example.user.gjsd.costlist;
+package com.example.user.gjsd.view.costlist;
 
 public class DistanceViewItem {
 

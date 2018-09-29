@@ -1,10 +1,16 @@
 package com.example.user.gjsd.modules;
 
+import android.annotation.TargetApi;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import com.example.user.gjsd.model.Market;
+
 import net.daum.mf.map.api.MapPoint;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,218 +19,280 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class MarketExplorer {
-    private Map<String, MapPoint> Markets;
-    public ArrayList<MarketD> Markets_sort_by_distance;
+    private Map<String, Market> markets;
+    private ArrayList<String> markets_sort_by_distance;
+    private ArrayList<String> markets_sort_by_price;
 
     public MarketExplorer() {
-        Markets = Collections.synchronizedMap(new HashMap<String, MapPoint>());
-        Markets_sort_by_distance = new ArrayList<MarketD>();
+        markets = Collections.synchronizedMap(new HashMap<String, Market>());
+        markets_sort_by_distance = new ArrayList<String>();
+        markets_sort_by_price = new ArrayList<String>();
 
         //데이터 삽입
-        Markets.put("종로구 통인시장", MapPoint.mapPointWithGeoCoord(37.5807801, 126.9699523));
-        Markets.put("용산구 용문시장", MapPoint.mapPointWithGeoCoord(37.5366204, 126.9597976));
-        Markets.put("중구 남대문시장", MapPoint.mapPointWithGeoCoord(37.5592111, 126.977639));
-        Markets.put("성북구 돈암제일시장", MapPoint.mapPointWithGeoCoord(37.5916795, 127.0157178));
-        Markets.put("성북구 장위골목시장", MapPoint.mapPointWithGeoCoord(37.6120979, 127.0508262));
-        Markets.put("영등포구 대림중앙시장", MapPoint.mapPointWithGeoCoord(37.4916125, 126.899949));
-        Markets.put("영등포구 영등포전통시장", MapPoint.mapPointWithGeoCoord(37.5197463, 126.9074287));
-        Markets.put("도봉구 방학동도깨비시장", MapPoint.mapPointWithGeoCoord(37.6657435, 127.0329465));
-        Markets.put("도봉구 신창시장", MapPoint.mapPointWithGeoCoord(37.63458869999999, 127.01483140000005));
-        Markets.put("서대문구 인왕시장", MapPoint.mapPointWithGeoCoord(37.5908692, 126.943696));
-        Markets.put("서대문구 영천시장", MapPoint.mapPointWithGeoCoord(37.5703324, 126.9618708));
-        Markets.put("강서구 송화시장", MapPoint.mapPointWithGeoCoord(37.5492288, 126.8345762));
-        Markets.put("은평구 대림시장", MapPoint.mapPointWithGeoCoord(37.5868145, 126.91771399999993));
-        Markets.put("종로구 광장시장", MapPoint.mapPointWithGeoCoord(37.5701227, 126.9997095));
-        Markets.put("용산구 후암시장", MapPoint.mapPointWithGeoCoord(37.5501259, 126.9764509));
-        Markets.put("강북구 수유재래시장", MapPoint.mapPointWithGeoCoord(37.6315365, 127.0223447));
-        Markets.put("성동구 금남시장", MapPoint.mapPointWithGeoCoord(37.5484673, 127.0227235));
-        Markets.put("성동구 뚝도시장", MapPoint.mapPointWithGeoCoord(37.5378062, 127.0548442));
-        Markets.put("광진구 자양골목시장", MapPoint.mapPointWithGeoCoord(37.5338035, 127.0816089));
-        Markets.put("동대문구 청량리종합시장", MapPoint.mapPointWithGeoCoord(37.5808292, 127.0433944));
-        Markets.put("동대문구 경동시장", MapPoint.mapPointWithGeoCoord(37.5787997, 127.0396819));
-        Markets.put("중랑구 우림시장", MapPoint.mapPointWithGeoCoord(37.5967745, 127.0982882));
-        Markets.put("중랑구 동원시장", MapPoint.mapPointWithGeoCoord(37.5898431, 127.0899073));
-        Markets.put("노원구 공릉동 도깨비시장", MapPoint.mapPointWithGeoCoord(37.6226999, 127.0762606));
-        Markets.put("양천구 목3동시장", MapPoint.mapPointWithGeoCoord(37.5482793, 126.8668424));
-        Markets.put("양천구 신영시장", MapPoint.mapPointWithGeoCoord(37.5330235, 126.8360192));
-        Markets.put("구로구 남구로시장", MapPoint.mapPointWithGeoCoord(37.4897303, 126.8864836));
-        Markets.put("구로구 고척근린시장", MapPoint.mapPointWithGeoCoord(37.5024083, 126.8505529));
-        Markets.put("동대문구 현대시장", MapPoint.mapPointWithGeoCoord(37.5669542, 127.0593016));
-        Markets.put("금천구 남문시장", MapPoint.mapPointWithGeoCoord(37.4737845, 126.9004226));
-        Markets.put("마포구 망원시장", MapPoint.mapPointWithGeoCoord(37.5562398, 126.9056321));
-        Markets.put("마포구 마포농수산물시장", MapPoint.mapPointWithGeoCoord(37.5651843, 126.8984946));
-        Markets.put("동작구 남성시장", MapPoint.mapPointWithGeoCoord(37.4894036, 126.9807712));
-        Markets.put("덕양구 원당종합시장", MapPoint.mapPointWithGeoCoord(37.6560447, 126.8373471));
-        Markets.put("관악구 신원시장(신림1동)", MapPoint.mapPointWithGeoCoord(37.4835132, 126.9258997));
-        Markets.put("송파구 마천중앙시장", MapPoint.mapPointWithGeoCoord(37.4980997, 127.1507085));
-        Markets.put("송파구 방이시장", MapPoint.mapPointWithGeoCoord(37.5103559, 127.1175756));
-        Markets.put("강동구 암사종합시장", MapPoint.mapPointWithGeoCoord(37.5508693, 127.1288365));
-        Markets.put("중구 서울중앙시장", MapPoint.mapPointWithGeoCoord(37.5667939, 127.0198036));
-        Markets.put("강동구 둔촌역전통시장", MapPoint.mapPointWithGeoCoord(37.5275029, 127.1351706));
-        Markets.put("관악구 관악신사시장(신림4동)", MapPoint.mapPointWithGeoCoord(37.4868119, 126.9170742));
-        Markets.put("노원구 상계중앙시장", MapPoint.mapPointWithGeoCoord(37.659884, 127.0698784));
-        Markets.put("광진구 노룬산골목시장", MapPoint.mapPointWithGeoCoord(37.5364069, 127.0646822));
-        Markets.put("강서구 화곡본동시장", MapPoint.mapPointWithGeoCoord(37.5428618, 126.8441381));
-        Markets.put("강남구 청담삼익시장", MapPoint.mapPointWithGeoCoord(37.5224855, 127.0576847));
-        Markets.put("강남구 도곡시장", MapPoint.mapPointWithGeoCoord(37.4954841, 127.0333574));
-        Markets.put("남구 방림시장", MapPoint.mapPointWithGeoCoord(37.483325, 126.99624500000004));
-        Markets.put("은평구 대조시장", MapPoint.mapPointWithGeoCoord(37.6098316, 126.9276087));
-        Markets.put("강북구 숭인시장", MapPoint.mapPointWithGeoCoord(37.6131571, 127.0294686));
-        Markets.put("중구 신세계백화점", MapPoint.mapPointWithGeoCoord(37.5609164, 126.9809698));
-        Markets.put("용산구 이마트 용산점", MapPoint.mapPointWithGeoCoord(37.5298702, 126.9648759));
-        Markets.put("중구 롯데마트 서울역점", MapPoint.mapPointWithGeoCoord(37.5574467, 126.9695134));
-        Markets.put("성북구 이마트 미아점", MapPoint.mapPointWithGeoCoord(37.6108546, 127.0299225));
-        Markets.put("성북구 현대백화점 미아점", MapPoint.mapPointWithGeoCoord(37.6084082, 127.0287466));
-        Markets.put("영등포구 홈플러스 영등포점", MapPoint.mapPointWithGeoCoord(37.5182193, 126.8958098));
-        Markets.put("영등포구 이마트 여의도점", MapPoint.mapPointWithGeoCoord(37.518272, 126.9260954));
-        Markets.put("도봉구 이마트 창동점", MapPoint.mapPointWithGeoCoord(37.6516448, 127.0467326));
-        Markets.put("도봉구 홈플러스 방학점", MapPoint.mapPointWithGeoCoord(37.6648915, 127.043577));
-        Markets.put("서대문구 현대백화점 신촌점", MapPoint.mapPointWithGeoCoord(37.5560866, 126.9358496));
-        Markets.put("강서구 홈플러스 등촌점", MapPoint.mapPointWithGeoCoord(37.5601997, 126.84633));
-        Markets.put("강서구 이마트 가양점", MapPoint.mapPointWithGeoCoord(37.5582132, 126.861794));
-        Markets.put("강남구 이마트 역삼점", MapPoint.mapPointWithGeoCoord(37.4992649, 127.0484171));
-        Markets.put("강남구 롯데백화점 강남점", MapPoint.mapPointWithGeoCoord(37.497041, 127.0532153));
-        Markets.put("은평구 2001아울렛 불광점", MapPoint.mapPointWithGeoCoord(37.60974, 126.9289681));
-        Markets.put("은평구 이마트 은평점", MapPoint.mapPointWithGeoCoord(37.6008414, 126.9205342));
-        Markets.put("중구 롯데백화점", MapPoint.mapPointWithGeoCoord(37.6550434, 127.0610971));
-        Markets.put("중구 이마트 청계점", MapPoint.mapPointWithGeoCoord(37.5709405, 127.0210984));
-        Markets.put("용산구 농협 하나로마트 용산점", MapPoint.mapPointWithGeoCoord(37.5331778, 126.9647535));
-        Markets.put("강북구 롯데백화점 미아점", MapPoint.mapPointWithGeoCoord(37.6145947, 127.0305364));
-        Markets.put("성동구 이마트 왕십리점", MapPoint.mapPointWithGeoCoord(37.5615131, 127.0384279));
-        Markets.put("성동구 이마트 성수점", MapPoint.mapPointWithGeoCoord(37.5399353, 127.0535218));
-        Markets.put("광진구 이마트 자양점", MapPoint.mapPointWithGeoCoord(37.5385628, 127.0730552));
-        Markets.put("광진구 롯데마트 강변점", MapPoint.mapPointWithGeoCoord(37.5349755, 127.0957226));
-        Markets.put("동대문구 홈플러스 동대문점", MapPoint.mapPointWithGeoCoord(37.5745613, 127.038873));
-        Markets.put("동대문구 롯데백화점 청량리점", MapPoint.mapPointWithGeoCoord(37.581387, 127.048979));
-        Markets.put("중랑구 이마트 상봉점", MapPoint.mapPointWithGeoCoord(37.5964905, 127.093618));
-        Markets.put("중랑구 홈플러스 면목점", MapPoint.mapPointWithGeoCoord(37.5792089, 127.0812071));
-        Markets.put("노원구 롯데백화점 노원점", MapPoint.mapPointWithGeoCoord(37.6550434, 127.0610971));
-        Markets.put("노원구 홈플러스 중계점", MapPoint.mapPointWithGeoCoord(37.6399096, 127.0686298));
-        Markets.put("구로구 이마트 신도림점", MapPoint.mapPointWithGeoCoord(37.5070488, 126.890246));
-        Markets.put("팔달구 애경백화점", MapPoint.mapPointWithGeoCoord(37.2656796, 127.0002404));
-        Markets.put("금천구 홈플러스 시흥점", MapPoint.mapPointWithGeoCoord(37.4518936, 126.9007885));
-        Markets.put("마포구 그랜드마트 신촌점", MapPoint.mapPointWithGeoCoord(37.5550041, 126.9359849));
-        Markets.put("마포구 홈플러스 월드컵점", MapPoint.mapPointWithGeoCoord(37.5699509, 126.899029));
-        Markets.put("동작구 태평백화점", MapPoint.mapPointWithGeoCoord(37.4869128, 126.9816608));
-        Markets.put("영등포구 롯데백화점 영등포점", MapPoint.mapPointWithGeoCoord(37.5156838, 126.9076607));
-        Markets.put("관악구 롯데백화점 관악점", MapPoint.mapPointWithGeoCoord(37.4904913, 126.9249815));
-        Markets.put("덕양구 세이브 마트", MapPoint.mapPointWithGeoCoord(37.7105685, 126.9056044));
-        Markets.put("서초구 하나로클럽 양재점", MapPoint.mapPointWithGeoCoord(37.4634962, 127.0435314));
-        Markets.put("송파구 롯데백화점 잠실점", MapPoint.mapPointWithGeoCoord(37.5110794, 127.0981638));
-        Markets.put("송파구 홈플러스 잠실점", MapPoint.mapPointWithGeoCoord(37.5162594, 127.1030345));
-        Markets.put("강동구 이마트 명일점", MapPoint.mapPointWithGeoCoord(37.5547054, 127.1556281));
-        Markets.put("강동구 홈플러스 강동점", MapPoint.mapPointWithGeoCoord(37.5456952, 127.142258));
-        Markets.put("서초구 뉴코아아울렛 강남점", MapPoint.mapPointWithGeoCoord(37.5092377, 127.0074886));
-        Markets.put("강북구 하나로클럽 미아점", MapPoint.mapPointWithGeoCoord(37.6215636, 127.0265155));
-        Markets.put("양천구 이마트 목동점", MapPoint.mapPointWithGeoCoord(37.52609, 126.871084));
-        Markets.put("서초구 신세계백화점 강남점", MapPoint.mapPointWithGeoCoord(37.5049178, 127.0032131));
-        Markets.put("노원구 롯데슈퍼", MapPoint.mapPointWithGeoCoord(37.6226316, 127.0795041));
-        Markets.put("금천구 홈플러스 독산점", MapPoint.mapPointWithGeoCoord(37.4686645, 126.8968827));
-        Markets.put("양천구 홈플러스 목동점", MapPoint.mapPointWithGeoCoord(37.5302268, 126.8733084));
+        markets.put("종로구 통인시장", new Market(MapPoint.mapPointWithGeoCoord(37.5807801, 126.9699523), false));
+        markets.put("용산구 용문시장", new Market(MapPoint.mapPointWithGeoCoord(37.5366204, 126.9597976), false));
+        markets.put("중구 남대문시장", new Market(MapPoint.mapPointWithGeoCoord(37.5592111, 126.977639), false));
+        markets.put("성북구 돈암제일시장", new Market(MapPoint.mapPointWithGeoCoord(37.5916795, 127.0157178), false));
+        markets.put("성북구 장위골목시장", new Market(MapPoint.mapPointWithGeoCoord(37.6120979, 127.0508262), false));
+        markets.put("영등포구 대림중앙시장", new Market(MapPoint.mapPointWithGeoCoord(37.4916125, 126.899949), false));
+        markets.put("영등포구 영등포전통시장", new Market(MapPoint.mapPointWithGeoCoord(37.5197463, 126.9074287), false));
+        markets.put("도봉구 방학동도깨비시장", new Market(MapPoint.mapPointWithGeoCoord(37.6657435, 127.0329465), false));
+        markets.put("도봉구 신창시장", new Market(MapPoint.mapPointWithGeoCoord(37.63458869999999, 127.01483140000005), false));
+        markets.put("서대문구 인왕시장", new Market(MapPoint.mapPointWithGeoCoord(37.5908692, 126.943696), false));
+        markets.put("서대문구 영천시장", new Market(MapPoint.mapPointWithGeoCoord(37.5703324, 126.9618708), false));
+        markets.put("강서구 송화시장", new Market(MapPoint.mapPointWithGeoCoord(37.5492288, 126.8345762), false));
+        markets.put("은평구 대림시장", new Market(MapPoint.mapPointWithGeoCoord(37.5868145, 126.91771399999993), false));
+        markets.put("종로구 광장시장", new Market(MapPoint.mapPointWithGeoCoord(37.5701227, 126.9997095), false));
+        markets.put("용산구 후암시장", new Market(MapPoint.mapPointWithGeoCoord(37.5501259, 126.9764509), false));
+        markets.put("강북구 수유재래시장", new Market(MapPoint.mapPointWithGeoCoord(37.6315365, 127.0223447), false));
+        markets.put("성동구 금남시장", new Market(MapPoint.mapPointWithGeoCoord(37.5484673, 127.0227235), false));
+        markets.put("성동구 뚝도시장", new Market(MapPoint.mapPointWithGeoCoord(37.5378062, 127.0548442), false));
+        markets.put("광진구 자양골목시장", new Market(MapPoint.mapPointWithGeoCoord(37.5338035, 127.0816089), false));
+        markets.put("동대문구 청량리종합시장", new Market(MapPoint.mapPointWithGeoCoord(37.5808292, 127.0433944), false));
+        markets.put("동대문구 경동시장", new Market(MapPoint.mapPointWithGeoCoord(37.5787997, 127.0396819), false));
+        markets.put("중랑구 우림시장", new Market(MapPoint.mapPointWithGeoCoord(37.5967745, 127.0982882), false));
+        markets.put("중랑구 동원시장", new Market(MapPoint.mapPointWithGeoCoord(37.5898431, 127.0899073), false));
+        markets.put("노원구 공릉동 도깨비시장", new Market(MapPoint.mapPointWithGeoCoord(37.6226999, 127.0762606), false));
+        markets.put("양천구 목3동시장", new Market(MapPoint.mapPointWithGeoCoord(37.5482793, 126.8668424), false));
+        markets.put("양천구 신영시장", new Market(MapPoint.mapPointWithGeoCoord(37.5330235, 126.8360192), false));
+        markets.put("구로구 남구로시장", new Market(MapPoint.mapPointWithGeoCoord(37.4897303, 126.8864836), false));
+        markets.put("구로구 고척근린시장", new Market(MapPoint.mapPointWithGeoCoord(37.5024083, 126.8505529), false));
+        markets.put("동대문구 현대시장", new Market(MapPoint.mapPointWithGeoCoord(37.5669542, 127.0593016), false));
+        markets.put("금천구 남문시장", new Market(MapPoint.mapPointWithGeoCoord(37.4737845, 126.9004226), false));
+        markets.put("마포구 망원시장", new Market(MapPoint.mapPointWithGeoCoord(37.5562398, 126.9056321), false));
+        markets.put("마포구 마포농수산물시장", new Market(MapPoint.mapPointWithGeoCoord(37.5651843, 126.8984946), false));
+        markets.put("동작구 남성시장", new Market(MapPoint.mapPointWithGeoCoord(37.4894036, 126.9807712), false));
+        markets.put("덕양구 원당종합시장", new Market(MapPoint.mapPointWithGeoCoord(37.6560447, 126.8373471), false));
+        markets.put("관악구 신원시장", new Market(MapPoint.mapPointWithGeoCoord(37.4835132, 126.9258997), false));
+        markets.put("송파구 마천중앙시장", new Market(MapPoint.mapPointWithGeoCoord(37.4980997, 127.1507085), false));
+        markets.put("송파구 방이시장", new Market(MapPoint.mapPointWithGeoCoord(37.5103559, 127.1175756), false));
+        markets.put("강동구 암사종합시장", new Market(MapPoint.mapPointWithGeoCoord(37.5508693, 127.1288365), false));
+        markets.put("중구 서울중앙시장", new Market(MapPoint.mapPointWithGeoCoord(37.5667939, 127.0198036), false));
+        markets.put("강동구 둔촌역전통시장", new Market(MapPoint.mapPointWithGeoCoord(37.5275029, 127.1351706), false));
+        markets.put("관악구 관악신사시장", new Market(MapPoint.mapPointWithGeoCoord(37.4868119, 126.9170742), false));
+        markets.put("노원구 상계중앙시장", new Market(MapPoint.mapPointWithGeoCoord(37.659884, 127.0698784), false));
+        markets.put("광진구 노룬산골목시장", new Market(MapPoint.mapPointWithGeoCoord(37.5364069, 127.0646822), false));
+        markets.put("강서구 화곡본동시장", new Market(MapPoint.mapPointWithGeoCoord(37.5428618, 126.8441381), false));
+        markets.put("강남구 청담삼익시장", new Market(MapPoint.mapPointWithGeoCoord(37.5224855, 127.0576847), false));
+        markets.put("강남구 도곡시장", new Market(MapPoint.mapPointWithGeoCoord(37.4954841, 127.0333574), false));
+        markets.put("남구 방림시장", new Market(MapPoint.mapPointWithGeoCoord(37.483325, 126.99624500000004), false));
+        markets.put("은평구 대조시장", new Market(MapPoint.mapPointWithGeoCoord(37.6098316, 126.9276087), false));
+        markets.put("강북구 숭인시장", new Market(MapPoint.mapPointWithGeoCoord(37.6131571, 127.0294686), false));
+        markets.put("중구 신세계백화점", new Market(MapPoint.mapPointWithGeoCoord(37.5609164, 126.9809698), true));
+        markets.put("용산구 이마트 용산점", new Market(MapPoint.mapPointWithGeoCoord(37.5298702, 126.9648759), true));
+        markets.put("중구 롯데마트 서울역점", new Market(MapPoint.mapPointWithGeoCoord(37.5574467, 126.9695134), true));
+        markets.put("성북구 이마트 미아점", new Market(MapPoint.mapPointWithGeoCoord(37.6108546, 127.0299225), true));
+        markets.put("성북구 현대백화점 미아점", new Market(MapPoint.mapPointWithGeoCoord(37.6084082, 127.0287466), true));
+        markets.put("영등포구 홈플러스 영등포점", new Market(MapPoint.mapPointWithGeoCoord(37.5182193, 126.8958098), true));
+        markets.put("영등포구 이마트 여의도점", new Market(MapPoint.mapPointWithGeoCoord(37.518272, 126.9260954), true));
+        markets.put("도봉구 이마트 창동점", new Market(MapPoint.mapPointWithGeoCoord(37.6516448, 127.0467326), true));
+        markets.put("도봉구 홈플러스 방학점", new Market(MapPoint.mapPointWithGeoCoord(37.6648915, 127.043577), true));
+        markets.put("서대문구 현대백화점 신촌점", new Market(MapPoint.mapPointWithGeoCoord(37.5560866, 126.9358496), true));
+        markets.put("강서구 홈플러스 등촌점", new Market(MapPoint.mapPointWithGeoCoord(37.5601997, 126.84633), true));
+        markets.put("강서구 이마트 가양점", new Market(MapPoint.mapPointWithGeoCoord(37.5582132, 126.861794), true));
+        markets.put("강남구 이마트 역삼점", new Market(MapPoint.mapPointWithGeoCoord(37.4992649, 127.0484171), true));
+        markets.put("강남구 롯데백화점 강남점", new Market(MapPoint.mapPointWithGeoCoord(37.497041, 127.0532153), true));
+        markets.put("은평구 2001아울렛 불광점", new Market(MapPoint.mapPointWithGeoCoord(37.60974, 126.9289681), true));
+        markets.put("은평구 이마트 은평점", new Market(MapPoint.mapPointWithGeoCoord(37.6008414, 126.9205342), true));
+        markets.put("중구 롯데백화점", new Market(MapPoint.mapPointWithGeoCoord(37.6550434, 127.0610971), true));
+        markets.put("중구 이마트 청계점", new Market(MapPoint.mapPointWithGeoCoord(37.5709405, 127.0210984), true));
+        markets.put("용산구 농협 하나로마트 용산점", new Market(MapPoint.mapPointWithGeoCoord(37.5331778, 126.9647535), true));
+        markets.put("강북구 롯데백화점 미아점", new Market(MapPoint.mapPointWithGeoCoord(37.6145947, 127.0305364), true));
+        markets.put("성동구 이마트 왕십리점", new Market(MapPoint.mapPointWithGeoCoord(37.5615131, 127.0384279), true));
+        markets.put("성동구 이마트 성수점", new Market(MapPoint.mapPointWithGeoCoord(37.5399353, 127.0535218), true));
+        markets.put("광진구 이마트 자양점", new Market(MapPoint.mapPointWithGeoCoord(37.5385628, 127.0730552), true));
+        markets.put("광진구 롯데마트 강변점", new Market(MapPoint.mapPointWithGeoCoord(37.5349755, 127.0957226), true));
+        markets.put("동대문구 홈플러스 동대문점", new Market(MapPoint.mapPointWithGeoCoord(37.5745613, 127.038873), true));
+        markets.put("동대문구 롯데백화점 청량리점", new Market(MapPoint.mapPointWithGeoCoord(37.581387, 127.048979), true));
+        markets.put("중랑구 이마트 상봉점", new Market(MapPoint.mapPointWithGeoCoord(37.5964905, 127.093618), true));
+        markets.put("중랑구 홈플러스 면목점", new Market(MapPoint.mapPointWithGeoCoord(37.5792089, 127.0812071), true));
+        markets.put("노원구 롯데백화점 노원점", new Market(MapPoint.mapPointWithGeoCoord(37.6550434, 127.0610971), true));
+        markets.put("노원구 홈플러스 중계점", new Market(MapPoint.mapPointWithGeoCoord(37.6399096, 127.0686298), true));
+        markets.put("구로구 이마트 신도림점", new Market(MapPoint.mapPointWithGeoCoord(37.5070488, 126.890246), true));
+        markets.put("팔달구 애경백화점", new Market(MapPoint.mapPointWithGeoCoord(37.2656796, 127.0002404), true));
+        markets.put("금천구 홈플러스 시흥점", new Market(MapPoint.mapPointWithGeoCoord(37.4518936, 126.9007885), true));
+        markets.put("마포구 그랜드마트 신촌점", new Market(MapPoint.mapPointWithGeoCoord(37.5550041, 126.9359849), true));
+        markets.put("마포구 홈플러스 월드컵점", new Market(MapPoint.mapPointWithGeoCoord(37.5699509, 126.899029), true));
+        markets.put("동작구 태평백화점", new Market(MapPoint.mapPointWithGeoCoord(37.4869128, 126.9816608), true));
+        markets.put("영등포구 롯데백화점 영등포점", new Market(MapPoint.mapPointWithGeoCoord(37.5156838, 126.9076607), true));
+        markets.put("관악구 롯데백화점 관악점", new Market(MapPoint.mapPointWithGeoCoord(37.4904913, 126.9249815), true));
+        markets.put("덕양구 세이브 마트", new Market(MapPoint.mapPointWithGeoCoord(37.7105685, 126.9056044), true));
+        markets.put("서초구 하나로클럽 양재점", new Market(MapPoint.mapPointWithGeoCoord(37.4634962, 127.0435314), true));
+        markets.put("송파구 롯데백화점 잠실점", new Market(MapPoint.mapPointWithGeoCoord(37.5110794, 127.0981638), true));
+        markets.put("송파구 홈플러스 잠실점", new Market(MapPoint.mapPointWithGeoCoord(37.5162594, 127.1030345), true));
+        markets.put("강동구 이마트 명일점", new Market(MapPoint.mapPointWithGeoCoord(37.5547054, 127.1556281), true));
+        markets.put("강동구 홈플러스 강동점", new Market(MapPoint.mapPointWithGeoCoord(37.5456952, 127.142258), true));
+        markets.put("서초구 뉴코아아울렛 강남점", new Market(MapPoint.mapPointWithGeoCoord(37.5092377, 127.0074886), true));
+        markets.put("강북구 하나로클럽 미아점", new Market(MapPoint.mapPointWithGeoCoord(37.6215636, 127.0265155), true));
+        markets.put("양천구 이마트 목동점", new Market(MapPoint.mapPointWithGeoCoord(37.52609, 126.871084), true));
+        markets.put("서초구 신세계백화점 강남점", new Market(MapPoint.mapPointWithGeoCoord(37.5049178, 127.0032131), true));
+        markets.put("노원구 롯데슈퍼", new Market(MapPoint.mapPointWithGeoCoord(37.6226316, 127.0795041), true));
+        markets.put("금천구 홈플러스 독산점", new Market(MapPoint.mapPointWithGeoCoord(37.4686645, 126.8968827), true));
+        markets.put("양천구 홈플러스 목동점", new Market(MapPoint.mapPointWithGeoCoord(37.5302268, 126.8733084), true));
 
+        //setNameToEachMarket
+        Set<String> keys = markets.keySet();
+        for(String key : keys){
+            markets.get(key).setName(key);
+        }
 
         //default sort
-        Set<String> keys = (Set<String>) Markets.keySet();
-        for (String name : keys) {
-            Markets_sort_by_distance.add(new MarketD(name));
-        }
+        markets_sort_by_price = new ArrayList<String>(markets.keySet());
+        markets_sort_by_distance = new ArrayList<String>(markets.keySet());
+
     }
 
-    public String searchMarket(String key) {
-        //검색 쿼리 구현
-        return null;
+    //getter and setter
+    public MapPoint getMarketMapPoint(String name) {
+        return markets.get(name).getMapPoint();
     }
 
-    public MapPoint getMarketMapPoint(String marketName) {
-        return Markets.get(marketName);
+    public Market getMarket(String name){
+        return markets.get(name);
     }
 
-    public Set<String> getAllMarketList() {
-        Set keys = Markets.keySet();
-        return keys;
+    public ArrayList<String> getMarkets_sort_by_distance() {
+        return markets_sort_by_distance;
     }
 
-    //p기준 새로고침
+    public ArrayList<String> getMarkets_sort_by_price() {
+        updateMarketPrice();
+        return markets_sort_by_price;
+    }
+
+//    public
+
+
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void updateMarketsSortedByDistance(MapPoint p) {
-        for (MarketD marketD : Markets_sort_by_distance) {
-            double latitude = Markets.get(marketD.name).getMapPointGeoCoord().latitude;
-            double longitude = Markets.get(marketD.name).getMapPointGeoCoord().longitude;
-            double stdlatitude = p.getMapPointGeoCoord().latitude;
-            double stdlongitude = p.getMapPointGeoCoord().longitude;
-            double d = calDistance(latitude,longitude,stdlatitude,stdlongitude);
-            marketD.setD_sqaure(d);
+    public MapPoint[] getNearNMarketsMapPoint(int numOfMarket) {
+//        updateMarketDistance(p);
+        MapPoint[] result = new MapPoint[numOfMarket];
+        int index = 0;
+        for (String name : getNearNMarketName(numOfMarket)) {
+            result[index] = markets.get(name).getMapPoint();
+            index++;
         }
-        MarketComparator mc = new MarketComparator();
-        Markets_sort_by_distance.sort(mc);
+        return result;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private String[] getNearNMarketName(int numOfMarket) {
 
-    public String[] getNearNMarkets(int numOfMarket) {
         String[] result = new String[numOfMarket];
         for (int i = 0; i < numOfMarket; i++) {
-            result[i] = Markets_sort_by_distance.get(i).name;
-            Log.d("nearMarket", Markets_sort_by_distance.get(i).name);
+            result[i] = markets_sort_by_distance.get(i);
+            Log.d("debug_near", markets_sort_by_distance.get(i));
         }
         return result;
     }
 
-    public MapPoint[] getNearNMarketsMapPoint(int numOfMarket) {
-        MapPoint[] result = new MapPoint[numOfMarket];
-        for (int i = 0; i < numOfMarket; i++) {
-            result[i] = getMarketMapPoint(Markets_sort_by_distance.get(i).name);
-            Log.d("nearMarket", Markets_sort_by_distance.get(i).name);
-        }
+    //calculate distance and sort
+    MarketDistanceComparator mc = new MarketDistanceComparator();
 
-        return result;
+
+    @TargetApi(Build.VERSION_CODES.N)
+    public void updateMarketDistance(MapPoint p) {
+        for (String name : markets_sort_by_distance) {
+            double latitude = markets.get(name).getMapPoint().getMapPointGeoCoord().latitude;
+            double longitude = markets.get(name).getMapPoint().getMapPointGeoCoord().longitude;
+            double stdlatitude = p.getMapPointGeoCoord().latitude;
+            double stdlongitude = p.getMapPointGeoCoord().longitude;
+            double d = calDistance(latitude, longitude, stdlatitude, stdlongitude);
+            markets.get(name).setDistance(d);
+        }
+        markets_sort_by_distance.sort(mc);
     }
 
-    public double calDistance(double lat1, double lon1, double lat2, double lon2){
-
+    private double calDistance(double lat1, double lon1, double lat2, double lon2) {
         double theta, dist;
         theta = lon1 - lon2;
         dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1))
                 * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
         dist = Math.acos(dist);
         dist = rad2deg(dist);
-
         dist = dist * 60 * 1.1515;
         dist = dist * 1.609344;    // 단위 mile 에서 km 변환.
         dist = dist * 1000.0;      // 단위  km 에서 m 로 변환
-
         return dist;
     }
 
-    private double deg2rad(double deg){
-        return (double)(deg * Math.PI / (double)180d);
+    private double deg2rad(double deg) {
+        return (double) (deg * Math.PI / (double) 180d);
     }
 
-    // 주어진 라디언(radian) 값을 도(degree) 값으로 변환
-    private double rad2deg(double rad){
-        return (double)(rad * (double)180d / Math.PI);
+    private double rad2deg(double rad) {
+        return (double) (rad * (double) 180d / Math.PI);
     }
 
-
-    class MarketD {
-        String name;
-        Double d_sqaure;
-
-        public MarketD(String name) {
-            this.name = name;
-            d_sqaure = -1.0;
-        }
-
-        public void setD_sqaure(Double d_square) {
-            this.d_sqaure = d_square;
-        }
-    }
-
-    class MarketComparator implements Comparator<MarketD> {
-
+    private class MarketDistanceComparator implements Comparator<String> {
         @Override
-        public int compare(MarketD o1, MarketD o2) {
-            return (o1.d_sqaure.compareTo(o2.d_sqaure));
+        public int compare(String s, String t1) {
+            Double d1 = markets.get(s).getDistance();
+            Double d2 = markets.get(t1).getDistance();
+            return d1.compareTo(d2);
         }
+    }
+
+
+
+
+    Retrofit retrofit;
+    APIService service;
+    public APIService getService() {
+        return service;
+    }
+    //시장이름과 품목으로 가격정보를 가져온다
+    public void getPrice(final String name, String goods) {
+        retrofit = new Retrofit.Builder()
+                .baseUrl(APIService.URL).build();
+//                .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
+//                .build();
+        service = retrofit.create(APIService.class);
+        Call<ResponseBody> call = service.get_name_goods(goods, name.replaceAll(" ", ""));
+        Log.d("debug_getPriceOfMarket", goods + "," + name.replaceAll(" ", ""));
+        call.enqueue(new Callback<ResponseBody>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String price = parsePrice(response.body().string());
+                    markets.get(name).setPrice(price);
+//                    mapFragment.setPriceOnPOIItem(poiItem, price);
+                } catch (Exception e) {
+                    Log.v("debug_error_getPrice", "true");
+                    markets.get(name).setPrice(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                markets.get(name).setPrice(null);
+            }
+        });
+    }
+
+    private String parsePrice(String s) {
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = new JSONArray(s);
+            String price = jsonArray.getJSONArray(0).getJSONObject(0).getString("cost");
+            return price;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void updateMarketPrice() {
+        //구현할것
+        //모든 시장의 해당 가격을 가져오고 정렬 및 셋팅
+        //없으면 null
     }
 }

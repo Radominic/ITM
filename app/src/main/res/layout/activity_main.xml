@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
 
     <FrameLayout
@@ -236,14 +236,14 @@
                     android:id="@+id/searchbase"
                     android:layout_centerHorizontal="true">
 
-                    <com.example.user.gjsd.ClearEditText
+                    <com.example.user.gjsd.view.ClearEditText
                         android:id="@+id/cleartext"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true">
 
-                    </com.example.user.gjsd.ClearEditText>
+                    </com.example.user.gjsd.view.ClearEditText>
                 </RelativeLayout>
 
             </RelativeLayout>

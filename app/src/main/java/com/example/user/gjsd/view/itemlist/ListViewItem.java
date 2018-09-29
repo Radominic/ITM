@@ -1,4 +1,4 @@
-package com.example.user.gjsd.itemlist;
+package com.example.user.gjsd.view.itemlist;
 
 import android.graphics.drawable.Drawable;
 
