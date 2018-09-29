@@ -38,7 +38,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     SlidingDrawer drawer1,drawer2;
     Animation animro, animri, animlo, animli;
-    String selectedItem = "default";
+    String selectedItem = "사과";
     String[] item = {"동태","조기","달걀","닭고기","돼지고기","쇠고기","애호박","오이","상추","양파","무","배추","배","사과","오징어","고등어","명태","냉동참조기"};
     ViewPager pager;
     Bundle bundle = new Bundle(1);
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_dashboard:
                     if(!drawer1.isOpened()&&!drawer2.isOpened()) {
                         drawer2.animateOpen(); fab.hide();
+
                     }else if(drawer2.isOpened()){
                         drawer2.animateClose(); fab.show();
                     }else if(drawer1.isOpened()){
@@ -110,6 +111,18 @@ public class MainActivity extends AppCompatActivity {
         ListView listview;
         ListViewAdapter adapter;
 
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        mf = new MapFragment();
+        marketExplorer = new MarketExplorer(mf);
+        mf.setMarketExplorer(marketExplorer);
+        GPSManager gm = new GPSManager(this);
+        mf.setGpsManager(gm);
+        mf.setMainActivity(this);
+        mf.setFramelayout((FrameLayout) findViewById(R.id.formap));
+        ft.add(R.id.formap,mf);
+        ft.commit();
+
         adapter = new ListViewAdapter() ;
 
         listview = (ListView) findViewById(R.id.itemlist1);
@@ -143,11 +156,8 @@ public class MainActivity extends AppCompatActivity {
                 selectedItem = item[position];
 
                 bundle.putString("itemName",selectedItem);
-                cf = new costFragment();
-                cf.setArguments(bundle);
-
-                cf.setMarketExplorer(marketExplorer);
-                df.setMarketExplorer(marketExplorer);
+//                cf = new costFragment();
+//                cf.setArguments(bundle);
 
                 pager = (ViewPager)findViewById(R.id.pager);
                 pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
@@ -159,17 +169,7 @@ public class MainActivity extends AppCompatActivity {
         }) ;
 
 
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        mf = new MapFragment();
-        marketExplorer = new MarketExplorer(mf);
-        mf.setMarketExplorer(marketExplorer);
-        GPSManager gm = new GPSManager(this);
-        mf.setGpsManager(gm);
-        mf.setMainActivity(this);
-        mf.setFramelayout((FrameLayout) findViewById(R.id.formap));
-        ft.add(R.id.formap,mf);
-        ft.commit();
+        //mf가 여기
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -189,11 +189,11 @@ public class MainActivity extends AppCompatActivity {
         bundle.putString("itemName","상품미선택");
         cf = new costFragment();
         df = new distanceFragment();
+        cf.setMarketExplorer(marketExplorer);
+        df.setMarketExplorer(marketExplorer);
         cf.setArguments(bundle);
         df.setArguments(bundle);
 //        cf.setMainActivity(this);
-        cf.setMarketExplorer(marketExplorer);
-        df.setMarketExplorer(marketExplorer);
 
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener(){

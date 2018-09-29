@@ -334,8 +334,8 @@ public class MarketExplorer {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     Log.v("pricelist_response", response.body().string());
-//                    ArrayList<String> sortedList = parsePriceList(response.body().string());
-//                    markets_sort_by_price = sortedList;
+                    ArrayList<String> sortedList = parsePriceList(response.body().string());
+                    markets_sort_by_price = sortedList;
 
                 } catch (Exception e) {
                     Log.v("debug_error", "getMarketsSortByPrice_error");

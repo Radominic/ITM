@@ -140,8 +140,8 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 //        marketExplorer.updateMarketDistance(mapView.getMapCenterPoint());
         initMarker();
         updateAllMarkersOnMap();
-
-
+        mainActivity.cf.updateMarkets_sort_by_price();
+        mainActivity.df.updateMarkets_sort_by_distance();
         marketExplorer.updateMarkets_sort_by_price(mainActivity.getSelectedItemName());
     }
 
