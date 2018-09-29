@@ -202,6 +202,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
                 Log.d("draw", "price true");
             }
         }
+        
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
