@@ -30,6 +30,8 @@ import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale;
 import java.util.Objects;
 
 
@@ -104,10 +106,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+//        item = getArguments().getString("itemName");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -125,6 +124,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         mapView.setPOIItemEventListener(this);
         mapView.setMapViewEventListener(this);
 //        Log.d("debug", "여기까지 ok");
+
         return view;
     }
 
@@ -175,12 +175,13 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 //        ArrayList<String> names = marketExplorer.getMarkets_sort_by_distance();
 //        MapPOIItem poiItems = mapView.
 //        for(String name : names)
+//        this.item = item;
         MapPOIItem[] poiItems = mapView.getPOIItems();
         for (MapPOIItem poiItem : poiItems) {
-            Log.d("debug_poi_null", ""+poiItems.length);
             if (poiItem.getItemName().equals("centerPoiItem")) {
                 continue;
             }
+            mapView.removePOIItem(poiItem);
 
 //            MapPOIItem[] poiItems = mapView.findPOIItemByName(name);
 //            MapPOIItem poiItem = poiItems[0];
@@ -201,6 +202,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
                 mainActivity.getSelectedItemName();
                 Log.d("draw", "price true");
             }
+           mapView.addPOIItem(poiItem);
         }
         
     }
@@ -439,7 +441,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         int TextSize = 30;
 
         //품목
-        String item = "품목 : ";
+        String item = mainActivity.getSelectedItemName()+" : "+ Currency.getInstance(Locale.KOREA).getSymbol();
         //가격 받아오기
         String price = "5000";
 

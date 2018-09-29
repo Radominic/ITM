@@ -298,7 +298,7 @@ public class MarketExplorer {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        return "품목없음";
     }
 
     public void updateMarketPrice(String selectedItem) {
