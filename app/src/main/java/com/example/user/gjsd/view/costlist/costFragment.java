@@ -30,14 +30,12 @@ public class costFragment extends ListFragment {
         setListAdapter(adapter);
         String in = getArguments().getString("itemName");
 
-
-        ArrayList<String> markets = marketExplorer.getMarkets_sort_by_price(in);
+        ArrayList<String> markets = marketExplorer.getMarkets_sort_by_price();
         String[] marketname = new String[markets.size()];
         marketname = markets.toArray(marketname);
 
         for (int i = 0; i < marketname.length; i++) {
             adapter.addItem((i + 1) + "등", marketname[i], in + " : " + "5000원");
-
         }
         return super.onCreateView(inflater, container, savedInstanceState);
     }

@@ -29,7 +29,6 @@ import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -143,7 +142,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         updateAllMarkersOnMap();
 
 
-
+        marketExplorer.updateMarkets_sort_by_price(mainActivity.getSelectedItemName());
     }
 
     private void initMarker() {
@@ -160,7 +159,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
             poiItem.setMarkerType(MapPOIItem.MarkerType.CustomImage);
             poiItem.setCustomImageAutoscale(false);
             poiItem.setShowCalloutBalloonOnTouch(false);
-            poiItem.setCustomImageAnchor(0.2f, 1.0f);
+            poiItem.setCustomImageAnchor(0.3f, 1.0f);
             poiItem.setCustomImageBitmap(writeOnDrawable(poiItem));
             if (poiItem.getUserObject() == null) Log.d("debug_poiSetobj_null", "true");
             mapView.addPOIItem(poiItem);
@@ -247,11 +246,10 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     }
 
     public void updatePrice(){
-        //가격 정보 모두 셋팅
-        //모두 그리기
+        //시장마다 정보 모두 셋팅
         marketExplorer.updateMarketPrice(mainActivity.getSelectedItemName());
-        //delete
-        marketExplorer.getMarkets_sort_by_price(mainActivity.getSelectedItemName());
+        //가격순 정렬 셋팅
+        marketExplorer.updateMarkets_sort_by_price(mainActivity.getSelectedItemName());
     }
 
 

@@ -12,6 +12,7 @@ import net.daum.mf.map.api.MapPoint;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,7 +119,7 @@ public class MarketExplorer {
         markets.put("노원구 롯데백화점 노원점", new Market(MapPoint.mapPointWithGeoCoord(37.6550434, 127.0610971), true));
         markets.put("노원구 홈플러스 중계점", new Market(MapPoint.mapPointWithGeoCoord(37.6399096, 127.0686298), true));
         markets.put("구로구 이마트 신도림점", new Market(MapPoint.mapPointWithGeoCoord(37.5070488, 126.890246), true));
-        markets.put("팔달구 애경백화점", new Market(MapPoint.mapPointWithGeoCoord(37.2656796, 127.0002404), true));
+        markets.put("구로구 애경백화점 구로점", new Market(MapPoint.mapPointWithGeoCoord(37.2656796, 127.0002404), true));
         markets.put("금천구 홈플러스 시흥점", new Market(MapPoint.mapPointWithGeoCoord(37.4518936, 126.9007885), true));
         markets.put("마포구 그랜드마트 신촌점", new Market(MapPoint.mapPointWithGeoCoord(37.5550041, 126.9359849), true));
         markets.put("마포구 홈플러스 월드컵점", new Market(MapPoint.mapPointWithGeoCoord(37.5699509, 126.899029), true));
@@ -165,47 +166,22 @@ public class MarketExplorer {
         return markets_sort_by_distance;
     }
 
-    public ArrayList<String> getMarkets_sort_by_price(String selectedItem) {
-//        retrofit = new Retrofit.Builder()
-//                .baseUrl(APIService.URL).build();
-////                .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
-////                .build();
-//        service = retrofit.create(APIService.class);
-//        Call<ResponseBody> call = service.get_ascending_sort(selectedItem);
-//        Log.d("debug_getPriceOfMarket", selectedItem);
-//        call.enqueue(new Callback<ResponseBody>() {
-//            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-//            @Override
-//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                try {
-//                    Log.v("pricelist_response", response.body().string());
-////                    ArrayList<String> sortedList = parsePriceList(response.body().string());
-////                    markets_sort_by_price = sortedList;
-//
-//                } catch (Exception e) {
-//                    Log.v("debug_error", "getMarketsSortByPrice_error");
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-////                markets.get(name).setPrice(null);
-//                Log.v("debug_error", "getMarketsSortByPrice_error:server_no_response");
-//            }
-//        });
+    public ArrayList<String> getMarkets_sort_by_price(){return markets_sort_by_price;}
 
-        ArrayList<String> tmp = new ArrayList<>();
-        tmp.add("one");
-        tmp.add("two");
-        tmp.add("three");
-
-        return tmp;
-//        return markets_sort_by_price;
-    }
 
     //응답 string을 arraylist<String>으로 변환
     private ArrayList<String> parsePriceList(String s) {
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = new JSONArray(s);
+            ArrayList<String> tmp = new ArrayList<String>();
+            for(int i = 0; i<jsonArray.length();i++){
+                tmp.add(jsonArray.getJSONObject(i).getString("mart_name"));
+            }
+            return tmp;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -342,5 +318,37 @@ public class MarketExplorer {
         }
 
         mapFragment.updateAllMarkersOnMap();
+    }
+
+    public void updateMarkets_sort_by_price(String selectedItem) {
+        retrofit = new Retrofit.Builder()
+                .baseUrl(APIService.URL).build();
+//                .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
+//                .build();
+        service = retrofit.create(APIService.class);
+        Call<ResponseBody> call = service.get_ascending_sort(selectedItem);
+        Log.d("debug_getPriceOfMarket", selectedItem);
+        call.enqueue(new Callback<ResponseBody>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    Log.v("pricelist_response", response.body().string());
+//                    ArrayList<String> sortedList = parsePriceList(response.body().string());
+//                    markets_sort_by_price = sortedList;
+
+                } catch (Exception e) {
+                    Log.v("debug_error", "getMarketsSortByPrice_error");
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                markets.get(name).setPrice(null);
+                Log.v("debug_error", "getMarketsSortByPrice_error:server_no_response");
+            }
+        });
+
     }
 }
