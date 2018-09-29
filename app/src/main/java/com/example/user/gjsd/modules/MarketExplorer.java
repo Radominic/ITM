@@ -285,7 +285,7 @@ public class MarketExplorer {
 //                    mapFragment.setPriceOnPOIItem(poiItem, price);
                 } catch (Exception e) {
                     Log.v("debug_error_getPrice", e.toString());
-                    markets.get(name).setPrice(null);
+                    markets.get(name).setPrice("품목없음");
                 }
             }
 
@@ -305,7 +305,7 @@ public class MarketExplorer {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        return "품목없음";
     }
 
     public void updateMarketPrice(String selectedItem) {

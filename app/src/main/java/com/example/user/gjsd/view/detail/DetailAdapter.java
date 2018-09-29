@@ -127,7 +127,8 @@ public class DetailAdapter extends BaseExpandableListAdapter {
         String positionName = (String) getGroup(groupPosition).toString();
         if (positionName == "동태") {
             if (child == "1") {
-                img.setImageResource(R.drawable.banana);
+                //데이터 확인해서 상승인지 하락인지 표기
+                img.setImageResource(R.drawable.upicon);
             }
         } else if (positionName == "조기") {
             if (child == "2") {

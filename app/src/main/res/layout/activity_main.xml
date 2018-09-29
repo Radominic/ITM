@@ -188,7 +188,8 @@
                         android:id="@+id/pager"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@id/tabpanel">
+                        android:layout_below="@id/tabpanel"
+                        android:layout_marginBottom="58dp">
 
                     </android.support.v4.view.ViewPager>
                 </RelativeLayout>

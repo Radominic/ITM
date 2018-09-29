@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.gjsd.R;
+import com.example.user.gjsd.modules.MarketExplorer;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,7 @@ public class DetailActivity extends AppCompatActivity {
     private RecyclerView recyclerview;
     private Intent intent ;
     private String marketName ;
+    private MarketExplorer marketExplorer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,10 @@ public class DetailActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+    private void setMarketExplorer(MarketExplorer marketExplorer){
+        this.marketExplorer = marketExplorer;
+
     }
 
     //add and get data for list

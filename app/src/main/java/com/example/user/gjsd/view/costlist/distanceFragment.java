@@ -39,12 +39,16 @@ public class distanceFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
 
                              @Nullable Bundle savedInstanceState) {
+        //해당 품목 가져오기
+
         adapter = new DistanceViewAdapter();
+        String in = getArguments().getString("itemName");
+        adapter.setItem(in);
         setListAdapter(adapter);
         updateMarkets_sort_by_distance();
 //        String[] marketname = new String[markets.size()];
 //        marketname = markets.toArray(marketname);
-        String in = getArguments().getString("itemName");
+
         //리스트에 저장
         for (String name : markets_sort_by_distance) {
             adapter.addItem(new DistanceViewItem(name, marketExplorer.getMarket(name)));
@@ -73,6 +77,8 @@ public class distanceFragment extends ListFragment {
     public void updateMarkets_sort_by_distance() {
         this.markets_sort_by_distance = marketExplorer.getMarkets_sort_by_distance();
         adapter.setOrder(markets_sort_by_distance);
+        String in = getArguments().getString("itemName");
+        adapter.setItem(in);
         adapter.notifyDataSetChanged();
     }
 

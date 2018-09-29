@@ -1,6 +1,7 @@
 package com.example.user.gjsd.view.costlist;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class DistanceViewAdapter extends BaseAdapter{
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private Map<String, DistanceViewItem> distanceViewItems = Collections.synchronizedMap(new HashMap<String, DistanceViewItem>());
     private ArrayList<String> distanceMarketNameList = new ArrayList<String>();
+    private String item = "품목";
 
     // ListViewAdapter의 생성자
     public DistanceViewAdapter() {
@@ -56,10 +58,11 @@ public class DistanceViewAdapter extends BaseAdapter{
         DistanceViewItem distanceViewItem = distanceViewItems.get(distanceMarketNameList.get(position));
 
         // 아이템 내 각 위젯에 데이터 반영
-        numberTextView.setText(""+position);
+        numberTextView.setText(""+(position+1));
         titleTextView.setText(distanceViewItem.getName());
-        descTextView.setText(distanceViewItem.getMarket().getPrice());
-        distTextView.setText(""+distanceViewItem.getMarket().getDistance());
+        String distance = String.format("%.3f" , distanceViewItem.getMarket().getDistance()/1000);
+        descTextView.setText(item+" : "+distanceViewItem.getMarket().getPrice());
+        distTextView.setText(distance+" km");
 
 
         return convertView;
@@ -98,5 +101,10 @@ public class DistanceViewAdapter extends BaseAdapter{
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
 
+    }
+
+
+    public void setItem(String item) {
+        this.item = item;
     }
 }

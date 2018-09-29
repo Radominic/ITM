@@ -12,7 +12,7 @@ public class Market {
     private boolean isMart;//fix at constructor
 
     //variable
-    private String price = null;
+    private String price = "품목없음";
     private Double distance = 0.0;
 
 //    public MapPOIItem getPoiItem() {

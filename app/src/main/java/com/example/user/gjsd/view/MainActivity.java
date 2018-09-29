@@ -165,7 +165,8 @@ public class MainActivity extends AppCompatActivity {
 //                pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
 //                pager.setCurrentItem(0);
                 pageadapter.notifyDataSetChanged();
-
+                mf.setArguments(bundle);
+                mf.updateAllMarkersOnMap();
                 mf.updatePrice();
                 drawer1.animateClose();
             }
@@ -198,6 +199,8 @@ public class MainActivity extends AppCompatActivity {
         cf.setArguments(bundle);
         df.setArguments(bundle);
 //        cf.setMainActivity(this);
+        //df
+        mf.setArguments(bundle);
 
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener(){
