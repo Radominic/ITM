@@ -15,7 +15,9 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Currency;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class DistanceViewAdapter extends BaseAdapter{
@@ -24,10 +26,10 @@ public class DistanceViewAdapter extends BaseAdapter{
     private Map<String, DistanceViewItem> distanceViewItems = Collections.synchronizedMap(new HashMap<String, DistanceViewItem>());
     private ArrayList<String> distanceMarketNameList = new ArrayList<String>();
     private String item = "품목";
-
+    distanceFragment d;
     // ListViewAdapter의 생성자
-    public DistanceViewAdapter() {
-
+    public DistanceViewAdapter(distanceFragment d) {
+        this.d = d;
     }
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
@@ -61,7 +63,12 @@ public class DistanceViewAdapter extends BaseAdapter{
         numberTextView.setText(""+(position+1));
         titleTextView.setText(distanceViewItem.getName());
         String distance = String.format("%.3f" , distanceViewItem.getMarket().getDistance()/1000);
-        descTextView.setText(item+" : "+distanceViewItem.getMarket().getPrice());
+        if(distanceViewItem.getMarket().getPrice().equals("품목없음")){
+            descTextView.setText(distanceViewItem.getMarket().getPrice());
+        }else{
+            descTextView.setText(d.getSelectedItem()+" : "+ Currency.getInstance(Locale.KOREA).getSymbol()+distanceViewItem.getMarket().getPrice());
+        }
+
         distTextView.setText(distance+" km");
 
 

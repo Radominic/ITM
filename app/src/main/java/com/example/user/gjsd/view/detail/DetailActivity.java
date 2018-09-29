@@ -15,6 +15,8 @@ import com.example.user.gjsd.R;
 import com.example.user.gjsd.modules.MarketExplorer;
 
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale;
 
 public class DetailActivity extends AppCompatActivity {
     private RecyclerView recyclerview;

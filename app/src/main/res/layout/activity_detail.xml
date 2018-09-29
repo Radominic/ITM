@@ -19,7 +19,7 @@
             android:layout_alignParentTop="true"
             android:paddingLeft="15dp"
             android:paddingTop="13dp"
-            android:text="시장정보 - 0000/00/00 업데이트"
+            android:text="시장정보"
             android:textColor="#ffffff" />
 
         <TextView
