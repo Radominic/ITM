@@ -30,6 +30,7 @@ public class costFragment extends ListFragment {
         setListAdapter(adapter);
         String in = getArguments().getString("itemName");
 
+
         ArrayList<String> markets = marketExplorer.getMarkets_sort_by_price(in);
         String[] marketname = new String[markets.size()];
         marketname = markets.toArray(marketname);

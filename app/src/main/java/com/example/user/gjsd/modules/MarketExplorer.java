@@ -166,40 +166,46 @@ public class MarketExplorer {
     }
 
     public ArrayList<String> getMarkets_sort_by_price(String selectedItem) {
-        retrofit = new Retrofit.Builder()
-                .baseUrl(APIService.URL).build();
-//                .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
-//                .build();
-        service = retrofit.create(APIService.class);
-        Call<ResponseBody> call = service.get_ascending_sort(selectedItem);
-        Log.d("debug_getPriceOfMarket", selectedItem);
-        call.enqueue(new Callback<ResponseBody>() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    Log.v("pricelist_response", response.body().string());
-//                    ArrayList<String> sortedList = parsePriceList(response.body().string());
-//                    markets_sort_by_price = sortedList;
+//        retrofit = new Retrofit.Builder()
+//                .baseUrl(APIService.URL).build();
+////                .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
+////                .build();
+//        service = retrofit.create(APIService.class);
+//        Call<ResponseBody> call = service.get_ascending_sort(selectedItem);
+//        Log.d("debug_getPriceOfMarket", selectedItem);
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                try {
+//                    Log.v("pricelist_response", response.body().string());
+////                    ArrayList<String> sortedList = parsePriceList(response.body().string());
+////                    markets_sort_by_price = sortedList;
+//
+//                } catch (Exception e) {
+//                    Log.v("debug_error", "getMarketsSortByPrice_error");
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+////                markets.get(name).setPrice(null);
+//                Log.v("debug_error", "getMarketsSortByPrice_error:server_no_response");
+//            }
+//        });
 
-                } catch (Exception e) {
-                    Log.v("debug_error", "getMarketsSortByPrice_error");
+        ArrayList<String> tmp = new ArrayList<>();
+        tmp.add("one");
+        tmp.add("two");
+        tmp.add("three");
 
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                markets.get(name).setPrice(null);
-                Log.v("debug_error", "getMarketsSortByPrice_error:server_no_response");
-            }
-        });
-        return markets_sort_by_price;
+        return tmp;
+//        return markets_sort_by_price;
     }
 
     //응답 string을 arraylist<String>으로 변환
     private ArrayList<String> parsePriceList(String s) {
-
         return null;
     }
 

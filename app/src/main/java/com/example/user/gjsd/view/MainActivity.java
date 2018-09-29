@@ -146,6 +146,9 @@ public class MainActivity extends AppCompatActivity {
                 cf = new costFragment();
                 cf.setArguments(bundle);
 
+                cf.setMarketExplorer(marketExplorer);
+                df.setMarketExplorer(marketExplorer);
+
                 pager = (ViewPager)findViewById(R.id.pager);
                 pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
                 pager.setCurrentItem(0);
@@ -191,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
 //        cf.setMainActivity(this);
         cf.setMarketExplorer(marketExplorer);
         df.setMarketExplorer(marketExplorer);
+
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -200,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-//        this.marketnamelist = (List<String>)marketExplorer.getAllMarketList();
+        this.marketnamelist = (List<String>)marketExplorer.getMarkets_sort_by_distance();
         final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
 
         autoCompleteTextView.setAdapter(new ArrayAdapter<String>(this,

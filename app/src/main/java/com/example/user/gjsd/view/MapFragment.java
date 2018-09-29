@@ -115,6 +115,8 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Log.i("@@@","open");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         mapView = new MapView(Objects.requireNonNull(this.getActivity()));
@@ -200,6 +202,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void setMapMyLocation() {
         mapView.removePOIItem(centerPoiItem);
         mapView.setMapCenterPoint(gpsManager.getMyMapPoint(), true);
@@ -227,7 +230,8 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         centerPoiItem = new MapPOIItem();
         centerPoiItem.setItemName("centerPoiItem");
         centerPoiItem.setMapPoint(mapView.getMapCenterPoint());
-        centerPoiItem.setCustomImageResourceId(R.drawable.custom_marker_red);
+        centerPoiItem.setMarkerType(MapPOIItem.MarkerType.CustomImage);
+        centerPoiItem.setCustomImageResourceId(R.drawable.mypoint);
         mapView.addPOIItem(centerPoiItem);
     }
 
@@ -416,16 +420,21 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         boolean isMart = market.isMart();
         market.getName();
         market.getPrice();
-
+        int drawableId ;
         //마켓의 종류에 따라 다른 드로어블 부여함.
-        int drawableId = R.drawable.default_mart;
+        if(isMart){
+            drawableId = R.drawable.default_mart;
+        }else{
+            drawableId = R.drawable.default_market;
+        }
 
-        //시장인 경우만 앞에 구 제거하고 띄어쓰기 엎얘기
+        //앞에 구 제거해주기
         String[] namearr = mapPOIItem.getItemName().split(" ");
         String name = "";
         for(int i=1;i<namearr.length;i++)
             name += namearr[i];
-        int TextSize = 45;
+        //텍스트 사이즈
+        int TextSize = 30;
 
         //품목
         String item = "품목 : ";
@@ -439,7 +448,10 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         paint1.setStyle(Paint.Style.FILL);
         paint1.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/Roboto-Black.ttf"));
         //마트인경우 시장인 경우 나누기
+        if(isMart)
         paint1.setColor(Color.rgb(9,101,227));
+        else
+            paint1.setColor(Color.rgb(72,163,132 ));
         paint1.setTextSize(TextSize);
         paint1.setTextAlign(Paint.Align.LEFT);
 
@@ -451,9 +463,11 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         paint2.setTextSize(TextSize);
         paint2.setTextAlign(Paint.Align.LEFT);
 
+        //색 설정하기
+
         Canvas canvas = new Canvas(bm);
-        canvas.drawText(name,35 , 60, paint1);
-        canvas.drawText(item+price,35 , 120, paint2);
+        canvas.drawText(name,13 , 43, paint1);
+        canvas.drawText(item+price,13 , 80, paint2);
 
         return bm;
     }
