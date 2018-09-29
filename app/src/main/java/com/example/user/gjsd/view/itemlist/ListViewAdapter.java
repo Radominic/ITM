@@ -49,6 +49,10 @@ public class ListViewAdapter extends BaseAdapter {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             iconImageView.setBackground(new ShapeDrawable(new OvalShape()));
         }
+        if(Build.VERSION.SDK_INT >= 21) {
+            iconImageView.setClipToOutline(true);
+        }
+
 
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득

@@ -204,10 +204,11 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_toRightOf="@id/standard"
+                android:layout_marginTop="6dp"
                 android:background="@drawable/enter_button"/>
 
             <RelativeLayout
-                android:layout_width="300dp"
+                android:layout_width="260dp"
                 android:layout_height="80dp"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/standard">
@@ -224,6 +225,7 @@
                         android:layout_height="wrap_content"
                         android:scaleType="center"
                         app:fabSize="mini"
+                        app:backgroundTint="#dadada"
                         android:src="@drawable/click_button"
                         android:backgroundTint="#dadada"/>
 

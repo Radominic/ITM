@@ -5,6 +5,7 @@ public class DistanceViewItem {
     private String numberStr ;
     private String titleStr ;
     private String descStr ;
+    private String disStr ;
 
     public void setNumber(String number) {
         numberStr = number;
@@ -16,6 +17,10 @@ public class DistanceViewItem {
         descStr = desc ;
     }
 
+    public void setDisStr(String disStr) {
+        this.disStr = disStr;
+    }
+
     public String getNumber() {
         return this.numberStr ;
     }
@@ -24,5 +29,9 @@ public class DistanceViewItem {
     }
     public String getDesc() {
         return this.descStr ;
+    }
+
+    public String getDisStr() {
+        return disStr;
     }
 }

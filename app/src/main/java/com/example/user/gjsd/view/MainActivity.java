@@ -117,10 +117,25 @@ public class MainActivity extends AppCompatActivity {
 
         // 첫 번째 아이템 추가.
 
-       for(int i=0;i<item.length;i++){
-           adapter.addItem(ContextCompat.getDrawable(this, R.drawable.banana),
-                   item[i]) ;
-       }
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item1),item[0]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item2),item[1]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item3),item[2]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item4),item[3]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item5),item[4]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item6),item[5]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item7),item[6]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item8),item[7]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item9),item[8]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item10),item[9]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item11),item[10]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item12),item[11]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item13),item[12]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item14),item[13]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item15),item[14]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item16),item[15]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item17),item[16]) ;
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item18),item[17]) ;
+
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

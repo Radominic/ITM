@@ -31,7 +31,7 @@ public class distanceFragment extends ListFragment {
         setListAdapter(adapter);
         String in = getArguments().getString("itemName");
         for(int i=0;i<marketname.length;i++){
-            adapter.addItem((i+1)+"등",marketname[i],"거리정보");
+            adapter.addItem((i+1)+"등",marketname[i],in + " : " + "5000원","거리 : "+"000km");
         }
         return super.onCreateView(inflater,container,savedInstanceState);
     }
@@ -39,7 +39,7 @@ public class distanceFragment extends ListFragment {
     @Override
     public void onListItemClick (ListView l, View v, int position, long id) {
         // get TextView's Text.
-        CostViewItem item = (CostViewItem) l.getItemAtPosition(position) ;
+        DistanceViewItem item = (DistanceViewItem) l.getItemAtPosition(position) ;
         String marketName = item.getTitle();
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("marketName",item.getTitle());

@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.example.user.gjsd.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class DistanceViewAdapter extends BaseAdapter{
@@ -36,13 +38,14 @@ public class DistanceViewAdapter extends BaseAdapter{
         // "listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.costfragment, parent, false);
+            convertView = inflater.inflate(R.layout.distancefragment, parent, false);
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        TextView numberTextView = (TextView) convertView.findViewById(R.id.textView0);
-        TextView titleTextView = (TextView) convertView.findViewById(R.id.textView1) ;
-        TextView descTextView = (TextView) convertView.findViewById(R.id.textView2) ;
+        TextView numberTextView = (TextView) convertView.findViewById(R.id.textView00);
+        TextView titleTextView = (TextView) convertView.findViewById(R.id.textView11) ;
+        TextView descTextView = (TextView) convertView.findViewById(R.id.textView22) ;
+        TextView distTextView = (TextView) convertView.findViewById(R.id.textView33);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         DistanceViewItem distanceViewItem = distanceViewItemList.get(position);
@@ -51,6 +54,8 @@ public class DistanceViewAdapter extends BaseAdapter{
         numberTextView.setText(distanceViewItem.getNumber());
         titleTextView.setText(distanceViewItem.getTitle());
         descTextView.setText(distanceViewItem.getDesc());
+        distTextView.setText(distanceViewItem.getDisStr());
+
 
         return convertView;
     }
@@ -68,12 +73,13 @@ public class DistanceViewAdapter extends BaseAdapter{
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(String number, String title, String desc) {
+    public void addItem(String number, String title, String desc,String dist) {
         DistanceViewItem item = new DistanceViewItem();
 
         item.setNumber(number);
         item.setTitle(title);
         item.setDesc(desc);
+        item.setDisStr(dist);
 
         distanceViewItemList.add(item);
     }

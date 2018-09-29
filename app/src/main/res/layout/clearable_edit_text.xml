@@ -11,24 +11,25 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true">
                 <ImageView
-                    android:layout_width="300dp"
+                    android:layout_width="260dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/search_bar"/>
 
                 <AutoCompleteTextView
                     android:id="@+id/autoCompleteTextView"
-                    android:layout_width="300dp"
+                    android:layout_width="240dp"
                     android:layout_height="45dp"
                     android:layout_gravity="center"
                     android:hint=" 검색"
-                    android:completionThreshold="1" />
+                    android:completionThreshold="1"
+                    />
                 <Button
                     android:id="@+id/deletebutton"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="125dp"
+                    android:layout_marginLeft="115dp"
                     android:background="@drawable/image_clear"/>
         </FrameLayout>
 

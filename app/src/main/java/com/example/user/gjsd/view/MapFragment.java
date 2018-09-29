@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -416,27 +417,46 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         market.getPrice();
 
         //마켓의 종류에 따라 다른 드로어블 부여함.
-        int drawableId = R.drawable.custom_marker_red;
+        int drawableId = R.drawable.default_mart;
+
+        //시장인 경우만 앞에 구 제거하고 띄어쓰기 엎얘기
         String[] namearr = mapPOIItem.getItemName().split(" ");
         String name = "";
-        for (int i = 1; i < namearr.length; i++)
+        for(int i=1;i<namearr.length;i++)
             name += namearr[i];
-        int TextSize = 30;
+        int TextSize = 45;
+
+        //품목
+        String item = "품목 : ";
+        //가격 받아오기
+        String price = "5000";
 
         Bitmap bm = BitmapFactory.decodeResource(this.getActivity().getResources(), drawableId).copy(Bitmap.Config.ARGB_8888, true);
-        BitmapFactory.decodeResource(this.getActivity().getResources(), R.drawable.custom_marker_red);
+        BitmapFactory.decodeResource(this.getActivity().getResources(), R.drawable.default_mart);
 
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(TextSize);
-        paint.setTextAlign(Paint.Align.CENTER);
+        Paint paint1 = new Paint();
+        paint1.setStyle(Paint.Style.FILL);
+        paint1.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/Roboto-Black.ttf"));
+        //마트인경우 시장인 경우 나누기
+        paint1.setColor(Color.rgb(9,101,227));
+        paint1.setTextSize(TextSize);
+        paint1.setTextAlign(Paint.Align.LEFT);
+
+        //마트,시장 공통
+        Paint paint2 = new Paint();
+        paint2.setStyle(Paint.Style.FILL);
+        paint2.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/Roboto-Black.ttf"));
+        paint2.setColor(Color.rgb(244,169,29));
+        paint2.setTextSize(TextSize);
+        paint2.setTextAlign(Paint.Align.LEFT);
 
         Canvas canvas = new Canvas(bm);
-        canvas.drawText(name, bm.getWidth() / 2, bm.getHeight() / 2, paint);
+        canvas.drawText(name,35 , 60, paint1);
+        canvas.drawText(item+price,35 , 120, paint2);
 
         return bm;
     }
+
 
 
 }
