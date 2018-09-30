@@ -39,7 +39,7 @@ public class DetailActivity extends AppCompatActivity {
         ExpandableListView expandableListView = (ExpandableListView)findViewById(R.id.expandableview);
         final ArrayList<DetailItem> position = getData();
         //create and bind to adatper
-        DetailAdapter adapter = new DetailAdapter(this, position);
+        DetailAdapter adapter = new DetailAdapter(this, position,marketName,(MarketExplorer)intent.getSerializableExtra("marketExplorer"));
         expandableListView.setAdapter(adapter);
 
         //set onclick listener
@@ -50,10 +50,6 @@ public class DetailActivity extends AppCompatActivity {
                 return false;
             }
         });
-    }
-    private void setMarketExplorer(MarketExplorer marketExplorer){
-        this.marketExplorer = marketExplorer;
-
     }
 
     //add and get data for list

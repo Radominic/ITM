@@ -13,7 +13,9 @@ import com.example.user.gjsd.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Currency;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class CostViewAdapter extends BaseAdapter {
@@ -56,7 +58,7 @@ public class CostViewAdapter extends BaseAdapter {
         numberTextView.setText(""+(position+1));
         titleTextView.setText(costViewItem.getName());
         if(costViewItem.getMarket().getItem(c.getSelectedItem()) != null) {
-            descTextView.setText(costViewItem.getMarket().getItem(c.getSelectedItem()).getPrice());
+            descTextView.setText(c.getSelectedItem()+" : "+Currency.getInstance(Locale.KOREA).getSymbol()+costViewItem.getMarket().getItem(c.getSelectedItem()).getPrice());
         }else{
             descTextView.setText("품목없음");
         }

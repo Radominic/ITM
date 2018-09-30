@@ -58,7 +58,8 @@ public class costFragment extends ListFragment {
         CostViewItem item = (CostViewItem) l.getItemAtPosition(position) ;
         String marketName = item.getName();
         Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra("marketName",item.getName());
+        intent.putExtra("marketName", item.getName());
+        intent.putExtra("marketExplorer",marketExplorer);
         startActivity(intent);
 
 

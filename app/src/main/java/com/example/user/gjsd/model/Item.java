@@ -5,9 +5,9 @@ import java.util.Set;
 public class Item {
     String itemname;
 
-    public String getPrice() {
-        return price;
-    }
+//    public String getPrice() {
+//        return price;
+//    }
 
     public String getDifference() {
         return difference;
