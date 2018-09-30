@@ -20,9 +20,10 @@ public class CostViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<String> costMarketNameList = new ArrayList<String>() ;
     private Map<String, CostViewItem> costViewItems = Collections.synchronizedMap(new HashMap<String, CostViewItem>());
+    costFragment c;
     // ListViewAdapter의 생성자
-    public CostViewAdapter() {
-
+    public CostViewAdapter(costFragment c) {
+        this.c = c;
     }
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
