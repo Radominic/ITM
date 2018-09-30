@@ -86,7 +86,6 @@ public class Market{
     public void putItem(String itemname,String price, String difference){
         items.put(itemname, new Item(itemname,price,difference));
     }
-
     public Item getItem(String itemname){
         //못찾았을때 널인지 확인
         Item result = items.get(itemname);

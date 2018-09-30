@@ -111,7 +111,7 @@ public class MarketExplorer {
         markets.put("은평구 이마트 은평점", new Market(MapPoint.mapPointWithGeoCoord(37.6008414, 126.9205342), true));
         markets.put("중구 롯데백화점", new Market(MapPoint.mapPointWithGeoCoord(37.5649053, 126.98121879999997), true));
         markets.put("중구 이마트 청계점", new Market(MapPoint.mapPointWithGeoCoord(37.5709405, 127.0210984), true));
-        markets.put("용산구 농협 하나로마트 용산점", new Market(MapPoint.mapPointWithGeoCoord(37.5331778, 126.9647535), true));
+        markets.put("용산구 농협 하나로마트", new Market(MapPoint.mapPointWithGeoCoord(37.5331778, 126.9647535), true));
         markets.put("강북구 롯데백화점 미아점", new Market(MapPoint.mapPointWithGeoCoord(37.6145947, 127.0305364), true));
         markets.put("성동구 이마트 왕십리점", new Market(MapPoint.mapPointWithGeoCoord(37.5615131, 127.0384279), true));
         markets.put("성동구 이마트 성수점", new Market(MapPoint.mapPointWithGeoCoord(37.5399353, 127.0535218), true));

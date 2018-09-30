@@ -455,6 +455,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
             name += namearr[i];
         //텍스트 사이즈
         int TextSize = 30;
+        int TextSizei = 28;
 
         Bitmap bm = BitmapFactory.decodeResource(this.getActivity().getResources(), drawableId).copy(Bitmap.Config.ARGB_8888, true);
 
@@ -474,7 +475,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         paint2.setStyle(Paint.Style.FILL);
         paint2.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),"fonts/Roboto-Black.ttf"));
         paint2.setColor(Color.rgb(244,169,29));
-        paint2.setTextSize(TextSize);
+        paint2.setTextSize(TextSizei);
         paint2.setTextAlign(Paint.Align.LEFT);
 
         //문자 생성
@@ -493,7 +494,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 
         //색 설정하기
         Canvas canvas = new Canvas(bm);
-        canvas.drawText(name,13 , 43, paint1);
+        canvas.drawText(name,10 , 43, paint1);
         canvas.drawText(text,13 , 80, paint2);
 
         return bm;

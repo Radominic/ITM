@@ -170,14 +170,10 @@ public class MainActivity extends AppCompatActivity {
                 pageadapter.notifyDataSetChanged();
 //                mf.setArguments(bundle);
                 marketExplorer.updateMarkets_sort_by_price(selectedItem);
-                drawer1.animateClose();
                 fab.show();
 
-
-
-
                 mf.refresh();
-                drawer1.animateClose();
+                drawer1.close();
             }
         }) ;
 
