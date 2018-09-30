@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,7 +30,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class MarketExplorer {
+@SuppressWarnings("serial")
+public class MarketExplorer implements Serializable{
     private Map<String, Market> markets;
     private ArrayList<String> markets_sort_by_distance;
     private ArrayList<String> markets_sort_by_price;
@@ -69,12 +71,12 @@ public class MarketExplorer {
         markets.put("양천구 신영시장", new Market(MapPoint.mapPointWithGeoCoord(37.5330235, 126.8360192), false));
         markets.put("구로구 남구로시장", new Market(MapPoint.mapPointWithGeoCoord(37.4897303, 126.8864836), false));
         markets.put("구로구 고척근린시장", new Market(MapPoint.mapPointWithGeoCoord(37.5024083, 126.8505529), false));
-        markets.put("동대문구 현대시장", new Market(MapPoint.mapPointWithGeoCoord(37.5669542, 127.0593016), false));
+        markets.put("금천구 현대시장", new Market(MapPoint.mapPointWithGeoCoord(37.4597989, 126.90433069999995), false));
         markets.put("금천구 남문시장", new Market(MapPoint.mapPointWithGeoCoord(37.4737845, 126.9004226), false));
         markets.put("마포구 망원시장", new Market(MapPoint.mapPointWithGeoCoord(37.5562398, 126.9056321), false));
         markets.put("마포구 마포농수산물시장", new Market(MapPoint.mapPointWithGeoCoord(37.5651843, 126.8984946), false));
         markets.put("동작구 남성시장", new Market(MapPoint.mapPointWithGeoCoord(37.4894036, 126.9807712), false));
-        markets.put("덕양구 원당종합시장", new Market(MapPoint.mapPointWithGeoCoord(37.6560447, 126.8373471), false));
+        markets.put("관악구 원당종합시장", new Market(MapPoint.mapPointWithGeoCoord(37.4748148, 126.96562949999998), false));
         markets.put("관악구 신원시장", new Market(MapPoint.mapPointWithGeoCoord(37.4835132, 126.9258997), false));
         markets.put("송파구 마천중앙시장", new Market(MapPoint.mapPointWithGeoCoord(37.4980997, 127.1507085), false));
         markets.put("송파구 방이시장", new Market(MapPoint.mapPointWithGeoCoord(37.5103559, 127.1175756), false));
@@ -87,7 +89,7 @@ public class MarketExplorer {
         markets.put("강서구 화곡본동시장", new Market(MapPoint.mapPointWithGeoCoord(37.5428618, 126.8441381), false));
         markets.put("강남구 청담삼익시장", new Market(MapPoint.mapPointWithGeoCoord(37.5224855, 127.0576847), false));
         markets.put("강남구 도곡시장", new Market(MapPoint.mapPointWithGeoCoord(37.4954841, 127.0333574), false));
-        markets.put("남구 방림시장", new Market(MapPoint.mapPointWithGeoCoord(37.483325, 126.99624500000004), false));
+        markets.put("서초구 방림시장", new Market(MapPoint.mapPointWithGeoCoord(37.486042, 126.99051080000004), false));
         markets.put("은평구 대조시장", new Market(MapPoint.mapPointWithGeoCoord(37.6098316, 126.9276087), false));
         markets.put("강북구 숭인시장", new Market(MapPoint.mapPointWithGeoCoord(37.6131571, 127.0294686), false));
         markets.put("중구 신세계백화점", new Market(MapPoint.mapPointWithGeoCoord(37.5609164, 126.9809698), true));
@@ -121,14 +123,14 @@ public class MarketExplorer {
         markets.put("노원구 롯데백화점 노원점", new Market(MapPoint.mapPointWithGeoCoord(37.6550434, 127.0610971), true));
         markets.put("노원구 홈플러스 중계점", new Market(MapPoint.mapPointWithGeoCoord(37.6399096, 127.0686298), true));
         markets.put("구로구 이마트 신도림점", new Market(MapPoint.mapPointWithGeoCoord(37.5070488, 126.890246), true));
-        markets.put("구로구 애경백화점 구로점", new Market(MapPoint.mapPointWithGeoCoord(37.2656796, 127.0002404), true));
+        markets.put("구로구 애경백화점", new Market(MapPoint.mapPointWithGeoCoord(37.2656796, 127.0002404), true));
         markets.put("금천구 홈플러스 시흥점", new Market(MapPoint.mapPointWithGeoCoord(37.4518936, 126.9007885), true));
         markets.put("마포구 그랜드마트 신촌점", new Market(MapPoint.mapPointWithGeoCoord(37.5550041, 126.9359849), true));
         markets.put("마포구 홈플러스 월드컵점", new Market(MapPoint.mapPointWithGeoCoord(37.5699509, 126.899029), true));
         markets.put("동작구 태평백화점", new Market(MapPoint.mapPointWithGeoCoord(37.4869128, 126.9816608), true));
         markets.put("영등포구 롯데백화점 영등포점", new Market(MapPoint.mapPointWithGeoCoord(37.5156838, 126.9076607), true));
         markets.put("관악구 롯데백화점 관악점", new Market(MapPoint.mapPointWithGeoCoord(37.4904913, 126.9249815), true));
-        markets.put("덕양구 세이브 마트", new Market(MapPoint.mapPointWithGeoCoord(37.7105685, 126.9056044), true));
+        markets.put("관악구 세이브 마트", new Market(MapPoint.mapPointWithGeoCoord(37.474277, 126.91764330000001), true));
         markets.put("서초구 하나로클럽 양재점", new Market(MapPoint.mapPointWithGeoCoord(37.4634962, 127.0435314), true));
         markets.put("송파구 롯데백화점 잠실점", new Market(MapPoint.mapPointWithGeoCoord(37.5110794, 127.0981638), true));
         markets.put("송파구 홈플러스 잠실점", new Market(MapPoint.mapPointWithGeoCoord(37.5162594, 127.1030345), true));
@@ -138,7 +140,7 @@ public class MarketExplorer {
         markets.put("강북구 하나로클럽 미아점", new Market(MapPoint.mapPointWithGeoCoord(37.6215636, 127.0265155), true));
         markets.put("양천구 이마트 목동점", new Market(MapPoint.mapPointWithGeoCoord(37.52609, 126.871084), true));
         markets.put("서초구 신세계백화점 강남점", new Market(MapPoint.mapPointWithGeoCoord(37.5049178, 127.0032131), true));
-        markets.put("노원구 롯데슈퍼", new Market(MapPoint.mapPointWithGeoCoord(37.6226316, 127.0795041), true));
+        markets.put("서대문구 롯데슈퍼", new Market(MapPoint.mapPointWithGeoCoord(37.585199, 126.94744400000002), true));
         markets.put("금천구 홈플러스 독산점", new Market(MapPoint.mapPointWithGeoCoord(37.4686645, 126.8968827), true));
         markets.put("양천구 홈플러스 목동점", new Market(MapPoint.mapPointWithGeoCoord(37.5302268, 126.8733084), true));
 
@@ -146,13 +148,72 @@ public class MarketExplorer {
         Set<String> keys = markets.keySet();
         for (String key : keys) {
             markets.get(key).setName(key);
+            getItemInfo(key);
         }
 
         //default sort
 //        markets_sort_by_price = new ArrayList<String>(markets.keySet());
         markets_sort_by_distance = new ArrayList<String>(markets.keySet());
-
+        markets_sort_by_price = new ArrayList<String>(markets.keySet());
     }
+
+
+    public void getItemInfo(final String marketname){
+        retrofit = new Retrofit.Builder()
+                .baseUrl(APIService.URL).build();
+//                .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
+//                .build();
+        service = retrofit.create(APIService.class);
+        Call<ResponseBody> call = service.get_all_goods(marketname.replaceAll(" ", ""));
+        Log.d("debug_getItemInfoOfMarket", marketname.replaceAll(" ", ""));
+        call.enqueue(new Callback<ResponseBody>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+//                    String price = parsePrice(response.body().string());
+//                    Log.d("debug_response_price_json",response.body().string());
+//                    markets.get(name).setPrice(price);
+                    JSONArray post = new JSONArray(response.body().string());
+                    for(int i = 0;i<post.length();i++){
+                        String itemname = post.getJSONObject(i).getString("goods").toString();
+                        String price=post.getJSONObject(i).getString("cost").toString();
+                        String difference = post.getJSONObject(i).getString("difference").toString();
+                        markets.get(marketname).putItem(itemname,price,difference);
+                    }
+
+                    Log.v("getItemInfo_success", "_______________________");
+//                    markets.get(name).setPrice(price);
+//                    Log.v("what the fuck", name+":"+price);
+//                    mapFragment.setPriceOnPOIItem(poiItem, price);
+                } catch (Exception e) {
+                    Log.v("getItemInfo_error1", marketname+":"+e.toString());
+//                    markets.get(name).setPrice("품목없음");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                markets.get(name).setPrice("품목없음");
+                Log.v("getItemInfo_error2","true");
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //getter and setter
     public MapPoint getMarketMapPoint(String name) {
@@ -305,15 +366,18 @@ public class MarketExplorer {
         //구현할것
         //모든 시장의 해당 가격을 가져오고 정렬 및 셋팅
         //없으면 null
+        Log.d("update_market_price","------------");
         Set<String> names = markets.keySet();
         for (String name : names) {
             getPrice(name, selectedItem);
         }
 
         mapFragment.updateAllMarkersOnMap();
+//        mapFragment.refresh();
     }
 
     public void updateMarkets_sort_by_price(String selectedItem) {
+        Log.d("update_sort_by_price","------------");
         retrofit = new Retrofit.Builder()
                 .baseUrl(APIService.URL).build();
 //                .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
@@ -332,18 +396,33 @@ public class MarketExplorer {
 //                    JsonArray array = new JsonArray().get(response.body().toString()).getAsJsonArray();
 //                    markets.get(name).setPrice(post.get("cost").toString());
                     JSONArray post = new JSONArray(response.body().string());
-                    ArrayList<String> tmp = new ArrayList<String>();
+
+                    breakOut:
                     for(int i = 0; i<post.getJSONArray(0).length();i++){
                         String name = post.getJSONArray(0).getJSONObject(i).getString("mart_name").toString();
-                        tmp.add(name);
+//                        int targetIndex = 0;
+                        boolean tmp;
+                        for(int j = i;j<post.getJSONArray(0).length();j++){
+                            tmp = false;
+                            if(markets_sort_by_price.get(j).replaceAll(" ","").equals(name)){
+                                Collections.swap(markets_sort_by_price,j,i);
+                                tmp = true;
+                                break;
+                            }
+                        }
+                        if(tmp = false) Log.v("no_match", name);
+
+
+//                        = markets_sort_by_price.indexOf(name.));
+
                         Log.v("sorted_market_name", name);
                     }
-                    markets_sort_by_price = tmp;
+                    mapFragment.updateCostFragment();
 //                    String price=post.getJSONObject(0).getString("cost").toString();
 //                    markets.get(name).setPrice(price);
 //                    Log.v("what the fuck", name+":"+price);
                 } catch (Exception e) {
-                    Log.v("debug_error", "getMarketsSortByPrice_error");
+                    Log.v("debug_error", "getMarketsSortByPrice_error"+e.toString());
 
                 }
             }

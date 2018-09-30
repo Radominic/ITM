@@ -1,7 +1,5 @@
 package com.example.user.gjsd.view;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,7 +24,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
@@ -38,7 +35,6 @@ import com.example.user.gjsd.modules.GPSManager;
 import com.example.user.gjsd.modules.MarketExplorer;
 
 import java.util.List;
-
 
 public class MainActivity extends AppCompatActivity {
     SlidingDrawer drawer1,drawer2;
@@ -55,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     MarketExplorer marketExplorer;
     Button bt1,bt2;
     pagerAdapter  pageadapter ;
-    Context context;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -80,11 +75,13 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_dashboard:
                     if(!drawer1.isOpened()&&!drawer2.isOpened()) {
                         df.updateMarkets_sort_by_distance();
+                        cf.applyMarkets_sort_by_price();
                         drawer2.animateOpen(); fab.hide();
                     }else if(drawer2.isOpened()){
                         drawer2.animateClose(); fab.show();
                     }else if(drawer1.isOpened()){
                         df.updateMarkets_sort_by_distance();
+                        cf.applyMarkets_sort_by_price();
                         drawer2.open();
                         drawer1.close();
                     }
@@ -105,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-
-        context = this;
         drawer1 = (SlidingDrawer) findViewById(R.id.slide1);
         drawer2 = (SlidingDrawer)findViewById(R.id.slide2);
         TextView tv1 = (TextView)findViewById(R.id.title1);
@@ -173,17 +168,19 @@ public class MainActivity extends AppCompatActivity {
 //                pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
 //                pager.setCurrentItem(0);
                 pageadapter.notifyDataSetChanged();
-                mf.setArguments(bundle);
-                mf.updateAllMarkersOnMap();
+//                mf.setArguments(bundle);
                 mf.updatePrice();
+                marketExplorer.updateMarkets_sort_by_price(selectedItem);
                 drawer1.animateClose();
                 fab.show();
 
 
 
 
+                mf.refresh();
             }
         }) ;
+
 
         //mf가 여기
 
@@ -213,6 +210,9 @@ public class MainActivity extends AppCompatActivity {
         cf.setMainActivity(this);
         df.setMainActivity(this);
         mf.setArguments(bundle);
+
+        //init sort_by_price
+        marketExplorer.updateMarkets_sort_by_price(selectedItem);
 
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener(){

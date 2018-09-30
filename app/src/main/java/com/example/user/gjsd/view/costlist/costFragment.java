@@ -32,12 +32,7 @@ public class costFragment extends ListFragment {
 
         adapter = new CostViewAdapter(this);
         setListAdapter(adapter);
-//        String in = getArguments().getString("itemName");
-
-//        ArrayList<String> marketname = marketExplorer.getMarkets_sort_by_price();
-        updateMarkets_sort_by_price();
-//        String[] marketname = new String[markets.size()];
-//        marketname = markets.toArray(marketname);
+        applyMarkets_sort_by_price();
 
         for (String name : markets_sort_by_price) {
             adapter.addItem(new CostViewItem(name,marketExplorer.getMarket(name)));
@@ -52,7 +47,7 @@ public class costFragment extends ListFragment {
     }
 
 
-    public void updateMarkets_sort_by_price(){
+    public void applyMarkets_sort_by_price(){
         this.markets_sort_by_price = marketExplorer.getMarkets_sort_by_price();
         adapter.setOrder(markets_sort_by_price);
         adapter.notifyDataSetChanged();

@@ -34,4 +34,10 @@ public interface APIService {
             @Field("goods") String goods
     );
 
+    @FormUrlEncoded
+    @POST("all_goods.php")
+    Call<ResponseBody> get_all_goods(
+            @Field("market_name") String market_name
+    );
+
 }
