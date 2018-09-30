@@ -18,6 +18,7 @@ public class SplashActivity extends Activity {
             if(!isPermission()){
                 finish();
             }
+            //marketExplorer 생성
         }catch (InterruptedException e){
             e.printStackTrace();
         }

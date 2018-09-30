@@ -3,6 +3,10 @@ package com.example.user.gjsd.model;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Market {
 //    public MapPOIItem poiItem;
     private String name;//fix at constructor
@@ -10,6 +14,8 @@ public class Market {
     private double lng;//fix at constructor
     private MapPoint mapPoint;//fix at constructor
     private boolean isMart;//fix at constructor
+
+    private Map<String, Item> items = Collections.synchronizedMap(new HashMap<String, Item>());;
 
 
     //variable
@@ -24,7 +30,6 @@ public class Market {
     public Market(MapPoint mapPoint ,boolean isMart){
         this.mapPoint = mapPoint;
         this.isMart = isMart;
-
 
     }
 //    public void setPoiItem(MapPOIItem poiItem){
@@ -74,5 +79,20 @@ public class Market {
 
     public void setDifference(String difference){
         this.difference = difference;
+    }
+
+    public void putItem(String itemname,String price, String difference){
+        items.put(itemname, new Item(itemname,price,difference));
+    }
+
+    public Item getItem(String itemname){
+        //못찾았을때 널인지 확인
+        Item result = items.get(itemname);
+        return result;
+//        if(result != null){
+//            return result;
+//        }else{
+//            return
+//        }
     }
 }
