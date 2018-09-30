@@ -245,6 +245,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         centerPoiItem.setMapPoint(mapView.getMapCenterPoint());
         centerPoiItem.setMarkerType(MapPOIItem.MarkerType.CustomImage);
         centerPoiItem.setCustomImageResourceId(R.drawable.mypoint);
+        centerPoiItem.setShowCalloutBalloonOnTouch(false);
         mapView.addPOIItem(centerPoiItem);
     }
 
@@ -503,6 +504,8 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     public void refresh(){
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.detach(this).attach(this).commit();
+//        mapView.invalidate();
+
     }
 
 
