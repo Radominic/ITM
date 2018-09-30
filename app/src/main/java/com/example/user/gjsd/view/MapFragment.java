@@ -168,7 +168,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         Log.d("debug_my_location",""+gpsManager.getMyMapPoint().getMapPointGeoCoord().latitude+","+gpsManager.getMyMapPoint().getMapPointGeoCoord().longitude);
         createCenterMarker();
         marketExplorer.updateMarketDistance(centerPoiItem.getMapPoint());
-        marketExplorer.updateMarkets_sort_by_price(mainActivity.getSelectedItemName());
+//        marketExplorer.updateMarkets_sort_by_price(mainActivity.getSelectedItemName());
 
         mapView.setZoomLevel(4,false);
 //        setZoomIncludeN(3);

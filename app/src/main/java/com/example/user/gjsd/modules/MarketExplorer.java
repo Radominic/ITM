@@ -1,6 +1,8 @@
 package com.example.user.gjsd.modules;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
@@ -35,6 +37,7 @@ public class MarketExplorer {
     private Map<String, Market> markets;
     private ArrayList<String> markets_sort_by_distance;
     private ArrayList<String> markets_sort_by_price;
+    AddressConverter addressConverter;
     MapFragment mapFragment;
 
     private static MarketExplorer marketExplorer;
@@ -145,15 +148,17 @@ public class MarketExplorer {
         markets.put("금천구 홈플러스 독산점", new Market(MapPoint.mapPointWithGeoCoord(37.4686645, 126.8968827), true));
         markets.put("양천구 홈플러스 목동점", new Market(MapPoint.mapPointWithGeoCoord(37.5302268, 126.8733084), true));
 
+        addressConverter = new AddressConverter(this);
+
         //setNameToEachMarket
         Set<String> keys = markets.keySet();
         for (String key : keys) {
             markets.get(key).setName(key);
             getItemInfo(key);
+            addressConverter.getAddress(markets.get(key));
         }
 
         //default sort
-//        markets_sort_by_price = new ArrayList<String>(markets.keySet());
         markets_sort_by_distance = new ArrayList<String>(markets.keySet());
         markets_sort_by_price = new ArrayList<String>(markets.keySet());
 
@@ -164,8 +169,6 @@ public class MarketExplorer {
     public void getItemInfo(final String marketname){
         retrofit = new Retrofit.Builder()
                 .baseUrl(APIService.URL).build();
-//                .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
-//                .build();
         service = retrofit.create(APIService.class);
         Call<ResponseBody> call = service.get_all_goods(marketname.replaceAll(" ", ""));
         Log.d("debug_getItemInfoOfMarket", marketname.replaceAll(" ", ""));
@@ -174,34 +177,27 @@ public class MarketExplorer {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-//                    String price = parsePrice(response.body().string());
-//                    Log.d("debug_response_price_json",response.body().string());
-//                    markets.get(name).setPrice(price);
                     JSONArray post = new JSONArray(response.body().string());
                     markets.get(marketname).setUpdateDate(post.getJSONObject(0).getString("time").toString());
                     for(int i = 0;i<post.length();i++){
                         String tmp = post.getJSONObject(i).getString("goods").toString();
                         Log.d("getItemInfo",tmp);
                         String itemname = tmp.split("\\(")[0];
-                        Log.d("getItemInfo_parced",itemname);
+                        Log.d("getItemInfo_parced",itemname+">"+marketname);
+                        if(itemname.equals("냉동참조기"))continue;
                         String price=post.getJSONObject(i).getString("cost").toString();
                         String difference = post.getJSONObject(i).getString("difference").toString();
                         markets.get(marketname).putItem(itemname,price,difference);
                     }
 
                     Log.v("getItemInfo_success", "_______________________");
-//                    markets.get(name).setPrice(price);
-//                    Log.v("what the fuck", name+":"+price);
-//                    mapFragment.setPriceOnPOIItem(poiItem, price);
                 } catch (Exception e) {
                     Log.v("getItemInfo_error1", marketname+":"+e.toString());
-//                    markets.get(name).setPrice("품목없음");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                markets.get(name).setPrice("품목없음");
                 Log.v("getItemInfo_error2","true");
             }
         });
@@ -236,13 +232,7 @@ public class MarketExplorer {
         return markets_sort_by_distance;
     }
 
-    public ArrayList<String> getMarkets_sort_by_price(){
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return markets_sort_by_price;}
+    public ArrayList<String> getMarkets_sort_by_price(){return markets_sort_by_price;}
 
 
 
@@ -328,41 +318,6 @@ public class MarketExplorer {
         return service;
     }
 
-//    //시장이름과 품목으로 가격정보를 가져온다
-//    public void getPrice(final String name, String goods) {
-//        retrofit = new Retrofit.Builder()
-//                .baseUrl(APIService.URL).build();
-////                .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
-////                .build();
-//        service = retrofit.create(APIService.class);
-//        Call<ResponseBody> call = service.get_name_goods(goods, name.replaceAll(" ", ""));
-//        Log.d("debug_getPriceOfMarket", goods + "," + name.replaceAll(" ", ""));
-//        call.enqueue(new Callback<ResponseBody>() {
-//            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-//            @Override
-//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                try {
-////                    String price = parsePrice(response.body().string());
-////                    Log.d("debug_response_price_json",response.body().string());
-////                    markets.get(name).setPrice(price);
-//                    JSONArray post = new JSONArray(response.body().string());
-//                    String price=post.getJSONObject(0).getString("cost").toString();
-//                    markets.get(name).setPrice(price);
-////                    Log.v("what the fuck", name+":"+price);
-////                    mapFragment.setPriceOnPOIItem(poiItem, price);
-//                } catch (Exception e) {
-//                    Log.v("debug_error_getPrice", e.toString());
-//                    markets.get(name).setPrice("품목없음");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                markets.get(name).setPrice("품목없음");
-//            }
-//        });
-//    }
-
     private String parsePrice(String s) {
         JSONArray jsonArray = null;
         try {
@@ -375,26 +330,10 @@ public class MarketExplorer {
         return "품목없음";
     }
 
-//    public void updateMarketPrice(String selectedItem) {
-//        //구현할것
-//        //모든 시장의 해당 가격을 가져오고 정렬 및 셋팅
-//        //없으면 null
-//        Log.d("update_market_price","------------");
-//        Set<String> names = markets.keySet();
-//        for (String name : names) {
-//            getPrice(name, selectedItem);
-//        }
-//
-//        mapFragment.updateAllMarkersOnMap();
-////        mapFragment.refresh();
-//    }
-
     public void updateMarkets_sort_by_price(String selectedItem) {
         Log.d("update_sort_by_price","------------");
         retrofit = new Retrofit.Builder()
                 .baseUrl(APIService.URL).build();
-//                .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
-//                .build();
         service = retrofit.create(APIService.class);
         Call<ResponseBody> call = service.get_ascending_sort(selectedItem);
         Log.d("debug_getPriceOfMarket", selectedItem);
@@ -403,18 +342,10 @@ public class MarketExplorer {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-//                    Log.v("pricelist_response", response.body().string());
-//                    ArrayList<String> sortedList = parsePriceList(response.body().string());
-//                    markets_sort_by_price = sortedList;
-//                    JsonArray array = new JsonArray().get(response.body().toString()).getAsJsonArray();
-//                    markets.get(name).setPrice(post.get("cost").toString());
                     JSONArray post = new JSONArray(response.body().string());
                     breakOut:
                     for(int i = 0; i<post.getJSONArray(0).length();i++){
-
                         String name = post.getJSONArray(0).getJSONObject(i).getString("mart_name").toString();
-
-//                        int targetIndex = 0;
                         boolean tmp;
                         for(int j = i;j<post.getJSONArray(0).length();j++){
                             tmp = false;
@@ -429,15 +360,11 @@ public class MarketExplorer {
 
 //                        = markets_sort_by_price.indexOf(name.));
 
-                        Log.v("sorted_market_name", name);
+                        Log.v("sorted_market_name", name+"/"+markets_sort_by_price.get(i));
                     }
                     mapFragment.updateCostFragment();
-//                    String price=post.getJSONObject(0).getString("cost").toString();
-//                    markets.get(name).setPrice(price);
-//                    Log.v("what the fuck", name+":"+price);
                 } catch (Exception e) {
                     Log.v("debug_error", "getMarketsSortByPrice_error"+e.toString());
-
                 }
             }
 

@@ -9,23 +9,34 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class Market{
-//    public MapPOIItem poiItem;
+public class Market {
+    //    public MapPOIItem poiItem;
     private String name;//fix at constructor
     private double lat;//fix at constructor
     private double lng;//fix at constructor
     private MapPoint mapPoint;//fix at constructor
+    private String detailAddress;
     private boolean isMart;//fix at constructor
 
     public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
     }
-    public String getUpdateDate(){
+
+    public void setDetailAddress(String detailAddress) {
+        this.detailAddress = detailAddress;
+    }
+
+    public String getDetailAddress() {
+        return this.detailAddress;
+    }
+
+    public String getUpdateDate() {
         return updateDate;
     }
 
     private String updateDate;
-    private Map<String, Item> items = Collections.synchronizedMap(new HashMap<String, Item>());;
+    private Map<String, Item> items = Collections.synchronizedMap(new HashMap<String, Item>());
+    ;
 
 
     //variable
@@ -37,7 +48,7 @@ public class Market{
 //        return poiItem;
 //    }
 
-    public Market(MapPoint mapPoint ,boolean isMart){
+    public Market(MapPoint mapPoint, boolean isMart) {
         this.mapPoint = mapPoint;
         this.isMart = isMart;
 
@@ -46,7 +57,7 @@ public class Market{
 //        this.poiItem = poiItem;
 //    }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -87,12 +98,12 @@ public class Market{
         this.distance = distance;
     }
 
-    public void setDifference(String difference){
+    public void setDifference(String difference) {
         this.difference = difference;
     }
 
-    public void putItem(String itemname,String price, String difference){
-        items.put(itemname, new Item(itemname,price,difference));
+    public void putItem(String itemname, String price, String difference) {
+        items.put(itemname, new Item(itemname, price, difference));
     }
     public Item getItem(String itemname){
         //못찾았을때 널인지 확인
@@ -105,7 +116,7 @@ public class Market{
 //        }
     }
 
-    public Set<String> allItems(){
+    public Set<String> allItems() {
         return items.keySet();
     }
 }

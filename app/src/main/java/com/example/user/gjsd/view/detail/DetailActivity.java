@@ -1,17 +1,20 @@
 package com.example.user.gjsd.view.detail;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.gjsd.R;
+import com.example.user.gjsd.modules.GPSManager;
 import com.example.user.gjsd.modules.MarketExplorer;
 
 import java.util.ArrayList;
@@ -72,6 +75,23 @@ public class DetailActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Toast.makeText(getApplicationContext(), detailItemList.get(groupPosition).diffrence, Toast.LENGTH_LONG).show();
                 return false;
+            }
+        });
+
+        Button goDaumAppButton = findViewById(R.id.goSearchButton);
+        final GPSManager gpsManager = new GPSManager(this);
+        goDaumAppButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String mylat = ""+gpsManager.getMyMapPoint().getMapPointGeoCoord().latitude;
+                String mylng = ""+gpsManager.getMyMapPoint().getMapPointGeoCoord().longitude;
+                String destLat = ""+marketExplorer.getMarket(marketName).getMapPoint().getMapPointGeoCoord().latitude;
+                String destLng = ""+marketExplorer.getMarket(marketName).getMapPoint().getMapPointGeoCoord().longitude;
+
+//                String url ="https://daummaps://route?sp="+mylat+","+mylng+"&ep="+destLat+","+destLng+"&by=CAR";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:"+ destLat+","+ destLng+"?q="+marketName));
+                startActivity(intent);
             }
         });
     }
