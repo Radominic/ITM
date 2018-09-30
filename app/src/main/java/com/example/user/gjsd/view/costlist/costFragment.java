@@ -3,6 +3,7 @@ package com.example.user.gjsd.view.costlist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class costFragment extends ListFragment {
         this.markets_sort_by_price = marketExplorer.getMarkets_sort_by_price();
         adapter.setOrder(markets_sort_by_price);
         adapter.notifyDataSetChanged();
+        Log.d("sort_by_price","complete");
     }
     @Override
     public void onListItemClick (ListView l, View v, int position, long id) {
@@ -60,8 +62,6 @@ public class costFragment extends ListFragment {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("marketName", item.getName());
         startActivity(intent);
-
-
 
         // TODO : use item data.
     }

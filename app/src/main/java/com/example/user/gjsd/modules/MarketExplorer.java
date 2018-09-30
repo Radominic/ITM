@@ -183,7 +183,8 @@ public class MarketExplorer {
                         String tmp = post.getJSONObject(i).getString("goods").toString();
                         Log.d("getItemInfo",tmp);
                         String itemname = tmp.split("\\(")[0];
-                        Log.d("getItemInfo_parced",itemname);
+                        Log.d("getItemInfo_parced",itemname+">"+marketname);
+                        if(itemname.equals("냉동참조기"))continue;
                         String price=post.getJSONObject(i).getString("cost").toString();
                         String difference = post.getJSONObject(i).getString("difference").toString();
                         markets.get(marketname).putItem(itemname,price,difference);
@@ -365,7 +366,6 @@ public class MarketExplorer {
                     mapFragment.updateCostFragment();
                 } catch (Exception e) {
                     Log.v("debug_error", "getMarketsSortByPrice_error"+e.toString());
-
                 }
             }
 

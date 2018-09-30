@@ -75,13 +75,13 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_dashboard:
                     if(!drawer1.isOpened()&&!drawer2.isOpened()) {
                         df.updateMarkets_sort_by_distance();
-                        cf.applyMarkets_sort_by_price();
+//                        cf.applyMarkets_sort_by_price();
                         drawer2.animateOpen(); fab.hide();
                     }else if(drawer2.isOpened()){
                         drawer2.animateClose(); fab.show();
                     }else if(drawer1.isOpened()){
                         df.updateMarkets_sort_by_distance();
-                        cf.applyMarkets_sort_by_price();
+//                        cf.applyMarkets_sort_by_price();
                         drawer2.open();
                         drawer1.close();
                     }
