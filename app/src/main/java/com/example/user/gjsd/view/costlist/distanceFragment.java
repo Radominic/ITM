@@ -44,11 +44,9 @@ public class distanceFragment extends ListFragment {
         adapter = new DistanceViewAdapter();
         setListAdapter(adapter);
         updateMarkets_sort_by_distance();
-//        String[] marketname = new String[markets.size()];
-//        marketname = markets.toArray(marketname);
 
-        //리스트에 저장
-        for (String name : markets_sort_by_distance) {
+
+        for (String name : marketExplorer.getMarkets_sort_by_distance()) {
             adapter.addItem(new DistanceViewItem(name, marketExplorer.getMarket(name)));
         }
         adapter.setOrder(markets_sort_by_distance);

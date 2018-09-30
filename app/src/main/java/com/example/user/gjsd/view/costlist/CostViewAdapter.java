@@ -1,6 +1,7 @@
 package com.example.user.gjsd.view.costlist;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,9 +50,9 @@ public class CostViewAdapter extends BaseAdapter {
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         CostViewItem costViewItem = costViewItems.get(costMarketNameList.get(position));
-
+        if(costViewItem==null) Log.d("@@@","s");
         // 아이템 내 각 위젯에 데이터 반영
-        numberTextView.setText(position);
+        numberTextView.setText(""+(position+1));
         titleTextView.setText(costViewItem.getName());
         descTextView.setText(costViewItem.getMarket().getPrice());
 
@@ -82,14 +83,6 @@ public class CostViewAdapter extends BaseAdapter {
 //    }
 
     public void addItem(CostViewItem item) {
-        //String number, String title, String desc,String dist
-//        DistanceViewItem item = new DistanceViewItem();
-//
-//        item.setNumber(number);
-//        item.setTitle(title);
-//        item.setDesc(desc);
-//        item.setDisStr(dist);
-
         costViewItems.put(item.getName(),item);
     }
 
@@ -102,4 +95,5 @@ public class CostViewAdapter extends BaseAdapter {
         super.notifyDataSetChanged();
 
     }
+
 }

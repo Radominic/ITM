@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,6 +86,10 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         this.marketExplorer = marketExplorer;
     }
 
+    public MainActivity getMainActivity() {
+        return mainActivity;
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -143,13 +148,13 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         initMarker();
 //        updateAllMarkersOnMap();
         marketExplorer.updateMarketPrice(mainActivity.selectedItem);
-        mainActivity.cf.updateMarkets_sort_by_price();
+//        mainActivity.cf.updateMarkets_sort_by_price();
         mainActivity.df.updateMarkets_sort_by_distance();
 
     }
 
     private void initMarker() {
-
+        Log.d("update_initMarker","------------");
         ArrayList<String> names = marketExplorer.getMarkets_sort_by_distance();
         for (String name : names) {
             Log.d("market_sort_dist", name);
@@ -176,6 +181,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 //        MapPOIItem poiItems = mapView.
 //        for(String name : names)
 //        this.item = item;
+        Log.d("update_all_markers_on_map","------------");
         MapPOIItem[] poiItems = mapView.getPOIItems();
         for (MapPOIItem poiItem : poiItems) {
             if (poiItem.getItemName().equals("centerPoiItem")) {
@@ -242,13 +248,13 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void updateCenterMarkerAndDistance() {
+        Log.d("update_center_marker_distance","------------");
         centerPoiItem.setMapPoint(mapView.getMapCenterPoint());
 //        mapView.addPOIItem(center);
         //거리 갱신
         marketExplorer.updateMarketDistance(mapView.getMapCenterPoint());
 //        updateAllMarkersOnMap();
         marketExplorer.getNearNMarketsMapPoint(5);
-
     }
 
     public void updatePrice(){
@@ -258,7 +264,9 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         marketExplorer.updateMarkets_sort_by_price(mainActivity.getSelectedItemName());
     }
 
-
+    public void updateCostFragment(){
+        mainActivity.cf.applyMarkets_sort_by_price();
+    }
 //    private void createMarker(String marketName) {
 //
 //        MapPOIItem mCustomMarker = new MapPOIItem();
@@ -312,6 +320,11 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
             mListener.onFragmentInteraction(uri);
         }
     }
+
+//    public void refresh(){
+//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//        transaction.detach(this).attach(this).commit();
+//    }
 
     @Override
     public void onAttach(Context context) {
@@ -476,6 +489,10 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         return bm;
     }
 
+    public void refresh(){
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.detach(this).attach(this).commit();
+    }
 
 
 }

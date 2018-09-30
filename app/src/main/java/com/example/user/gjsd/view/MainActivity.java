@@ -74,11 +74,13 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_dashboard:
                     if(!drawer1.isOpened()&&!drawer2.isOpened()) {
                         df.updateMarkets_sort_by_distance();
+                        cf.applyMarkets_sort_by_price();
                         drawer2.animateOpen(); fab.hide();
                     }else if(drawer2.isOpened()){
                         drawer2.animateClose(); fab.show();
                     }else if(drawer1.isOpened()){
                         df.updateMarkets_sort_by_distance();
+                        cf.applyMarkets_sort_by_price();
                         drawer2.open();
                         drawer1.close();
                     }
@@ -125,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
         ft.add(R.id.formap,mf);
         ft.commit();
 
+
+
         adapter = new ListViewAdapter() ;
 
         listview = (ListView) findViewById(R.id.itemlist1);
@@ -165,10 +169,11 @@ public class MainActivity extends AppCompatActivity {
 //                pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
 //                pager.setCurrentItem(0);
                 pageadapter.notifyDataSetChanged();
-                mf.setArguments(bundle);
-                mf.updateAllMarkersOnMap();
+//                mf.setArguments(bundle);
                 mf.updatePrice();
+                marketExplorer.updateMarkets_sort_by_price(selectedItem);
                 drawer1.animateClose();
+                mf.refresh();
             }
         }) ;
 
@@ -201,6 +206,9 @@ public class MainActivity extends AppCompatActivity {
 //        cf.setMainActivity(this);
         //df
         mf.setArguments(bundle);
+
+        //init sort_by_price
+        marketExplorer.updateMarkets_sort_by_price(selectedItem);
 
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener(){

@@ -151,7 +151,7 @@ public class MarketExplorer {
         //default sort
 //        markets_sort_by_price = new ArrayList<String>(markets.keySet());
         markets_sort_by_distance = new ArrayList<String>(markets.keySet());
-
+        markets_sort_by_price = new ArrayList<String>(markets.keySet());
     }
 
     //getter and setter
@@ -305,15 +305,18 @@ public class MarketExplorer {
         //구현할것
         //모든 시장의 해당 가격을 가져오고 정렬 및 셋팅
         //없으면 null
+        Log.d("update_market_price","------------");
         Set<String> names = markets.keySet();
         for (String name : names) {
             getPrice(name, selectedItem);
         }
 
         mapFragment.updateAllMarkersOnMap();
+//        mapFragment.refresh();
     }
 
     public void updateMarkets_sort_by_price(String selectedItem) {
+        Log.d("update_sort_by_price","------------");
         retrofit = new Retrofit.Builder()
                 .baseUrl(APIService.URL).build();
 //                .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
@@ -332,18 +335,33 @@ public class MarketExplorer {
 //                    JsonArray array = new JsonArray().get(response.body().toString()).getAsJsonArray();
 //                    markets.get(name).setPrice(post.get("cost").toString());
                     JSONArray post = new JSONArray(response.body().string());
-                    ArrayList<String> tmp = new ArrayList<String>();
+
+                    breakOut:
                     for(int i = 0; i<post.getJSONArray(0).length();i++){
                         String name = post.getJSONArray(0).getJSONObject(i).getString("mart_name").toString();
-                        tmp.add(name);
+//                        int targetIndex = 0;
+                        boolean tmp;
+                        for(int j = i;j<post.getJSONArray(0).length();j++){
+                            tmp = false;
+                            if(markets_sort_by_price.get(j).replaceAll(" ","").equals(name)){
+                                Collections.swap(markets_sort_by_price,j,i);
+                                tmp = true;
+                                break;
+                            }
+                        }
+                        if(tmp = false) Log.v("no_match", name);
+
+
+//                        = markets_sort_by_price.indexOf(name.));
+
                         Log.v("sorted_market_name", name);
                     }
-                    markets_sort_by_price = tmp;
+                    mapFragment.updateCostFragment();
 //                    String price=post.getJSONObject(0).getString("cost").toString();
 //                    markets.get(name).setPrice(price);
 //                    Log.v("what the fuck", name+":"+price);
                 } catch (Exception e) {
-                    Log.v("debug_error", "getMarketsSortByPrice_error");
+                    Log.v("debug_error", "getMarketsSortByPrice_error"+e.toString());
 
                 }
             }
