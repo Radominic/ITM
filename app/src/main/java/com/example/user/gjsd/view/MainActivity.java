@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 //                cf.setArguments(bundle);
 
 //                pager = (ViewPager)findViewById(R.id.pager);
-//                pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
+//                pager.setAdapter(new pagerAdapter(getSupportFragmetManager()));
 //                pager.setCurrentItem(0);
                 pageadapter.notifyDataSetChanged();
 //                mf.setArguments(bundle);

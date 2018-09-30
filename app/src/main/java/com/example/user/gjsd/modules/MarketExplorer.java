@@ -361,7 +361,7 @@ public class MarketExplorer {
 
 //                        = markets_sort_by_price.indexOf(name.));
 
-                        Log.v("sorted_market_name", name);
+                        Log.v("sorted_market_name", name+"/"+markets_sort_by_price.get(i));
                     }
                     mapFragment.updateCostFragment();
                 } catch (Exception e) {
