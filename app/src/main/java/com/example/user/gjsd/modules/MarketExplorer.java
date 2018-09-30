@@ -185,9 +185,11 @@ public class MarketExplorer {
                         String itemname = tmp.split("\\(")[0];
                         Log.d("getItemInfo_parced",itemname+">"+marketname);
                         if(itemname.equals("냉동참조기"))continue;
+                        if(itemname.equals("호박"))continue;
                         String price=post.getJSONObject(i).getString("cost").toString();
                         String difference = post.getJSONObject(i).getString("difference").toString();
                         markets.get(marketname).putItem(itemname,price,difference);
+                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",itemname+">"+marketname);
                     }
 
                     Log.v("getItemInfo_success", "_______________________");
@@ -343,6 +345,7 @@ public class MarketExplorer {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     JSONArray post = new JSONArray(response.body().string());
+
                     breakOut:
                     for(int i = 0; i<post.getJSONArray(0).length();i++){
                         String name = post.getJSONArray(0).getJSONObject(i).getString("mart_name").toString();
@@ -397,4 +400,5 @@ public class MarketExplorer {
     public static MarketExplorer getInstance(){
         return marketExplorer;
     }
+
 }

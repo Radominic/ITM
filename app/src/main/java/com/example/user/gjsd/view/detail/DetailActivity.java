@@ -1,12 +1,15 @@
 package com.example.user.gjsd.view.detail;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +59,7 @@ public class DetailActivity extends AppCompatActivity {
 
         for(String itemname : marketExplorer.getMarket(marketName).allItems()) {
             DetailItem detailItem = detailItemMap.get(itemname);
+            Log.d("@@@@",itemname);
             detailItem.setDiffrence(marketExplorer.getMarket(marketName).getItem(itemname).getDifference());
             detailItemList.add(detailItem);
 
@@ -72,6 +76,18 @@ public class DetailActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Toast.makeText(getApplicationContext(), detailItemList.get(groupPosition).diffrence, Toast.LENGTH_LONG).show();
                 return false;
+            }
+        });
+
+
+        Button goSearch = findViewById(R.id.goSearchButton);
+        goSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String destLat = ""+marketExplorer.getMarket(marketName).getMapPoint().getMapPointGeoCoord().latitude;
+                String destLng = ""+marketExplorer.getMarket(marketName).getMapPoint().getMapPointGeoCoord().longitude;
+                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:"+destLat+","+destLng+"?q="+marketName));
+                startActivity(intent);
             }
         });
     }

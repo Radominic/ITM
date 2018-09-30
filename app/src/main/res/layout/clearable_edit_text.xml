@@ -23,6 +23,8 @@
                     android:layout_gravity="center"
                     android:hint=" 검색"
                     android:completionThreshold="1"
+                    android:singleLine="true"
+                    android:lines="1"
                     />
                 <Button
                     android:id="@+id/deletebutton"

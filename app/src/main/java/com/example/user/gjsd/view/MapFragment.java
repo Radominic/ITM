@@ -2,6 +2,7 @@ package com.example.user.gjsd.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -24,6 +25,7 @@ import com.example.user.gjsd.R;
 import com.example.user.gjsd.model.Market;
 import com.example.user.gjsd.modules.GPSManager;
 import com.example.user.gjsd.modules.MarketExplorer;
+import com.example.user.gjsd.view.detail.DetailActivity;
 //import com.example.user.gjsd.modules.MyPOIObject;
 
 import net.daum.mf.map.api.MapPOIItem;
@@ -263,6 +265,11 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         mapView.zoomOut(true);
     }
 
+    public void showDetail(String marketName){
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra("marketName", marketName);
+        startActivity(intent);
+    }
 
     MapPOIItem centerPoiItem;
 
@@ -431,6 +438,8 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     //poi listener
     @Override
     public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
+        showDetail(mapPOIItem.getItemName());
+        mapView.deselectPOIItem(mapPOIItem);
     }
 
     @Override
@@ -480,8 +489,19 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         //앞에 구 제거해주기
         String[] namearr = mapPOIItem.getItemName().split(" ");
         String name = "";
-        for(int i=1;i<namearr.length;i++)
+        boolean trash = false;
+        ok :
+        for(int i=1;i<namearr.length;i++){
+            if(namearr.length>2&&i==namearr.length-1){
+                for(int j=0;j<namearr[i].length();j++){
+                    if(namearr[i].charAt(j)=='점')
+                        break ok;
+
+                }
+            }
+
             name += namearr[i];
+        }
         //텍스트 사이즈
         int TextSize = 30;
         int TextSizei = 28;
