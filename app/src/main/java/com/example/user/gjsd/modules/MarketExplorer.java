@@ -178,6 +178,7 @@ public class MarketExplorer {
 //                    Log.d("debug_response_price_json",response.body().string());
 //                    markets.get(name).setPrice(price);
                     JSONArray post = new JSONArray(response.body().string());
+                    markets.get(marketname).setUpdateDate(post.getJSONObject(0).getString("time").toString());
                     for(int i = 0;i<post.length();i++){
                         String tmp = post.getJSONObject(i).getString("goods").toString();
                         Log.d("getItemInfo",tmp);
