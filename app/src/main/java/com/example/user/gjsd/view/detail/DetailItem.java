@@ -8,21 +8,32 @@ public class DetailItem {
 
     //Properties of Position
     private Drawable itemIcon;
-    public String position;
-    public String image;
-    public ArrayList<String> childinfo = new ArrayList<String>();
+//    public String position;
 
-    public DetailItem(String position,Drawable itemIcon){
-        this.position = position;
+    public String itemname;
+    public String image;
+    public String diffrence;
+//    public ArrayList<String> childinfo = new ArrayList<String>();
+
+    public DetailItem(String itemname, Drawable itemIcon) {
+        this.itemname = itemname;
         this.itemIcon = itemIcon;
     }
 
-    public String toString () {
-        return position;
+    public String getItemname() {
+        return itemname;
     }
-    public Drawable getIcon(){
+
+
+    public String toString() {
+        return itemname;
+    }
+
+    public Drawable getIcon() {
         return this.itemIcon;
     }
 
-
+    public void setDiffrence(String s) {
+        this.diffrence = s;
+    }
 }
