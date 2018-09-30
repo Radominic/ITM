@@ -12,17 +12,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.gjsd.R;
-import com.example.user.gjsd.model.Market;
 import com.example.user.gjsd.modules.MarketExplorer;
 
 import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Locale;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DetailActivity extends AppCompatActivity {
     private RecyclerView recyclerview;
     private Intent intent ;
     private String marketName ;
+    private Map<String, DetailItem> detailItemMap = Collections.synchronizedMap(new HashMap<String, DetailItem>());
+    //전달할 아이템들
+    private ArrayList<DetailItem> detailItemList = new ArrayList<DetailItem>();
+
+    MarketExplorer marketExplorer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,28 +37,42 @@ public class DetailActivity extends AppCompatActivity {
 
         intent = getIntent();
         marketName = intent.getStringExtra("marketName");
+//        마켓이 가지고 있는 품목의 item만 가지고 있는 list, map에서 검색하여 새로운 디테일아이템리스트를 뽑아 전달함
+        initItemMap();
+        marketExplorer = MarketExplorer.getInstance();
+
 
         TextView textView = (TextView)findViewById(R.id.markettitle);
         textView.setText(marketName);
 
         ExpandableListView expandableListView = (ExpandableListView)findViewById(R.id.expandableview);
-        final ArrayList<DetailItem> position = getData();
+//        final ArrayList<DetailItem> setItemViews = getItemViews();
         //create and bind to adatper
-        DetailAdapter adapter = new DetailAdapter(this, position,marketName);
+
+        for(String itemname : marketExplorer.getMarket(marketName).allItems()) {
+            DetailItem detailItem = detailItemMap.get(itemname);
+            detailItem.setDiffrence(marketExplorer.getMarket(marketName).getItem(itemname).getDifference());
+            detailItemList.add(detailItem);
+
+        }
+        DetailAdapter adapter = new DetailAdapter(this, marketName);
+        adapter.addViewItems(detailItemList);
+
+
         expandableListView.setAdapter(adapter);
 
         //set onclick listener
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Toast.makeText(getApplicationContext(), position.get(groupPosition).childinfo.get(childPosition), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), detailItemList.get(groupPosition).diffrence, Toast.LENGTH_LONG).show();
                 return false;
             }
         });
     }
 
     //add and get data for list
-    private ArrayList<DetailItem> getData() {
+    private void initItemMap() {
 
         DetailItem p1 = new DetailItem("동태", ContextCompat.getDrawable(this, R.drawable.item1));
         DetailItem p2 = new DetailItem("조기", ContextCompat.getDrawable(this, R.drawable.item2));
@@ -73,48 +92,48 @@ public class DetailActivity extends AppCompatActivity {
         DetailItem p16 = new DetailItem("고등어", ContextCompat.getDrawable(this, R.drawable.item16));
         DetailItem p17 = new DetailItem("명태", ContextCompat.getDrawable(this, R.drawable.item17));
         DetailItem p18 = new DetailItem("호박", ContextCompat.getDrawable(this, R.drawable.item18));
-        p1.childinfo.add("1");
-        p2.childinfo.add("2");
-        p3.childinfo.add("3");
-        p4.childinfo.add("4");
-        p5.childinfo.add("5");
-        p6.childinfo.add("6");
-        p7.childinfo.add("7");
-        p8.childinfo.add("8");
-        p9.childinfo.add("9");
-        p10.childinfo.add("10");
-        p11.childinfo.add("11");
-        p12.childinfo.add("12");
-        p13.childinfo.add("13");
-        p14.childinfo.add("14");
-        p15.childinfo.add("15");
-        p16.childinfo.add("16");
-        p17.childinfo.add("17");
-        p18.childinfo.add("18");
-
-        ArrayList<DetailItem> allposition = new ArrayList<>();
-        allposition.add(p1);
-        allposition.add(p2);
-        allposition.add(p3);
-        allposition.add(p4);
-        allposition.add(p5);
-        allposition.add(p6);
-        allposition.add(p7);
-        allposition.add(p8);
-        allposition.add(p9);
-        allposition.add(p10);
-        allposition.add(p11);
-        allposition.add(p12);
-        allposition.add(p13);
-        allposition.add(p14);
-        allposition.add(p15);
-        allposition.add(p16);
-        allposition.add(p17);
-        allposition.add(p18);
+//        p1.childinfo.add("1");
+//        p2.childinfo.add("2");
+//        p3.childinfo.add("3");
+//        p4.childinfo.add("4");
+//        p5.childinfo.add("5");
+//        p6.childinfo.add("6");
+//        p7.childinfo.add("7");
+//        p8.childinfo.add("8");
+//        p9.childinfo.add("9");
+//        p10.childinfo.add("10");
+//        p11.childinfo.add("11");
+//        p12.childinfo.add("12");
+//        p13.childinfo.add("13");
+//        p14.childinfo.add("14");
+//        p15.childinfo.add("15");
+//        p16.childinfo.add("16");
+//        p17.childinfo.add("17");
+//        p18.childinfo.add("18");
 
 
+        detailItemMap.put(p1.getItemname(),p1);
+        detailItemMap.put(p2.getItemname(),p2);
+        detailItemMap.put(p3.getItemname(),p3);
+        detailItemMap.put(p4.getItemname(),p4);
+        detailItemMap.put(p5.getItemname(),p5);
+        detailItemMap.put(p6.getItemname(),p6);
+        detailItemMap.put(p7.getItemname(),p7);
+        detailItemMap.put(p8.getItemname(),p8);
+        detailItemMap.put(p9.getItemname(),p9);
+        detailItemMap.put(p10.getItemname(),p10);
+        detailItemMap.put(p11.getItemname(),p11);
+        detailItemMap.put(p12.getItemname(),p12);
+        detailItemMap.put(p13.getItemname(),p13);
+        detailItemMap.put(p14.getItemname(),p14);
+        detailItemMap.put(p15.getItemname(),p15);
+        detailItemMap.put(p16.getItemname(),p16);
+        detailItemMap.put(p17.getItemname(),p17);
+        detailItemMap.put(p18.getItemname(),p18);
 
-        return allposition;
+
+
+//        return detailItemList;
     }
 
     }

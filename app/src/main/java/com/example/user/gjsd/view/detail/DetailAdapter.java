@@ -17,30 +17,44 @@ import com.example.user.gjsd.R;
 import com.example.user.gjsd.model.Market;
 import com.example.user.gjsd.modules.MarketExplorer;
 import com.example.user.gjsd.view.MapFragment;
+import com.example.user.gjsd.view.costlist.CostViewItem;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Currency;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class DetailAdapter extends BaseExpandableListAdapter {
     private Context mContext;
-    private ArrayList<DetailItem> position;
+    private ArrayList<DetailItem> detailItems;
+
     private LayoutInflater inflater;
     private String marketName;
     private MarketExplorer marketExplorer;
     //class Constructor
-    public DetailAdapter (Context mContext, ArrayList<DetailItem> position, String name) {
+    public DetailAdapter (Context mContext, String name) {
         this.marketName = name;
         this.mContext = mContext;
-        this.position = position;
+        marketExplorer = MarketExplorer.getInstance();
+//        this.detailItemMap = detailItemMap;
         inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public void addViewItems(ArrayList<DetailItem> detailItems){
+//        for(DetailItem detailItem : detailItems){
+//            this.detailItems.
+//        }
+//        detailItemMap.put(detailItem.getItemname(),detailItem);
+        this.detailItems = detailItems;
     }
 
     @Override
     public int getGroupCount() {
-        return position.size();
+        return detailItems.size();
     }
 
     public DetailAdapter(){
@@ -49,19 +63,19 @@ public class DetailAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return position.get(groupPosition).childinfo.size();
+        return 1;
     }
 
     //get position
     @Override
     public Object getGroup(int groupPosition) {
-        return position.get(groupPosition);
+        return detailItems.get(groupPosition);
     }
 
     //this is where we get the information of player
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return position.get(groupPosition).childinfo.get(childPosition);
+        return detailItems.get(groupPosition).diffrence;
     }
 
     //position ID
@@ -89,23 +103,24 @@ public class DetailAdapter extends BaseExpandableListAdapter {
         }
 
         //get position
-        DetailItem position = (DetailItem) getGroup(groupPosition);
+        DetailItem detailItem = (DetailItem) getGroup(groupPosition);
 
         //set positionName
-        String positionName = position.position;
+        String itemname = detailItem.getItemname();
 
-        TextView textView = (TextView) convertView.findViewById(R.id.position_tv);
-        textView.setText(positionName);
+        TextView itemname_tv = (TextView) convertView.findViewById(R.id.position_tv);
+        itemname_tv.setText(itemname);
 
 //        //부모 텍스트
 //        for(String itemname : marketExplorer.getMarket(marketName).allItems())
 //            marketExplorer.getMarket(marketName).getItem(itemname).getPrice();
 
-        TextView parentcost = (TextView)convertView.findViewById(R.id.priceinfo) ;
+        TextView price_tv = (TextView)convertView.findViewById(R.id.priceinfo) ;
+        price_tv.setText(Currency.getInstance(Locale.KOREA).getSymbol()+marketExplorer.getMarket(marketName).getItem(itemname).getPrice());
 //        parentcost.setText(Currency.getInstance(Locale.KOREA).getSymbol()+marketExplorer.getMarket(marketName).getItem(position.position).getPrice());
-        for(String itemname : marketExplorer.getMarket(marketName).allItems()){
-
-        }
+//        for(String itemname : marketExplorer.getMarket(marketName).allItems()){
+//
+//        }
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.indicator);
 
@@ -116,7 +131,7 @@ public class DetailAdapter extends BaseExpandableListAdapter {
             imageView.setClipToOutline(true);
         }
 
-        imageView.setImageDrawable(position.getIcon());
+        imageView.setImageDrawable(detailItem.getIcon());
 //        팽창됐을때랑 아닐때 이미지 변경 가능
 //        if(isExpanded){
 //            imageView.setImageResource(R.drawable.itemon);
@@ -152,7 +167,11 @@ public class DetailAdapter extends BaseExpandableListAdapter {
         cost.setTextColor(Color.rgb(242,21,40));
 //        cost.setTextColor(Color.rgb(65,108,216));
         //이 아래부터 각각 if문 안에 넣어주기
-        cost.setText(Currency.getInstance(Locale.KOREA).getSymbol()+"가격들어갈 자리");
+
+
+        //차액정보 그대로 가져옴=====================================================================<>
+        String difference = detailItems.get(groupPosition).diffrence;
+        cost.setText(Currency.getInstance(Locale.KOREA).getSymbol()+difference);
         update.setText("업데이트 정보 자리");
 
         //get position name
