@@ -17,6 +17,14 @@ public class Market{
     private MapPoint mapPoint;//fix at constructor
     private boolean isMart;//fix at constructor
 
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+    public String getUpdateDate(){
+        return updateDate;
+    }
+
+    private String updateDate;
     private Map<String, Item> items = Collections.synchronizedMap(new HashMap<String, Item>());;
 
 
