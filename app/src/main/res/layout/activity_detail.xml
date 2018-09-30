@@ -51,7 +51,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:drawableRight="@drawable/point"
-        android:text="서울 00구 00로 00"/>
+        android:text="길 찾아가기"/>
     <ExpandableListView
         android:id="@+id/expandableview"
         android:layout_marginTop="165dp"

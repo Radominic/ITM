@@ -33,6 +33,7 @@ import net.daum.mf.map.api.MapView;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Currency;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -64,6 +65,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 
     private MapView mapView;
     private FrameLayout framelayout;
+    private static HashMap<String,String> criteria ;
 
     @SuppressLint("ValidFragment")
     public MapFragment() {
@@ -130,9 +132,35 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         mapView.setPOIItemEventListener(this);
         mapView.setMapViewEventListener(this);
 //        Log.d("debug", "여기까지 ok");
+        criteria = new HashMap<String, String>();
+        inputCriteria();
 
         return view;
     }
+    private void inputCriteria(){
+        criteria.put("동태","(1마리)");
+        criteria.put("조기","(1마리)");
+        criteria.put("달걀","(30개)");
+        criteria.put("닭고기","(1마리)");
+        criteria.put("돼지고기","(600g)");
+        criteria.put("쇠고기","(600g)");
+        criteria.put("애호박","(1개)");
+        criteria.put("오이","(1개)");
+        criteria.put("상추","(100g)");
+        criteria.put("양파","(1망)");
+        criteria.put("무","(1개)");
+        criteria.put("배추","(1포기)");
+        criteria.put("배","(1개)");
+        criteria.put("사과","(1개)");
+        criteria.put("오징어","(1마리)");
+        criteria.put("고등어","(1마리)");
+        criteria.put("명태","(1마리)");
+
+    }
+    public static String getCriteria(String item){
+        return criteria.get(item);
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initMap() {

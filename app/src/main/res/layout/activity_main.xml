@@ -19,6 +19,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"></FrameLayout>
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="center"
+            app:fabSize="mini"
+            app:backgroundTint="#dadada"
+            android:src="@drawable/click_button"
+            android:backgroundTint="#dadada"
+            android:layout_gravity="right|bottom"
+            android:layout_marginBottom="73dp"
+            android:layout_marginRight="15dp">
+
+        </android.support.design.widget.FloatingActionButton>
+
 
 
         <SlidingDrawer
@@ -28,6 +43,7 @@
             android:allowSingleTap="true"
             android:animateOnClick="true"
             android:bottomOffset="3dp"
+            android:layout_marginBottom="58dp"
             android:content="@id/content1"
             android:handle="@id/handle1"
             android:orientation="vertical"
@@ -198,6 +214,7 @@
 
 
         <RelativeLayout
+            android:layout_marginTop="13dp"
             android:layout_width="match_parent"
             android:layout_height="80dp">
             <Button
@@ -205,7 +222,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_toRightOf="@id/standard"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="7dp"
                 android:background="@drawable/enter_button"/>
 
             <RelativeLayout
@@ -214,28 +231,12 @@
                 android:layout_centerHorizontal="true"
                 android:id="@+id/standard">
 
-                <LinearLayout
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true">
 
-                    <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/fab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:scaleType="center"
-                        app:fabSize="mini"
-                        app:backgroundTint="#dadada"
-                        android:src="@drawable/click_button"
-                        android:backgroundTint="#dadada"/>
-
-                </LinearLayout>
 
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="45dp"
                     android:id="@+id/searchbase"
                     android:layout_centerHorizontal="true">
 

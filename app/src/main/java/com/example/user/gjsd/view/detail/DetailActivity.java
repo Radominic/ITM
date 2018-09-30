@@ -43,7 +43,12 @@ public class DetailActivity extends AppCompatActivity {
 
 
         TextView textView = (TextView)findViewById(R.id.markettitle);
-        textView.setText(marketName);
+        if(marketName.equals("용산구 농협 하나로마트 용산점"))
+            textView.setText("용산구 농협 하나로마트");
+        else{
+            textView.setText(marketName);
+        }
+
 
         ExpandableListView expandableListView = (ExpandableListView)findViewById(R.id.expandableview);
 //        final ArrayList<DetailItem> setItemViews = getItemViews();
@@ -91,7 +96,6 @@ public class DetailActivity extends AppCompatActivity {
         DetailItem p15 = new DetailItem("오징어", ContextCompat.getDrawable(this, R.drawable.item15));
         DetailItem p16 = new DetailItem("고등어", ContextCompat.getDrawable(this, R.drawable.item16));
         DetailItem p17 = new DetailItem("명태", ContextCompat.getDrawable(this, R.drawable.item17));
-        DetailItem p18 = new DetailItem("호박", ContextCompat.getDrawable(this, R.drawable.item18));
 //        p1.childinfo.add("1");
 //        p2.childinfo.add("2");
 //        p3.childinfo.add("3");
@@ -129,7 +133,6 @@ public class DetailActivity extends AppCompatActivity {
         detailItemMap.put(p15.getItemname(),p15);
         detailItemMap.put(p16.getItemname(),p16);
         detailItemMap.put(p17.getItemname(),p17);
-        detailItemMap.put(p18.getItemname(),p18);
 
 
 

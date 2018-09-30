@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 
 import com.example.user.gjsd.R;
+import com.example.user.gjsd.view.MapFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,9 +57,13 @@ public class CostViewAdapter extends BaseAdapter {
         if(costViewItem==null) Log.d("@@@","s");
         // 아이템 내 각 위젯에 데이터 반영
         numberTextView.setText(""+(position+1));
-        titleTextView.setText(costViewItem.getName());
-        if(costViewItem.getMarket().getItem(c.getSelectedItem()) != null) {
-            descTextView.setText(c.getSelectedItem()+" : "+Currency.getInstance(Locale.KOREA).getSymbol()+costViewItem.getMarket().getItem(c.getSelectedItem()).getPrice());
+        if(costViewItem.getName().equals("용산구 농협 하나로마트 용산점"))
+            titleTextView.setText("용산구 농협 하나로마트");
+        else{
+            titleTextView.setText(costViewItem.getName());
+        }
+        if(costViewItem.getMarket().getItem(c.getSelectedItem()) != null&&!costViewItem.getMarket().getItem(c.getSelectedItem()).getPrice().equals("0")) {
+            descTextView.setText(c.getSelectedItem()+" : "+Currency.getInstance(Locale.KOREA).getSymbol()+costViewItem.getMarket().getItem(c.getSelectedItem()).getPrice()+" "+ MapFragment.getCriteria(c.getSelectedItem()));
         }else{
             descTextView.setText("품목없음");
         }

@@ -170,120 +170,101 @@ public class DetailAdapter extends BaseExpandableListAdapter {
         ImageView img = (ImageView) convertView.findViewById(R.id.playerpic);
         TextView cost = (TextView) convertView.findViewById(R.id.cost);
 
-
-        if(difference.substring(0,1).equals("▲")){
-            cost.setTextColor(Color.rgb(242,21,40));
-            cost.setText(Currency.getInstance(Locale.KOREA).getSymbol()+difference.substring(1,difference.length()));
-        }
-        else if(difference.substring(0,1).equals("▼")){
-            cost.setTextColor(Color.rgb(65,108,216));
-            cost.setText(Currency.getInstance(Locale.KOREA).getSymbol()+difference.substring(2,difference.length()));
-        }else{
-            cost.setTextColor(Color.rgb(70,70,70));
-            cost.setText(Currency.getInstance(Locale.KOREA).getSymbol()+difference.substring(0,difference.length()));
-        }
+        if(difference.substring(1,2).equals("0")){cost.setTextColor(Color.rgb(70,70,70));
+            cost.setText(Currency.getInstance(Locale.KOREA).getSymbol()+difference.substring(1,difference.length()));}
+        else if(difference.substring(0,1).equals("▲")){cost.setTextColor(Color.rgb(242,21,40));
+            cost.setText(Currency.getInstance(Locale.KOREA).getSymbol()+difference.substring(1,difference.length()));}
+        else{cost.setTextColor(Color.rgb(65,108,216));
+            cost.setText(Currency.getInstance(Locale.KOREA).getSymbol()+difference.substring(2,difference.length()));}
 
         //이 아래부터 각각 if문 안에 넣어주기
 
 
 
 
-        update.setText("업데이트 정보 자리");
+        update.setText("기준날짜 "+marketExplorer.getMarket(marketName).getUpdateDate().substring(0,10));
 
         //get position name
 
 
         if (itemname == "동태") {
                 //데이터 확인해서 상승인지 하락인지 표기
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
-
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
         } else if (itemname == "조기") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
 
         } else if (itemname == "달걀") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
-
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
         } else if (itemname == "닭고기") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
 
         }else if (itemname == "돼지고기") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
-
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
         }else if (itemname == "쇠고기") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
 
         }else if (itemname == "애호박") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
 
         }else if (itemname == "오이") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
 
         }else if (itemname == "상추") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
 
         }else if (itemname == "양파") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
 
         }else if (itemname == "무") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
 
         }else if (itemname == "배추") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
-
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
         }else if (itemname == "배") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
 
         }else if (itemname == "사과") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
-
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
         }else if (itemname == "오징어") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
-
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
         }else if (itemname == "고등어") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
-
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
         }else if (itemname == "명태") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
-
-        }else if (itemname == "호박") {
-                if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
-                else if(difference.substring(0,1).equals("▼")){img.setImageResource(R.drawable.downicon);}
-                else{img.setImageResource(R.drawable.equalicon);}
-            
+            if(difference.substring(1,2).equals("0")){img.setImageResource(R.drawable.equalicon);}
+            else if(difference.substring(0,1).equals("▲")){img.setImageResource(R.drawable.upicon);}
+            else{img.setImageResource(R.drawable.downicon);}
         }
         return convertView;
     }

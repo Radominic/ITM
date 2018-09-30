@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     SlidingDrawer drawer1,drawer2;
     Animation animro, animri, animlo, animli;
     String selectedItem = "사과";
-    String[] item = {"동태","조기","달걀","닭고기","돼지고기","쇠고기","애호박","오이","상추","양파","무","배추","배","사과","오징어","고등어","명태","냉동참조기"};
+    String[] item = {"동태","조기","달걀","닭고기","돼지고기","쇠고기","애호박","오이","상추","양파","무","배추","배","사과","오징어","고등어","명태"};
     ViewPager pager;
     Bundle bundle = new Bundle(1);
     costFragment cf;
@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item15),item[14]) ;
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item16),item[15]) ;
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item17),item[16]) ;
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.item18),item[17]) ;
 
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

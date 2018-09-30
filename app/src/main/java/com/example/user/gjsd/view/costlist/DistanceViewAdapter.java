@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.user.gjsd.R;
 import com.example.user.gjsd.model.Market;
+import com.example.user.gjsd.view.MapFragment;
 
 import org.w3c.dom.Text;
 
@@ -61,12 +62,22 @@ public class DistanceViewAdapter extends BaseAdapter{
 
         // 아이템 내 각 위젯에 데이터 반영
         numberTextView.setText(""+(position+1));
-        titleTextView.setText(distanceViewItem.getName());
+        if(distanceViewItem.getName().equals("용산구 농협 하나로마트 용산점"))
+            titleTextView.setText("용산구 농협 하나로마트");
+        else{
+            titleTextView.setText(distanceViewItem.getName());
+        }
+
         String distance = String.format("%.3f" , distanceViewItem.getMarket().getDistance()/1000);
         if(distanceViewItem.getMarket().getItem(d.getSelectedItem())==null){
             descTextView.setText("품목없음");
+        }else{if(distanceViewItem.getMarket().getItem(d.getSelectedItem()).getPrice().equals("0")){
+            descTextView.setText("품목없음");
+
         }else{
-            descTextView.setText(d.getSelectedItem()+" : "+ Currency.getInstance(Locale.KOREA).getSymbol()+distanceViewItem.getMarket().getItem(d.getSelectedItem()).getPrice());
+            descTextView.setText(d.getSelectedItem()+" : "+ Currency.getInstance(Locale.KOREA).getSymbol()+distanceViewItem.getMarket().getItem(d.getSelectedItem()).getPrice()+" "+ MapFragment.getCriteria(d.getSelectedItem()));
+        }
+
         }
 
         distTextView.setText(distance+" km");

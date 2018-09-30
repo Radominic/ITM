@@ -19,7 +19,7 @@
                 <AutoCompleteTextView
                     android:id="@+id/autoCompleteTextView"
                     android:layout_width="240dp"
-                    android:layout_height="45dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:hint=" 검색"
                     android:completionThreshold="1"
