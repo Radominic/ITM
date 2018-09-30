@@ -147,7 +147,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 //        marketExplorer.updateMarketDistance(mapView.getMapCenterPoint());
         initMarker();
 //        updateAllMarkersOnMap();
-        marketExplorer.updateMarketPrice(mainActivity.selectedItem);
+//        marketExplorer.updateMarketPrice(mainActivity.selectedItem);
 //        mainActivity.cf.updateMarkets_sort_by_price();
         mainActivity.df.updateMarkets_sort_by_distance();
 
@@ -197,7 +197,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
             if (market == null) {
                 Log.d("debug_market_null", "true");
             }
-            if (market.getPrice() == null) {
+            if (market.getItem(mainActivity.selectedItem).getPrice() == null) {
                 //draw default bitmap
                 Log.d("debug_market_price", "null");
                 poiItem.setCustomImageBitmap(writeOnDrawable(poiItem));
@@ -257,12 +257,13 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         marketExplorer.getNearNMarketsMapPoint(5);
     }
 
-    public void updatePrice(){
-        //시장마다 정보 모두 셋팅
-        marketExplorer.updateMarketPrice(mainActivity.getSelectedItemName());
-        //가격순 정렬 셋팅
-        marketExplorer.updateMarkets_sort_by_price(mainActivity.getSelectedItemName());
-    }
+//    public void updatePrice(){
+//        //시장마다 정보 모두 셋팅
+////        marketExplorer.updateMarketPrice(mainActivity.getSelectedItemName());
+//
+//        //가격순 정렬 셋팅
+//        marketExplorer.updateMarkets_sort_by_price(mainActivity.getSelectedItemName());
+//    }
 
     public void updateCostFragment(){
         mainActivity.cf.applyMarkets_sort_by_price();
@@ -435,8 +436,8 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         Market market = (Market) mapPOIItem.getUserObject();
         //전통시장이면 false, 대형마트이면 true
         boolean isMart = market.isMart();
-        market.getName();
-        market.getPrice();
+//        market.getName();
+//        market.getItem(mainActivity.selectedItem).getPrice();
         int drawableId ;
         //마켓의 종류에 따라 다른 드로어블 부여함.
         if(isMart){
@@ -452,11 +453,6 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
             name += namearr[i];
         //텍스트 사이즈
         int TextSize = 30;
-
-        //품목
-        String item = mainActivity.getSelectedItemName()+" : "+ Currency.getInstance(Locale.KOREA).getSymbol();
-        //가격 받아오기
-        String price = "5000";
 
         Bitmap bm = BitmapFactory.decodeResource(this.getActivity().getResources(), drawableId).copy(Bitmap.Config.ARGB_8888, true);
         BitmapFactory.decodeResource(this.getActivity().getResources(), R.drawable.default_mart);
@@ -480,11 +476,24 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         paint2.setTextSize(TextSize);
         paint2.setTextAlign(Paint.Align.LEFT);
 
-        //색 설정하기
+        //문자 생성
+        String text = "";
+        if(market.getItem(mainActivity.selectedItem)==null){
+            //draw default
+            text = "품목없음";
+        }else{
+            //품목
+            text += mainActivity.getSelectedItemName()+" : "+ Currency.getInstance(Locale.KOREA).getSymbol();
+            //가격 받아오기
+            text += market.getItem(mainActivity.selectedItem).getPrice();
+        }
 
+
+
+        //색 설정하기
         Canvas canvas = new Canvas(bm);
         canvas.drawText(name,13 , 43, paint1);
-        canvas.drawText(item+price,13 , 80, paint2);
+        canvas.drawText(text,13 , 80, paint2);
 
         return bm;
     }

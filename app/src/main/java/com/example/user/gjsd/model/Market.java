@@ -19,7 +19,7 @@ public class Market {
 
 
     //variable
-    private String price = "품목없음";
+//    private String price = "품목없음";
     private Double distance = 0.0;
     private String difference = "0";
 
@@ -40,13 +40,13 @@ public class Market {
         this.name = name;
     }
 
-    public void setPrice(String price){
-        this.price = price;
-    }
+//    public void setPrice(String price){
+//        this.price = price;
+//    }
 
-    public String getPrice(){
-        return price;
-    }
+//    public String getPrice(){
+//        return price;
+//    }
 
     public String getName() {
         return name;
