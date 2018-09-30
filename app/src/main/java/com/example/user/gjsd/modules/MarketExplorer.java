@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,12 +30,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+@SuppressWarnings("serial")
 public class MarketExplorer {
     private Map<String, Market> markets;
     private ArrayList<String> markets_sort_by_distance;
     private ArrayList<String> markets_sort_by_price;
     MapFragment mapFragment;
 
+    private static MarketExplorer marketExplorer;
     public MarketExplorer(MapFragment mapFragment) {
         markets = Collections.synchronizedMap(new HashMap<String, Market>());
         markets_sort_by_distance = new ArrayList<String>();
@@ -153,6 +156,8 @@ public class MarketExplorer {
 //        markets_sort_by_price = new ArrayList<String>(markets.keySet());
         markets_sort_by_distance = new ArrayList<String>(markets.keySet());
         markets_sort_by_price = new ArrayList<String>(markets.keySet());
+
+        marketExplorer = this;
     }
 
 
@@ -451,5 +456,10 @@ public class MarketExplorer {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    public static MarketExplorer getInstance(){
+        return marketExplorer;
     }
 }

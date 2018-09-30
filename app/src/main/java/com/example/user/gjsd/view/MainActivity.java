@@ -128,8 +128,6 @@ public class MainActivity extends AppCompatActivity {
         ft.add(R.id.formap,mf);
         ft.commit();
 
-
-
         adapter = new ListViewAdapter() ;
 
         listview = (ListView) findViewById(R.id.itemlist1);
@@ -172,6 +170,13 @@ public class MainActivity extends AppCompatActivity {
                 pageadapter.notifyDataSetChanged();
 //                mf.setArguments(bundle);
                 marketExplorer.updateMarkets_sort_by_price(selectedItem);
+                drawer1.animateClose();
+                fab.show();
+
+
+
+
+                mf.refresh();
                 drawer1.animateClose();
                 mf.refresh();
 
@@ -306,6 +311,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("!!!", "Listener is null");
             if(drawer1.isOpened()){
                 drawer1.animateClose();
+                fab.show();
             }else if(drawer2.isOpened()){
                 drawer2.animateClose();
             }else{

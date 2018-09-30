@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.user.gjsd.R;
+import com.example.user.gjsd.model.Market;
+import com.example.user.gjsd.modules.MarketExplorer;
+import com.example.user.gjsd.view.MapFragment;
 
 import org.w3c.dom.Text;
 
@@ -25,10 +28,11 @@ public class DetailAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private ArrayList<DetailItem> position;
     private LayoutInflater inflater;
-
+    private String marketName;
+    private MarketExplorer marketExplorer;
     //class Constructor
-    public DetailAdapter (Context mContext, ArrayList<DetailItem> position) {
-
+    public DetailAdapter (Context mContext, ArrayList<DetailItem> position, String name) {
+        this.marketName = name;
         this.mContext = mContext;
         this.position = position;
         inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -37,6 +41,10 @@ public class DetailAdapter extends BaseExpandableListAdapter {
     @Override
     public int getGroupCount() {
         return position.size();
+    }
+
+    public DetailAdapter(){
+        marketExplorer = MarketExplorer.getInstance();
     }
 
     @Override
@@ -59,7 +67,7 @@ public class DetailAdapter extends BaseExpandableListAdapter {
     //position ID
     @Override
     public long getGroupId(int groupPosition) {
-        return 0;
+        return groupPosition;
     }
 
     //where to get player's id
@@ -89,9 +97,15 @@ public class DetailAdapter extends BaseExpandableListAdapter {
         TextView textView = (TextView) convertView.findViewById(R.id.position_tv);
         textView.setText(positionName);
 
-        //부모 텍스트
+//        //부모 텍스트
+//        for(String itemname : marketExplorer.getMarket(marketName).allItems())
+//            marketExplorer.getMarket(marketName).getItem(itemname).getPrice();
+
         TextView parentcost = (TextView)convertView.findViewById(R.id.priceinfo) ;
-        parentcost.setText(Currency.getInstance(Locale.KOREA).getSymbol()+"0,000");
+//        parentcost.setText(Currency.getInstance(Locale.KOREA).getSymbol()+marketExplorer.getMarket(marketName).getItem(position.position).getPrice());
+        for(String itemname : marketExplorer.getMarket(marketName).allItems()){
+
+        }
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.indicator);
 
@@ -112,6 +126,7 @@ public class DetailAdapter extends BaseExpandableListAdapter {
 
         return convertView;
     }
+
 
     //get child_list.xml (View)
     @Override
