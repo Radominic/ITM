@@ -176,7 +176,10 @@ public class MarketExplorer implements Serializable{
 //                    markets.get(name).setPrice(price);
                     JSONArray post = new JSONArray(response.body().string());
                     for(int i = 0;i<post.length();i++){
-                        String itemname = post.getJSONObject(i).getString("goods").toString();
+                        String tmp = post.getJSONObject(i).getString("goods").toString();
+                        Log.d("getItemInfo",tmp);
+                        String itemname = tmp.split("\\(")[0];
+                        Log.d("getItemInfo_parced",itemname);
                         String price=post.getJSONObject(i).getString("cost").toString();
                         String difference = post.getJSONObject(i).getString("difference").toString();
                         markets.get(marketname).putItem(itemname,price,difference);
@@ -315,40 +318,40 @@ public class MarketExplorer implements Serializable{
         return service;
     }
 
-    //시장이름과 품목으로 가격정보를 가져온다
-    public void getPrice(final String name, String goods) {
-        retrofit = new Retrofit.Builder()
-                .baseUrl(APIService.URL).build();
-//                .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
-//                .build();
-        service = retrofit.create(APIService.class);
-        Call<ResponseBody> call = service.get_name_goods(goods, name.replaceAll(" ", ""));
-        Log.d("debug_getPriceOfMarket", goods + "," + name.replaceAll(" ", ""));
-        call.enqueue(new Callback<ResponseBody>() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-//                    String price = parsePrice(response.body().string());
-//                    Log.d("debug_response_price_json",response.body().string());
+//    //시장이름과 품목으로 가격정보를 가져온다
+//    public void getPrice(final String name, String goods) {
+//        retrofit = new Retrofit.Builder()
+//                .baseUrl(APIService.URL).build();
+////                .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
+////                .build();
+//        service = retrofit.create(APIService.class);
+//        Call<ResponseBody> call = service.get_name_goods(goods, name.replaceAll(" ", ""));
+//        Log.d("debug_getPriceOfMarket", goods + "," + name.replaceAll(" ", ""));
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                try {
+////                    String price = parsePrice(response.body().string());
+////                    Log.d("debug_response_price_json",response.body().string());
+////                    markets.get(name).setPrice(price);
+//                    JSONArray post = new JSONArray(response.body().string());
+//                    String price=post.getJSONObject(0).getString("cost").toString();
 //                    markets.get(name).setPrice(price);
-                    JSONArray post = new JSONArray(response.body().string());
-                    String price=post.getJSONObject(0).getString("cost").toString();
-                    markets.get(name).setPrice(price);
-//                    Log.v("what the fuck", name+":"+price);
-//                    mapFragment.setPriceOnPOIItem(poiItem, price);
-                } catch (Exception e) {
-                    Log.v("debug_error_getPrice", e.toString());
-                    markets.get(name).setPrice("품목없음");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                markets.get(name).setPrice("품목없음");
-            }
-        });
-    }
+////                    Log.v("what the fuck", name+":"+price);
+////                    mapFragment.setPriceOnPOIItem(poiItem, price);
+//                } catch (Exception e) {
+//                    Log.v("debug_error_getPrice", e.toString());
+//                    markets.get(name).setPrice("품목없음");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                markets.get(name).setPrice("품목없음");
+//            }
+//        });
+//    }
 
     private String parsePrice(String s) {
         JSONArray jsonArray = null;
@@ -362,19 +365,19 @@ public class MarketExplorer implements Serializable{
         return "품목없음";
     }
 
-    public void updateMarketPrice(String selectedItem) {
-        //구현할것
-        //모든 시장의 해당 가격을 가져오고 정렬 및 셋팅
-        //없으면 null
-        Log.d("update_market_price","------------");
-        Set<String> names = markets.keySet();
-        for (String name : names) {
-            getPrice(name, selectedItem);
-        }
-
-        mapFragment.updateAllMarkersOnMap();
-//        mapFragment.refresh();
-    }
+//    public void updateMarketPrice(String selectedItem) {
+//        //구현할것
+//        //모든 시장의 해당 가격을 가져오고 정렬 및 셋팅
+//        //없으면 null
+//        Log.d("update_market_price","------------");
+//        Set<String> names = markets.keySet();
+//        for (String name : names) {
+//            getPrice(name, selectedItem);
+//        }
+//
+//        mapFragment.updateAllMarkersOnMap();
+////        mapFragment.refresh();
+//    }
 
     public void updateMarkets_sort_by_price(String selectedItem) {
         Log.d("update_sort_by_price","------------");

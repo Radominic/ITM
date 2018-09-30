@@ -55,8 +55,11 @@ public class CostViewAdapter extends BaseAdapter {
         // 아이템 내 각 위젯에 데이터 반영
         numberTextView.setText(""+(position+1));
         titleTextView.setText(costViewItem.getName());
-        descTextView.setText(costViewItem.getMarket().getPrice());
-
+        if(costViewItem.getMarket().getItem(c.getSelectedItem()) != null) {
+            descTextView.setText(costViewItem.getMarket().getItem(c.getSelectedItem()).getPrice());
+        }else{
+            descTextView.setText("품목없음");
+        }
         return convertView;
     }
 

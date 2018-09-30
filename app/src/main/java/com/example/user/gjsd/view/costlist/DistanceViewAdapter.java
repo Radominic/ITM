@@ -63,10 +63,10 @@ public class DistanceViewAdapter extends BaseAdapter{
         numberTextView.setText(""+(position+1));
         titleTextView.setText(distanceViewItem.getName());
         String distance = String.format("%.3f" , distanceViewItem.getMarket().getDistance()/1000);
-        if(distanceViewItem.getMarket().getPrice().equals("품목없음")){
-            descTextView.setText(distanceViewItem.getMarket().getPrice());
+        if(distanceViewItem.getMarket().getItem(d.getSelectedItem())==null){
+            descTextView.setText("품목없음");
         }else{
-            descTextView.setText(d.getSelectedItem()+" : "+ Currency.getInstance(Locale.KOREA).getSymbol()+distanceViewItem.getMarket().getPrice());
+            descTextView.setText(d.getSelectedItem()+" : "+ Currency.getInstance(Locale.KOREA).getSymbol()+distanceViewItem.getMarket().getItem(d.getSelectedItem()).getPrice());
         }
 
         distTextView.setText(distance+" km");
