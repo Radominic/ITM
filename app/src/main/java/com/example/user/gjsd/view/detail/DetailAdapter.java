@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.user.gjsd.R;
+import com.example.user.gjsd.model.Market;
 import com.example.user.gjsd.modules.MarketExplorer;
 import com.example.user.gjsd.view.MapFragment;
 
@@ -27,11 +28,10 @@ public class DetailAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private ArrayList<DetailItem> position;
     private LayoutInflater inflater;
-    private MarketExplorer marketExplorer ;
     private String marketName;
+    private MarketExplorer marketExplorer;
     //class Constructor
-    public DetailAdapter (Context mContext, ArrayList<DetailItem> position,String name,MarketExplorer marketExplorer) {
-        this.marketExplorer = marketExplorer;
+    public DetailAdapter (Context mContext, ArrayList<DetailItem> position, String name) {
         this.marketName = name;
         this.mContext = mContext;
         this.position = position;
@@ -41,6 +41,10 @@ public class DetailAdapter extends BaseExpandableListAdapter {
     @Override
     public int getGroupCount() {
         return position.size();
+    }
+
+    public DetailAdapter(){
+        marketExplorer = MarketExplorer.getInstance();
     }
 
     @Override
@@ -63,7 +67,7 @@ public class DetailAdapter extends BaseExpandableListAdapter {
     //position ID
     @Override
     public long getGroupId(int groupPosition) {
-        return 0;
+        return groupPosition;
     }
 
     //where to get player's id
@@ -98,7 +102,10 @@ public class DetailAdapter extends BaseExpandableListAdapter {
 //            marketExplorer.getMarket(marketName).getItem(itemname).getPrice();
 
         TextView parentcost = (TextView)convertView.findViewById(R.id.priceinfo) ;
-        parentcost.setText(Currency.getInstance(Locale.KOREA).getSymbol()+marketExplorer.getMarket(marketName).getItem(position.position));
+//        parentcost.setText(Currency.getInstance(Locale.KOREA).getSymbol()+marketExplorer.getMarket(marketName).getItem(position.position).getPrice());
+        for(String itemname : marketExplorer.getMarket(marketName).allItems()){
+
+        }
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.indicator);
 

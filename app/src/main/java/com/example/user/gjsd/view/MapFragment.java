@@ -30,6 +30,7 @@ import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Locale;
@@ -44,7 +45,7 @@ import java.util.Objects;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment implements MapView.MapViewEventListener, MapView.POIItemEventListener {
+public class MapFragment extends Fragment implements MapView.MapViewEventListener, MapView.POIItemEventListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";

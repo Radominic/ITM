@@ -3,12 +3,13 @@ package com.example.user.gjsd.model;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class Market {
+public class Market{
 //    public MapPOIItem poiItem;
     private String name;//fix at constructor
     private double lat;//fix at constructor

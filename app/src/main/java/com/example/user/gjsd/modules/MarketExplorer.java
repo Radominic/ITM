@@ -31,12 +31,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 @SuppressWarnings("serial")
-public class MarketExplorer implements Serializable{
+public class MarketExplorer {
     private Map<String, Market> markets;
     private ArrayList<String> markets_sort_by_distance;
     private ArrayList<String> markets_sort_by_price;
     MapFragment mapFragment;
 
+    private static MarketExplorer marketExplorer;
     public MarketExplorer(MapFragment mapFragment) {
         markets = Collections.synchronizedMap(new HashMap<String, Market>());
         markets_sort_by_distance = new ArrayList<String>();
@@ -155,6 +156,8 @@ public class MarketExplorer implements Serializable{
 //        markets_sort_by_price = new ArrayList<String>(markets.keySet());
         markets_sort_by_distance = new ArrayList<String>(markets.keySet());
         markets_sort_by_price = new ArrayList<String>(markets.keySet());
+
+        marketExplorer = this;
     }
 
 
@@ -453,5 +456,10 @@ public class MarketExplorer implements Serializable{
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    public static MarketExplorer getInstance(){
+        return marketExplorer;
     }
 }

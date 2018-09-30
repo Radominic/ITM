@@ -1,5 +1,6 @@
 package com.example.user.gjsd.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 public class Item {
