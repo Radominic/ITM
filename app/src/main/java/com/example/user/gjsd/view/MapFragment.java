@@ -183,6 +183,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
             }
             mapView.removePOIItem(poiItem);
 
+
 //            MapPOIItem[] poiItems = mapView.findPOIItemByName(name);
 //            MapPOIItem poiItem = poiItems[0];
             Log.d("debug_poi_null", poiItem.getItemName());
@@ -446,7 +447,6 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         String price = "5000";
 
         Bitmap bm = BitmapFactory.decodeResource(this.getActivity().getResources(), drawableId).copy(Bitmap.Config.ARGB_8888, true);
-        BitmapFactory.decodeResource(this.getActivity().getResources(), R.drawable.default_mart);
 
         Paint paint1 = new Paint();
         paint1.setStyle(Paint.Style.FILL);

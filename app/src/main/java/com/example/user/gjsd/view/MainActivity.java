@@ -1,5 +1,7 @@
 package com.example.user.gjsd.view;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +26,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
@@ -35,6 +38,7 @@ import com.example.user.gjsd.modules.GPSManager;
 import com.example.user.gjsd.modules.MarketExplorer;
 
 import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
     SlidingDrawer drawer1,drawer2;
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     MarketExplorer marketExplorer;
     Button bt1,bt2;
     pagerAdapter  pageadapter ;
+    Context context;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -100,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
+        context = this;
         drawer1 = (SlidingDrawer) findViewById(R.id.slide1);
         drawer2 = (SlidingDrawer)findViewById(R.id.slide2);
         TextView tv1 = (TextView)findViewById(R.id.title1);
@@ -170,11 +177,13 @@ public class MainActivity extends AppCompatActivity {
                 mf.updateAllMarkersOnMap();
                 mf.updatePrice();
                 drawer1.animateClose();
+                fab.show();
 
-                
+
+
+
             }
         }) ;
-
 
         //mf가 여기
 
@@ -300,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("!!!", "Listener is null");
             if(drawer1.isOpened()){
                 drawer1.animateClose();
+                fab.show();
             }else if(drawer2.isOpened()){
                 drawer2.animateClose();
             }else{
